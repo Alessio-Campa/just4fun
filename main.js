@@ -1,3 +1,3 @@
-var colors = require("colors")
+const colors = require("colors")
 
 console.log("Helo".rainbow)
