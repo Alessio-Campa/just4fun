@@ -4,5 +4,6 @@
     "colors": "^1.4.0"
   },
   "name": "just4fun",
+  "main": "main.js",
   "version": "0.0.1"
 }
