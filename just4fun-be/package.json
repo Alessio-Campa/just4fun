@@ -1,12 +1,20 @@
 {
   "name": "just4fun-be",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "compile": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "dependencies": {
+    "colors": "^1.4.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.3.5",
+    "@types/node": "^16.3.2"
+  },
   "keywords": [],
-  "author": "",
+  "author": "!giveUp(you)",
   "license": "ISC"
 }
