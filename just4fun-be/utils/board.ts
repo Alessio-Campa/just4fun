@@ -5,7 +5,7 @@ const COLUMNS: number = 7;
 const CELL_TO_WIN: number = 4;
 
 class Board {
-    private cells: PlayerEnum[][];
+    private readonly cells: PlayerEnum[][];
     private _turn: PlayerEnum;
 
     constructor() {
@@ -23,10 +23,10 @@ class Board {
 
     getCell(row: number, column: number): PlayerEnum {
         /**
-         * @throws error: not a valid column
+         * @returns null if out of bounds or empty, player otherwise
          */
         if (row < 0 || row >= ROWS || column < 0 || column >= COLUMNS) {
-            throw new Error("Index out of bound");
+            return null
         }
         return this.cells[row][column];
     }
@@ -54,9 +54,16 @@ class Board {
          * @param column: the column in which you wanna insert player's disk
          * @returns Result: a Result instance if this is the winning move, null otherwise
          */
-        if (player != this.turn) throw new Error("Not your turn"); //Not your turn
-        let row = this.insertDisk(column);
+        if (player != this._turn) throw new Error("Not your turn"); //Not your turn
+
+        let row;
+        try{
+            row = this.insertDisk(column);
+        } catch (e) {
+            return e
+        }
         let winner: Result = this.checkWin(row, column);
+
         this._turn = (this._turn == PlayerEnum.Player1) ? PlayerEnum.Player2 : PlayerEnum.Player1; //switch turn
         return winner;
     }
@@ -67,58 +74,59 @@ class Board {
          * @param column: column of the current move
          * @returns Result: a Result instance if this is the winning move, null otherwise
          */
-        let potentialWinner:Result = new Result(this._turn);
-        if (this.checkDirection(row, column, -1,1, potentialWinner)) return potentialWinner;
-        if (this.checkDirection(row, column, 0,1, potentialWinner)) return potentialWinner;
-        if (this.checkDirection(row, column, 1, 1, potentialWinner)) return potentialWinner;
-        if (this.checkDirection(row, column, 1, 0, potentialWinner)) return potentialWinner;
-        return null;
+        let result:Result;
+
+        if (result == null)
+            result = this.checkDirection(row, column, -1,1)
+        if (result == null)
+            result = this.checkDirection(row, column, 0,1)
+        if (result == null)
+            result = this.checkDirection(row, column, 1, 1)
+        if (result == null)
+            result = this.checkDirection(row, column, 1, 0)
+
+        console.log(result)
+        return result;
     }
 
-    private checkDirection(row:number, column:number, deltaRow:number, deltaColumn:number, potentialWinner:Result): boolean {
+    private checkDirection(row:number, column:number, deltaRow:number, deltaColumn:number): Result {
         /**
          * @param row: starter position's row from which start the winning test
          * @param column: starter position's column from which start the winning test
          * @param deltaRow:
          * @param deltaColumn:
-         * @param potentialWinner: an instance of Result, used as an output parameter
-         * @returns boolean: true if there is a winning combination, false otherwise
+         * @returns potentialWinner: an instance of Result, used as an output parameter
          */
-        let counterWin = 0;
-        let player = this.getCell(row, column);
-        let testingRow = row, testingColumn = column;
-        let newPosition = player;
-        while (newPosition == player) {
-            potentialWinner.add(testingRow, testingColumn);
-            counterWin++;
-            testingColumn += deltaColumn;
-            testingRow += deltaRow;
-            try {
-                newPosition = this.getCell(testingRow, testingColumn);
-            } catch (e) {
-                potentialWinner.clear();
-                break;
-            }
-            if (counterWin == CELL_TO_WIN) return true;
+        const player:PlayerEnum = this.getCell(row, column)
+        const potentialWinner:Result = new Result(this._turn);
+        let count:number = CELL_TO_WIN - 1;
+        let r:number = row, c:number = column;
+
+        potentialWinner.add(r, c);
+        while (this.getCell(r+=deltaRow, c+=deltaColumn) == player && count > 0){
+            count--;
+            potentialWinner.add(r, c);
         }
-        counterWin = 0;
-        newPosition = player;
-        testingColumn -= deltaColumn;
-        testingRow -= deltaRow;
-        while (newPosition == player) {
-            potentialWinner.add(testingRow, testingColumn);
-            counterWin++;
-            testingColumn -= deltaColumn;
-            testingRow -= deltaRow;
-            try {
-                newPosition = this.getCell(testingRow, testingColumn);
-            } catch (e) {
-                potentialWinner.clear();
-                break;
-            }
-            if (counterWin == CELL_TO_WIN) return true;
+        r = row; c = column;
+        while (this.getCell(r-=deltaRow, c-=deltaColumn) == player && count > 0){
+            count--;
+            potentialWinner.add(r, c);
         }
-        return false;
+
+        if (count == 0)
+            return potentialWinner;
+        return null
+    }
+
+    testing(){
+        for(let i = 0; i < 6; i++){
+            let out = "";
+            for(let j = 0; j < 7; j++){
+                out += this.cells[i][j] == null ? "n" : this.cells[i][j]
+                out += " "
+            }
+            console.log(out)
+        }
     }
 }
 
@@ -135,3 +143,19 @@ class Result {
     clear(){ this._cells = []; }
     get cells(): [number, number][] { return [...this._cells]; }
 }
+
+
+function testing(){
+    let b = new Board();
+    b.makeMove(0, 1)
+    b.makeMove(1,2)
+    b.makeMove(0, 1)
+    b.makeMove(1,2)
+    b.makeMove(0, 1)
+    b.makeMove(1,2)
+    b.makeMove(0, 1)
+    b.makeMove(1,2)
+    b.testing()
+}
+
+//testing()
