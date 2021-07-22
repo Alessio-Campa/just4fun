@@ -3,8 +3,8 @@ import url = require('url');
 import fs = require('fs');
 import colors = require('colors');
 
-import {isMatch, Match} from "./models/Match";
-import * as match from "./models/Match"
+import {isMatch, Match} from "../models/Match";
+import * as match from "../models/Match"
 import * as mongoose from "mongoose";
 
 colors.enabled = true;

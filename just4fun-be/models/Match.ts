@@ -8,7 +8,7 @@ export interface Match extends mongoose.Document {
     player0: string,
     player1: string,
     winner: {
-        player: number, // TODO : renderlo enum, null = in corso, -1 = parità, 0/1 = vincitore;
+        player: number, // TODO?: renderlo enum, null = in corso, -1 = parità, 0/1 = vincitore;
         positions: number[][]
     },
     turn: number,
@@ -22,6 +22,10 @@ export interface Match extends mongoose.Document {
     getCell: (row: number, column: number)=> number,
     checkWin: (row:number, column:number)=> Result,
     checkDirection: (row:number, column:number, deltaRow:number, deltaColumn:number)=> Result
+}
+
+export class MatchMethods extends Match{
+
 }
 
 export function isMatch(arg){
