@@ -1,24 +1,11 @@
-/*
-*
-*  ENDPOINTS  | METHOD | ATTRIBUTES | DESCRIPTION
-* ------------+--------+------------+-------------
-*  /          | GET    |     --     | returns list of endpoints
-*  /user      | GET    |     --     | returns info of logged user
-*  /user      | GET    | ?mail=<s>  | returns info of searched user
-*  /user      | DELETE | ?mail=<s>  | deletes user with mail == s
-*  /users     | GET    |     --     | returns list of all users
-*  /chats     | GET    | ?mail=<s>  | returns list of all direct messages with s as part
-*  /matches   | GET    |     --     | returns list of all matches
-*  /match     | GET    | ?match=<n> | returns info of match with id == n
-*
-*
-*
-*  */
-
 import http = require('http');
 import url = require('url');
 import fs = require('fs');
 import colors = require('colors');
+
+import {isMatch, Match} from "./models/Match";
+import * as match from "./models/Match"
+import * as mongoose from "mongoose";
 
 colors.enabled = true;
 
@@ -35,31 +22,39 @@ let server = http.createServer( function (req, res){
         body = body + chunk;
 
     }).on("end", function() {
-        let response_data: object = {
-            error: true,
-            errormessage: "Invalid endpoint/method"
-        };
-        let status_code: number = 404;
-
-
-        if (req.url == "/" && req.method == "GET") {
-            status_code = 200;
-            response_data = {
-                api_version: "0.1",
-                endpoints: []
-            }
-            console.log("200 - Success".green)
+        let respond = function( status_code: number, response_data: Object ) : void {
+            res.writeHead(status_code, { "Content-Type": "application/json" });
+            res.write(JSON.stringify(response_data), "utf-8");
+            res.end();
         }
-        if (req.url == "/users" && req.method == "GET"){
-            response_data = {
-                users_list: []
-            }
-            console.log("200 - Success".green)
+        if (req.url == "/match" && req.method == "GET"){
+            let a;
+            match.getModel().findOne({}).then( (data) => {
+                a = data;
+            }).then(()=>{
+                return respond(200, a)
+            })
         }
-
-        res.writeHead(status_code, { "Content-Type": "application/json" });
-        res.write(JSON.stringify(response_data), "utf-8");
-        res.end();
+        if (req.url == "/match1" && req.method == "PUT"){
+            let a;
+            match.getModel().findOne({}).then((data) =>{
+                a = data
+                a.makeMove("b", 0)
+                a.save()
+            }).then(() => {
+                return respond(200, {HE: "LO"})
+            })
+        }
+        if (req.url == "/match0" && req.method == "PUT"){
+            let a;
+            match.getModel().findOne({}).then((data) =>{
+                a = data
+                a.makeMove("a", 5)
+                a.save()
+            }).then(() => {
+                return respond(200, {HE: "LO"})
+            })
+        }
 
         console.log("Request end".bold);
     });
@@ -67,9 +62,40 @@ let server = http.createServer( function (req, res){
 
 })
 
+mongoose.connect( `mongodb://just4fun:${encodeURIComponent("@Just@4@FUN@")}@54.38.158.223:27017/just4fun`, {useNewUrlParser: true, useUnifiedTopology: true})
+.then(() => {
 
-server.listen( 8080, function() {
-    console.log("HTTP Server started on port 8080".bgGreen.black);
-});
+        console.log("Connected to MongoDB".bgGreen.black);
+        return match.getModel().countDocuments({}); // We explicitly return a promise here
+    }
+).then((c) => {
+    if (c == 0){
+        let a = match.getModel().create({
+            player0: "a",
+            player1: "b",
+            winner: {
+                player: null,
+                positions: null
+            },
+            turn: 0,
+            board: [[null, null, null, null, null, null, null], [null, null, null, null, null, null, null], [null, null, null, null, null, null, null], [null, null, null, null, null, null, null], [null, null, null, null, null, null, null], [null, null, null, null, null, null, null]],
+            moves: [],
+            matchStart: Date.now(),
+            lastMove: Date.now(),
+        })
+        return Promise.all([a]);
+    }
 
-console.log("Server setup complete".bgGreen.black);
+}).then(() => {
+    return new Promise( (resolve, reject) => {
+        server.listen(8080, function () {
+            console.log("HTTP Server started on port 8080".bgGreen.black);
+            resolve(0);
+        });
+        server.on('error', (e) => { reject(e); } );
+    });
+})
+
+
+
+
