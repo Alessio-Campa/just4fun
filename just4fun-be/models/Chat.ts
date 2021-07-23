@@ -22,10 +22,20 @@ let chatSchema = new mongoose.Schema<Chat>({
         type: [mongoose.SchemaTypes.String],
         required: true
     },
-    messages: {
-        types: mongoose.SchemaTypes.DocumentArray,
-        required: true
-    }
+    messages: [{
+        sender: {
+            type: mongoose.SchemaTypes.String,
+            required: false
+        },
+        text:  {
+            type: mongoose.SchemaTypes.String,
+            required: false
+        },
+        timestamp: {
+            type: mongoose.SchemaTypes.Date,
+            required: false
+        }
+    }]
 })
 export function getSchema() {return chatSchema}
 
