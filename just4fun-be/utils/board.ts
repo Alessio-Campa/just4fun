@@ -1,10 +1,10 @@
-enum PlayerEnum { Player1, Player2 }
+export enum PlayerEnum { Player1, Player2 }
 
 const ROWS: number = 6;
 const COLUMNS: number = 7;
 const CELL_TO_WIN: number = 4;
 
-class Board {
+export class Board{
     private readonly cells: PlayerEnum[][];
     private _turn: PlayerEnum;
 
@@ -129,7 +129,7 @@ class Board {
     }
 }
 
-class Result {
+export class Result {
     private _cells: [number, number][] = null;
     readonly winner: PlayerEnum = null;
 

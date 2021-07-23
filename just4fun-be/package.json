@@ -6,7 +6,8 @@
   "scripts": {
     "compile": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node build/bin/www.js"
+    "start": "node build/bin/www.js",
+    "debug": "node build/utils/just4fun.js"
   },
   "dependencies": {
     "colors": "^1.4.0",
