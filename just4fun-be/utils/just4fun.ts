@@ -4,7 +4,12 @@ import fs = require('fs');
 import colors = require('colors');
 
 import {isMatch, Match} from "../models/Match";
+import {isChat, Chat} from "../models/Chat";
+import {isMessage, Message} from "../models/Message";
+
 import * as match from "../models/Match"
+import * as chat from "../models/Chat"
+import * as message from "../models/Message"
 import * as mongoose from "mongoose";
 
 colors.enabled = true;
@@ -29,7 +34,7 @@ let server = http.createServer( function (req, res){
         }
         if (req.url == "/match" && req.method == "GET"){
             let a;
-            match.getModel().findOne({}).then( (data) => {
+            match.getModel().find({}).then( (data) => {
                 a = data;
             }).then(()=>{
                 return respond(200, a)
@@ -55,6 +60,62 @@ let server = http.createServer( function (req, res){
                 return respond(200, {HE: "LO"})
             })
         }
+        if (req.url == "/match" && req.method == "POST"){
+            match.getModel().create({
+                player0: "a",
+                player1: "b",
+                winner: {
+                    player: null,
+                    positions: null
+                },
+                turn: 0,
+                board: Array(6).fill( Array(7).fill(null) ),
+                moves: [],
+                matchStart: Date.now(),
+                lastMove: Date.now()
+            }).then(()=>{
+                return respond(200, "object created")
+            })
+        }
+        if(req.url == "/chat" && req.method == "POST"){
+            chat.getModel().create({
+                idMatch: null,
+                members: ["a"],
+                messages: []
+            }).then(r => {
+                return respond(200, "object created")
+            })
+        }
+        if(req.url == "/chat" && req.method == "GET"){
+            chat.getModel().find({}).then((data)=> {
+                return respond(200, data);
+            })
+        }
+        if(req.url == "/message" && req.method == "POST"){
+            message.getModel().create({
+                sender: "c",
+                text: "Test3",
+                timestamp: Date.now()
+            }).then(r => {
+                chat.getModel().findOne({}).then(data => {
+                    let d;
+                    d = data
+                    d.messages.push(r);
+                    d.save()
+                }).then(() => {
+                    message.getModel().findOneAndDelete({_id: r._id}).then(()=>{
+                        return respond(200, "object created");
+                    });
+                })
+            })
+        }
+        if(req.url == "/message" && req.method == "GET"){
+            message.getModel().find({}).then((data)=> {
+                return respond(200, data);
+            })
+        }
+
+
 
         console.log("Request end".bold);
     });
@@ -78,7 +139,7 @@ mongoose.connect( `mongodb://just4fun:${encodeURIComponent("@Just@4@FUN@")}@54.3
                 positions: null
             },
             turn: 0,
-            board: [[null, null, null, null, null, null, null], [null, null, null, null, null, null, null], [null, null, null, null, null, null, null], [null, null, null, null, null, null, null], [null, null, null, null, null, null, null], [null, null, null, null, null, null, null]],
+            board: Array(6).fill( Array(7).fill(null) ),
             moves: [],
             matchStart: Date.now(),
             lastMove: Date.now(),
@@ -95,7 +156,4 @@ mongoose.connect( `mongodb://just4fun:${encodeURIComponent("@Just@4@FUN@")}@54.3
         server.on('error', (e) => { reject(e); } );
     });
 })
-
-
-
 
