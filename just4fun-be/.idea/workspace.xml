@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="50b6c8c6-a28e-4a48-8e0d-af753471fd40" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/app.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/www.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/socket.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/board.ts" beforeDir="false" afterPath="$PROJECT_DIR$/utils/board.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/app.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bin/app.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/www.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bin/www.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,6 +89,10 @@
       <workItem from="1626195938799" duration="9000" />
       <workItem from="1626883198751" duration="1024000" />
       <workItem from="1626884688424" duration="3236000" />
+      <workItem from="1626888239409" duration="265000" />
+      <workItem from="1626962803524" duration="279000" />
+      <workItem from="1626963132505" duration="3457000" />
+      <workItem from="1627407803495" duration="337000" />
     </task>
     <servers />
   </component>
@@ -121,17 +122,5 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/bin/www.ts</url>
-          <line>13</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
