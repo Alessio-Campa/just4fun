@@ -33,11 +33,10 @@ let server = http.createServer( function (req, res){
             res.end();
         }
         if (req.url == "/match" && req.method == "GET"){
-            let a;
             match.getModel().find({}).then( (data) => {
-                a = data;
-            }).then(()=>{
-                return respond(200, a)
+                respond(200, data)
+            }).catch((err)=>{
+                respond(404, {"error": err})
             })
         }
         if (req.url == "/match1" && req.method == "PUT"){
@@ -51,11 +50,11 @@ let server = http.createServer( function (req, res){
             })
         }
         if (req.url == "/match0" && req.method == "PUT"){
-            let a;
             match.getModel().findOne({}).then((data) =>{
-                a = data
-                a.makeMove("a", 5)
-                a.save()
+                let a: Match;
+                if(isMatch(data)){
+                    a = data
+                }
             }).then(() => {
                 return respond(200, {HE: "LO"})
             })
@@ -149,7 +148,7 @@ mongoose.connect( `mongodb://just4fun:${encodeURIComponent("@Just@4@FUN@")}@54.3
 
 }).then(() => {
     return new Promise( (resolve, reject) => {
-        server.listen(8080, function () {
+        server.listen(3000, function () {
             console.log("HTTP Server started on port 8080".bgGreen.black);
             resolve(0);
         });

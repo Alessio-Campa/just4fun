@@ -4,6 +4,9 @@ import path = require('path');
 import cookieParser = require('cookie-parser');
 import bodyparser = require('body-parser')
 
+let matchRouter = require('../routes/matches');
+let chatRouter = require('../routes/chats');
+
 let app = express();
 
 app.use(logger('dev'));
@@ -17,7 +20,8 @@ app.use(bodyparser.json());
 
 // app.use('/', indexRouter);
 // app.use('/users', usersRouter);
-// app.use('/auctions', auctionRouter);
+app.use('/match', matchRouter);
+app.use('/chat', chatRouter);
 // app.use('/books', booksRouter);
 
 

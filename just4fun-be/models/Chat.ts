@@ -1,13 +1,16 @@
 import mongoose = require("mongoose")
-import {Message} from "./Message";
 
 export interface Chat {
     idMatch: string,
     members: string[],
-    messages: Message[]
+    messages: {
+        sender: string,
+        text: string,
+        timestamp: number
+    }[]
 }
 
-export function isChat(arg){
+export function isChat(arg: any): arg is Chat{
     return arg &&
         arg.members && Array.isArray(arg.members) &&
         arg.messages && Array.isArray(arg.messages);
@@ -32,7 +35,7 @@ let chatSchema = new mongoose.Schema<Chat>({
             required: false
         },
         timestamp: {
-            type: mongoose.SchemaTypes.Date,
+            type: mongoose.SchemaTypes.Number,
             required: false
         }
     }]

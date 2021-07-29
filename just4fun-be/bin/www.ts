@@ -1,10 +1,12 @@
 require('dotenv').config()
 
 import { app } from './app'
-
+import * as mongoose from "mongoose";
 import http = require('http')
 import { AddressInfo } from "net";
 // import mongoose = require('mongoose')
+import colors = require('colors');
+import * as match from "../models/Match"; colors.enabled = true;
 let debug = require('debug')('just4fun-be')
 
 
@@ -13,7 +15,14 @@ let port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 let server = http.createServer(app);
-server.listen(port);
+
+mongoose.connect( `mongodb://${process.env.DB_NAME}:${process.env.DB_PASS}@54.38.158.223:27017/just4fun`, {useNewUrlParser: true, useUnifiedTopology: true})
+.then(() => {
+    console.log("Connected to MongoDB".bgGreen.black);
+    return match.getModel().countDocuments({}); // We explicitly return a promise here
+}).then(()=>{
+    server.listen(port,  ()=> console.log( ("HTTP Server started on port "+port).bgGreen.black) );
+})
 server.on('error', onError);
 server.on('listening', onListening);
 
