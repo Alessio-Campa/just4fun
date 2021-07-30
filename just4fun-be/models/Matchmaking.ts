@@ -2,23 +2,31 @@ import mongoose = require("mongoose")
 
 const RANGE_EXPANSION: number = 10;
 
-export interface Matchmaking extends mongoose.Document {
+export interface MatchMaking{
 	playerID: string,
-	range: (number,number), 
-	timestamp: Date, //TODO find the correct type
+	range: [number,number],
+	timestamp: Date,
 
-	searchMatch()=> void
+	searchMatch: ()=> void
 }
 
-export class MatchMakingMethods extends MatchMaking{
+export class MatchMakingMethods implements MatchMaking{
+    playerID: string;
+    range: [number, number];
+    timestamp: Date;
+
+    searchMatch(): void {
+        //TODO: to implement
+        throw new Error();
+    }
 
 }
 
 export function isMatchMaking(arg){
     return arg &&
         arg.playerID && typeof(arg.playerID) === 'string' &&
-        arg.range && typeof(arg.range) === '(number,number)' &&
-        arg.timestamp && typeof(arg.timestamp) === 'time'
+        arg.range && typeof(arg.range) === 'object' &&
+        arg.timestamp && typeof(arg.timestamp) === 'object'
 }
 
 let matchMakingSchema = new mongoose.Schema<MatchMaking>({
@@ -27,7 +35,7 @@ let matchMakingSchema = new mongoose.Schema<MatchMaking>({
         required: true
     },
     range: {
-	    type: mongoose.SchemaTypes. //TODO which type for a tuple?,
+	    type: mongoose.SchemaTypes.Array,
         required: true
     },
 	timestamp: {
