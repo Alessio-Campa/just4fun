@@ -4,7 +4,7 @@ const ROWS: number = 6;
 const COLUMNS: number = 7;
 const CELL_TO_WIN: number = 4;
 
-export interface Match extends mongoose.Document {
+export interface Match extends mongoose.Document{
     player0: string,
     player1: string,
     winner: {
@@ -24,11 +24,13 @@ export interface Match extends mongoose.Document {
     checkDirection: (row:number, column:number, deltaRow:number, deltaColumn:number)=> Result
 }
 
-export class MatchMethods extends Match{
+/*
+export class MatchMethods implements Match{
 
 }
+*/
 
-export function isMatch(arg){
+export function isMatch(arg): arg is Match{
     return arg &&
         arg.player0 && typeof(arg.player0) == 'string' &&
         arg.player1 && typeof(arg.player1) == 'string' &&
@@ -52,32 +54,39 @@ let matchSchema = new mongoose.Schema<Match>({
     winner: {
         player: {
             type: mongoose.SchemaTypes.Number,
-            required: false
+            required: false,
+            default: null
         },
         positions: {
             type: [[mongoose.SchemaTypes.Number]],
-            required: false
+            required: false,
+            default: null
         }
     },
     turn:  {
         type: mongoose.SchemaTypes.Number,
-        required: true
+        required: true,
+        default: 0
     },
     board: {
         type: [[mongoose.SchemaTypes.Number]],
-        required: true
+        required: true,
+        default: Array(6).fill(Array(7).fill(null))
     },
     moves:  {
         type: [mongoose.SchemaTypes.Number],
-        required: true
+        required: true,
+        default: []
     },
     matchStart: {
         type: mongoose.SchemaTypes.Date,
-        required: true
+        required: true,
+        default: Date.now()
     },
     lastMove: {
         type: mongoose.SchemaTypes.Date,
-        required: true
+        required: true,
+        default: Date.now()
     }
 })
 
@@ -91,6 +100,7 @@ matchSchema.methods.makeMove = function (player: string, column: number): void {
     } catch (e) {
         return e
     }
+    this.moves.push(column)
 
     let winner = this.checkWin(row, column);
     if(winner.winner !== null){
@@ -102,7 +112,7 @@ matchSchema.methods.makeMove = function (player: string, column: number): void {
     this.turn = (this.turn + 1) % 2 //switch turn
 }
 
-matchSchema.methods.insertDisk = function(column: number):number {
+matchSchema.methods.insertDisk = function(column: number): number {
     if (column < 0 || column >= COLUMNS) throw new Error("Not a valid column");
     let row = 0;
     while (this.getCell(row, column) != null) {

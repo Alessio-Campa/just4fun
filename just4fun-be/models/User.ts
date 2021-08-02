@@ -4,6 +4,8 @@ import * as crypto from 'crypto'
 export interface User extends mongoose.Document{
     username: string,
     mail: string,
+    points: number,
+    friends: string[],
     roles: string[],
     salt: string,
     digest: string,
@@ -21,20 +23,30 @@ let userSchema = new mongoose.Schema<User>({
         type: mongoose.SchemaTypes.String,
         required: true
     },
-    mail:{
+    mail: {
         type: mongoose.SchemaTypes.String,
         required: true,
         unique: true
     },
-    roles:{
+    points: {
+        type: mongoose.SchemaTypes.Number,
+        required: true,
+        default: 0
+    },
+    friends: {
+        type: [mongoose.SchemaTypes.String],
+        required: true,
+        default: []
+    },
+    roles: {
         type: [mongoose.SchemaTypes.String],
         required: true
     },
-    salt:{
+    salt: {
         type: mongoose.SchemaTypes.String,
         required: false
     },
-    digest:{
+    digest: {
         type: mongoose.SchemaTypes.String,
         required: false
     }

@@ -22,7 +22,7 @@ export class MatchMakingMethods implements MatchMaking{
 
 }
 
-export function isMatchMaking(arg){
+export function isMatchMaking(arg): arg is MatchMaking{
     return arg &&
         arg.playerID && typeof(arg.playerID) === 'string' &&
         arg.range && typeof(arg.range) === 'object' &&
