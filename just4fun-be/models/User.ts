@@ -40,7 +40,8 @@ let userSchema = new mongoose.Schema<User>({
     },
     roles: {
         type: [mongoose.SchemaTypes.String],
-        required: true
+        required: true,
+        default: []
     },
     salt: {
         type: mongoose.SchemaTypes.String,

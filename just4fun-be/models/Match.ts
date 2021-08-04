@@ -24,18 +24,11 @@ export interface Match extends mongoose.Document{
     checkDirection: (row:number, column:number, deltaRow:number, deltaColumn:number)=> Result
 }
 
-/*
-export class MatchMethods implements Match{
-
-}
-*/
-
 export function isMatch(arg): arg is Match{
     return arg &&
         arg.player0 && typeof(arg.player0) == 'string' &&
         arg.player1 && typeof(arg.player1) == 'string' &&
-        arg.winner && typeof(arg.winner) == 'string' &&
-        arg.turn && typeof(arg.turn) == 'string' &&
+        arg.turn && typeof(arg.turn) == 'number' &&
         arg.board && Array.isArray(arg.board) &&
         arg.moves && Array.isArray(arg.moves) &&
         arg.matchStart && arg.matchStart instanceof Date &&
