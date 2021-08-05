@@ -1,20 +1,19 @@
 require('dotenv').config()
 
 import { app } from './app'
-import * as mongoose from "mongoose";
-import http = require('http')
 import { AddressInfo } from "net";
-// import mongoose = require('mongoose')
-import colors = require('colors');
-import * as match from "../models/Match"; colors.enabled = true;
-let debug = require('debug')('just4fun-be')
+import http = require('http')
+import colors = require('colors'); colors.enabled = true;
+import * as mongoose from "mongoose";
+import * as match from "../models/Match";
 
-
-//Create HTTP server
+// Create HTTP server
 let port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
+const server = http.createServer(app);
 
-let server = http.createServer(app);
+// Initilize socket.io
+
 
 mongoose.connect( `mongodb://${process.env.DB_NAME}:${process.env.DB_PASS}@54.38.158.223:27017/just4fun`, {useNewUrlParser: true, useUnifiedTopology: true})
 .then(() => {

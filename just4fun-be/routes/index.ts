@@ -6,6 +6,7 @@ import passportHTTP = require('passport-http')
 import jsonWebToken = require('jsonwebtoken')
 import * as user from '../models/User'
 
+
 const JWT_EXPIRATION = '1d';
 
 declare global{
@@ -58,10 +59,6 @@ router.get('/login', passport.authenticate('basic', {session: false}), (req, res
     return res.status(200).json({ error: false, errormessage: "", token: token_signed });
 
 });
-
-
-
-//To start the db write on terminal:     brew services start mongodb-community@4.2
 
 export = router;
 

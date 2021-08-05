@@ -16,87 +16,89 @@ export interface Matchmaking extends mongoose.Document{
 }
 
 export function isMatchMaking(arg): arg is Matchmaking{
-    return arg &&
-        arg.playerID && typeof(arg.playerID) === 'string' &&
-        arg.min && typeof(arg.min) === 'number' &&
-        arg.max && typeof(arg.max) === 'number' &&
-        arg.timestamp && arg.timestamp instanceof Date
+	return arg &&
+		arg.playerID && typeof(arg.playerID) === 'string' &&
+		arg.min && typeof(arg.min) === 'number' &&
+		arg.max && typeof(arg.max) === 'number' &&
+		arg.timestamp && arg.timestamp instanceof Date
 }
 
 let matchMakingSchema = new mongoose.Schema<Matchmaking>({
-    playerID: {
-        type: mongoose.SchemaTypes.String,
-        required: true
-    },
+	playerID: {
+		type: mongoose.SchemaTypes.String,
+		required: true
+	},
 	min: {
-	    type: mongoose.SchemaTypes.Number,
-        required: true
-    },
+		type: mongoose.SchemaTypes.Number,
+		required: true
+	},
 	max: {
-    	type: mongoose.SchemaTypes.Number,
+		type: mongoose.SchemaTypes.Number,
 		required: true
 	},
 	timestamp: {
 		type: mongoose.SchemaTypes.Date,
 		required: true,
 		default: Date.now()
-    }
+	}
 })
 
 matchMakingSchema.methods.searchMatch = function (): void { //TODO: testing, potrebbe essere molto buggata
-	let playerPoints;
-	let startSearch = Date.now();
-	user.getModel().findById(this.playerID, {points: 1}).then((data)=>{
-		playerPoints = data;
-	});
-
-	let interval = setInterval(()=>{
-		let waitingPlayers;
-		let found = false;
-		let opponent;
-		matchmakingModel.find({playerID: {$ne: this.playerID}, $or: [ {min: {$gte: this.max}}, {max: {$lte: this.min}}]}).then((data)=>{
-			waitingPlayers = data
-			waitingPlayers.forEach((element) => {
-				if (found) {
-					return;
-				}
-				if (Date.now()-startSearch > INTERSECTION_TIME_LIMIT){
-					// TODO: potremmo ritornare quello con il punteggio più vicino
-					opponent = element.playerID;
-					matchmakingModel.remove({$or: [{playerID: opponent}, {playerID: this.playerID}]});
-					found = true;
-				}
-				else if (element.min <= this.max || element.max >= this.min){
-					opponent = element.playerID;
-					matchmakingModel.remove({$or: [{playerID: opponent}, {playerID: this.playerID}]});
-					found = true;
-				}
-			});
-			if (found) {
-				clearInterval(interval);
-				return opponent;
-			}
-			let searcher;
-			getModel().findOne({playerID: this.playerID}).then( (data) => {
-				searcher = data;
-				if (searcher === null) {
-					matchmakingModel.insertMany({
-						playerID: this.playerID,
-						min: playerPoints - RANGE_EXPANSION,
-						max: playerPoints + RANGE_EXPANSION,
-						timestamp: Date.now()
-					});
-				}
-				let min = data.min;
-				let max = data.max;
-				matchmakingModel.updateMany({playerID: this.playerID}, {
-					$set: {min: min - RANGE_EXPANSION, max: max + RANGE_EXPANSION}
-				});
-			});
-			//TODO: eventuale stop del soket
+	let matchmakeDone = function (interval, myId, opponentId)
+	{
+		matchmakingModel.remove({
+			$or: [{playerID: opponentId},{playerID: myId}]
 		});
-	}, RANGE_EXPANSION_MS);
+		clearInterval(interval);
+		// TODO: pinga user
+	}
 
+	let matchmakeFail = function (thisPlayer)
+	{
+		thisPlayer.min -= RANGE_EXPANSION/2.0;
+		thisPlayer.max += RANGE_EXPANSION/2.0;
+		matchmakingModel.updateOne({playerID: thisPlayer.playerID}, {min: thisPlayer.min, max: thisPlayer.max});
+	}
+
+	let startSearch = Date.now();
+	user.getModel().findById(this.playerID, {points: 1}).then((thisPlayer)=>{
+		let interval = setInterval(()=>{
+			matchmakingModel.findOne({
+				playerID: {$ne: this.playerID},
+				min: {$lte: thisPlayer.points},
+				max: {$gte: thisPlayer.points},
+			}).sort({
+				timestamp: "ascending"
+			}).then((data) => {
+				if (data){
+					//Match oldest in queue that respect filter
+					matchmakeDone(interval, this.playerID, data.playerID);
+				}
+				else{
+					if(Date.now()-startSearch > INTERSECTION_TIME_LIMIT)
+					{//Too much wait, take nearest
+						matchmakingModel.findOne({
+							playerID: {$ne: this.playerID},
+						}).sort([
+							[{ $abs: { $subtract: [ thisPlayer.points, "$min" ] }}, 1]
+						]).then((data) => {
+							if (data)
+								//Match nearest
+								matchmakeDone(interval, this.playerID, data.playerID);
+							else
+								//No one is in the matchMaking
+								matchmakeFail(thisPlayer);
+						});
+					}
+					else
+					{
+						//Update range and wait
+						matchmakeFail(thisPlayer);
+					}
+				}
+			});
+		}, RANGE_EXPANSION_INTERVAL);
+	});
 }
 
 

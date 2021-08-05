@@ -2,31 +2,29 @@ import express = require('express')
 import {isChat, Chat} from "../models/Chat";
 import * as chat from "../models/Chat";
 import auth = require("../bin/authentication");
+import jwt_decode from "jwt-decode"
+import {User} from "../models/User";
 
 let router = express.Router();
 
 router.get("/", auth, (req, res, next)=>{
-    let friend = req.body.friend;
-
-    /*
-    if (!friend){
-        chat.getModel().find().then((data)=>{
-            return res.status(200).json(data);
-        })
-    }
-    */
-
-    chat.getModel().findOne({matchID: null, members: {$all: [req.user.id, friend]}} ).then((data) => {
+    chat.getModel().findOne({matchID: null, members: {$all: [req.user.id, req.body.friend]}} ).then((data) => {
         return res.status(200).json(data);
     }).catch((err) => {
         return next({status_code: 400, error: true, errormessage: err})
     })
 })
 
+router.get("/:matchID", (req, res, next)=> {
+    let user;
+    //optional authentication with bearer token
+    if( req.headers['authorization'] !== undefined ){
+        let token: User = jwt_decode(req.headers.authorization.split(" ")[1])
+        user = token.id
+    }
 
-// unsigned guests can't see the chat (otherwise they could be the person playing)
-router.get("/:matchID", auth, (req, res, next)=> {
     chat.getModel().findOne({matchID: req.params.matchID}).then( (data)=> {
+        // TODO: ritornare messaggi in base chi sei (giocatore o fuori)
         return res.status(200).json( data );
     }).catch((err)=> {
         return next({status_code: 400, error: true, errormessage: err})
