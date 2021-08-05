@@ -1,6 +1,6 @@
 import mongoose = require("mongoose")
 
-export interface Chat {
+export interface Chat extends mongoose.Document{
     idMatch: string,
     members: string[],
     messages: {
