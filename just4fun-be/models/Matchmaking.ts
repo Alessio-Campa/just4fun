@@ -1,10 +1,10 @@
 import mongoose = require("mongoose")
 import * as user from "./User"
-import {match} from "assert";
+import { match } from "assert";
 
 const RANGE_EXPANSION: number = 20;
-const RANGE_EXPANSION_MS: number = 2000;
-const INTERSECTION_TIME_LIMIT: number = 16 * 1000;
+const RANGE_EXPANSION_INTERVAL: number = 2000; //2sec
+const INTERSECTION_TIME_LIMIT: number = 16 * 1000; //16sec
 
 export interface Matchmaking extends mongoose.Document{
 	playerID: string,

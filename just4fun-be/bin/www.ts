@@ -15,17 +15,15 @@ const server = http.createServer(app);
 // Initilize socket.io
 
 
-mongoose.connect( `mongodb://${process.env.DB_NAME}:${process.env.DB_PASS}@54.38.158.223:27017/just4fun`, {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect( `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_ADDR}:27017/${process.env.DB_USER}`, {useNewUrlParser: true, useUnifiedTopology: true})
 .then(() => {
     console.log("Connected to MongoDB".bgGreen.black);
     return match.getModel().countDocuments({}); // We explicitly return a promise here
 }).then(()=>{
     server.listen(port,  ()=> console.log( ("HTTP Server started on port "+port).bgGreen.black) );
+    server.on('error', onError);
+    server.on('listening', onListening);
 })
-server.on('error', onError);
-server.on('listening', onListening);
-
-
 
 /**
  * Event listener for HTTP server "error" event
@@ -56,7 +54,7 @@ function onError(error) {
  * Event listener for HTTP server "listening" event
  */
 function onListening() {
-    debug('Listening on ' + getBind(server.address()));
+    console.log('Listening on ' + getBind(server.address()).bgGreen.black);
 }
 
 function getBind(address: string | AddressInfo): string
