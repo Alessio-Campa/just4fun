@@ -1,6 +1,10 @@
 import mongoose = require("mongoose")
+import * as user from "./User"
+import {match} from "assert";
 
-const RANGE_EXPANSION: number = 10;
+const RANGE_EXPANSION: number = 20;
+const RANGE_EXPANSION_MS: number = 2000;
+const INTERSECTION_TIME_LIMIT: number = 16 * 1000;
 
 export interface Matchmaking extends mongoose.Document{
 	playerID: string,
@@ -14,8 +18,9 @@ export interface Matchmaking extends mongoose.Document{
 export function isMatchMaking(arg): arg is Matchmaking{
     return arg &&
         arg.playerID && typeof(arg.playerID) === 'string' &&
-        arg.range && typeof(arg.range) === 'object' &&
-        arg.timestamp && typeof(arg.timestamp) === 'object'
+        arg.min && typeof(arg.min) === 'number' &&
+        arg.max && typeof(arg.max) === 'number' &&
+        arg.timestamp && arg.timestamp instanceof Date
 }
 
 let matchMakingSchema = new mongoose.Schema<Matchmaking>({
@@ -33,7 +38,8 @@ let matchMakingSchema = new mongoose.Schema<Matchmaking>({
 	},
 	timestamp: {
 		type: mongoose.SchemaTypes.Date,
-		required: true
+		required: true,
+		default: Date.now()
     }
 })
 
