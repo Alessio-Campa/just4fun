@@ -1,24 +1,42 @@
 import express = require('express')
 import {isChat, Chat} from "../models/Chat";
 import * as chat from "../models/Chat";
-import {Model} from "mongoose";
-//import auth = require("../authentication");
-
+import auth = require("../bin/authentication");
 
 let router = express.Router();
 
-router.get("/", (req, res, next)=> {
-    chat.getModel().find({}).then( (data)=> {
-        return res.status(200).json( data );
-    }).catch((err)=> {
-        return next({status_code:400, error:true, errormessage:err})
+router.get("/", auth, (req, res, next)=>{
+    let friend = req.body.friend;
+
+    /*
+    if (!friend){
+        chat.getModel().find().then((data)=>{
+            return res.status(200).json(data);
+        })
+    }
+    */
+
+    chat.getModel().findOne({matchID: null, members: {$all: [req.user.id, friend]}} ).then((data) => {
+        return res.status(200).json(data);
+    }).catch((err) => {
+        return next({status_code: 400, error: true, errormessage: err})
     })
 })
 
-router.post("/", (req, res, next)=> {
+
+// unsigned guests can't see the chat (otherwise they could be the person playing)
+router.get("/:matchID", auth, (req, res, next)=> {
+    chat.getModel().findOne({matchID: req.params.matchID}).then( (data)=> {
+        return res.status(200).json( data );
+    }).catch((err)=> {
+        return next({status_code: 400, error: true, errormessage: err})
+    })
+})
+
+router.post("/", auth, (req, res, next)=> {
     chat.getModel().create({
-        idMatch: req.body.idMatch,
-        members: req.body.members,
+        matchID: req.body.matchID,
+        members: [req.body.friend, req.user.id],
         messages: []
     }).then((data)=> {
         return res.status(200).json({error: false, objectId: data._id})
@@ -27,19 +45,21 @@ router.post("/", (req, res, next)=> {
     })
 })
 
-router.put("/:id", (req, res, next)=> {
+router.put("/:id", auth, (req, res, next)=> {
     console.log(req.params.id)
     chat.getModel().findById(req.params.id).then((data)=> {
         let c: Chat;
         if (isChat(data)) c = data;
         c.messages.push({
-            sender: req.body.sender,
+            sender: req.user.username,
             text: req.body.text,
             timestamp: Date.now()
         })
         data.save()
-    }).then((data)=> {
-        return res.status(200).json("DONE")
+    }).then(() => {
+        return res.status(200).json({error: false, message: "Object created"})
+    }).catch((err) => {
+        return next({status_code: 400, error: true, errormessage: err})
     })
 })
 
@@ -51,8 +71,5 @@ router.delete("/:id", (req, res, next)=> {
         return next({status_code:400, error:true, errormessage:err})
     })
 })
-
-// TODO ? :Message deletion
-
 
 module.exports = router;

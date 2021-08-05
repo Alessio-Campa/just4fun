@@ -23,7 +23,6 @@ app.use('/user', userRouter);
 app.use('/match', matchRouter);
 app.use('/chat', chatRouter);
 app.use('/', indexRouter);
-// app.use('/books', booksRouter);
 
 app.use( function (err, req, res, next) {
     console.log("Request error: ".red + JSON.stringify( err ));

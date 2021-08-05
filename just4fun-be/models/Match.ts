@@ -113,6 +113,7 @@ matchSchema.methods.insertDisk = function(column: number): number {
             throw new Error("The column is full");
         }
     }
+
     this.board[row][column] = this.turn;
     this.markModified("board");
     return row;
@@ -142,7 +143,7 @@ matchSchema.methods.checkWin = function(row:number, column:number): Result {
 matchSchema.methods.checkDirection = function(row:number, column:number, deltaRow:number, deltaColumn:number): Result {
     const player:number = this.getCell(row, column);
     const potentialWinner:Result = new Result();
-    let count:number = CELL_TO_WIN - 1;
+    let count: number = CELL_TO_WIN - 1;
     let r:number = row, c:number = column;
 
     potentialWinner.add(r, c);

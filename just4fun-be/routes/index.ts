@@ -6,6 +6,8 @@ import passportHTTP = require('passport-http')
 import jsonWebToken = require('jsonwebtoken')
 import * as user from '../models/User'
 
+const JWT_EXPIRATION = '1d';
+
 declare global{
     namespace Express{
         interface User{
@@ -28,7 +30,7 @@ passport.use( new passportHTTP.BasicStrategy(
         console.log("New login attempt from ".yellow + username);
         user.getModel().findOne( {mail:username}, (err, user)=>{
             if (err){
-                return done( {statusCode:500, error:true, errormessage:err} );
+                return done( {statusCode:401, error:true, errormessage:err} );
             }
             if (!user){
                 return done(null, false,{statusCode:500, error:true, errormessage:"Invalid user"});
@@ -51,7 +53,7 @@ router.get('/login', passport.authenticate('basic', {session: false}), (req, res
     };
 
     console.log("Login granted. Generating token" );
-    let token_signed = jsonWebToken.sign(tokenData, process.env.JWT_SECRET, { expiresIn: '1h' } );
+    let token_signed = jsonWebToken.sign(tokenData, process.env.JWT_SECRET, { expiresIn: JWT_EXPIRATION } );
 
     return res.status(200).json({ error: false, errormessage: "", token: token_signed });
 

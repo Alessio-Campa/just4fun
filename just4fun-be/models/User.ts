@@ -21,7 +21,8 @@ export interface User extends mongoose.Document{
 let userSchema = new mongoose.Schema<User>({
     username: {
         type: mongoose.SchemaTypes.String,
-        required: true
+        required: true,
+        unique: true
     },
     mail: {
         type: mongoose.SchemaTypes.String,

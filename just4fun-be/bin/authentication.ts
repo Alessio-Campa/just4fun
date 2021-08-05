@@ -5,4 +5,4 @@ if (!process.env.JWT_SECRET){
     process.exit(-1);
 }
 
-export = jwt( {secret: process.env.JWT_SECRET, algorithms: ["SHA512"]} );
+export = jwt( {secret: process.env.JWT_SECRET, algorithms: ["HS256"]} );

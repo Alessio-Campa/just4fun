@@ -17,7 +17,7 @@ export function isChat(arg: any): arg is Chat{
 }
 
 let chatSchema = new mongoose.Schema<Chat>({
-    idMatch: {
+    matchID: {
         type: mongoose.SchemaTypes.String,
         required: false
     },
@@ -28,15 +28,16 @@ let chatSchema = new mongoose.Schema<Chat>({
     messages: [{
         sender: {
             type: mongoose.SchemaTypes.String,
-            required: false
+            required: true
         },
         text:  {
             type: mongoose.SchemaTypes.String,
-            required: false
+            required: true
         },
         timestamp: {
             type: mongoose.SchemaTypes.Number,
-            required: false
+            required: true,
+            default: Date.now()
         }
     }]
 })
