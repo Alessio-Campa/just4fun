@@ -44,7 +44,8 @@ let matchMakingSchema = new mongoose.Schema<Matchmaking>({
 })
 
 matchMakingSchema.methods.searchMatch = function (): void {
-	let matchmakeDone = function (interval, opponentPlayer, thisPlayer) {
+	let interval;
+	let matchmakeDone = function (opponentPlayer, thisPlayer) {
 		thisPlayer.remove();
 		opponentPlayer.remove()
 		clearInterval(interval);
@@ -60,8 +61,8 @@ matchMakingSchema.methods.searchMatch = function (): void {
 
 	let startSearch = Date.now();
 	user.getModel().findById(this.playerID, {points: 1}).then((thisPlayer)=>{
-		let interval = setInterval(()=>{
-			// console.log(`${this.playerID} ${this.min} ${this.max}; searching...`.cyan)
+		interval = setInterval(()=>{
+			//console.log(`${this.playerID} ${this.min} ${this.max}; searching...`.cyan)
 			matchmakingModel.findOne({
 				playerID: {$ne: this.playerID},
 				min: {$lte: thisPlayer.points},
@@ -71,7 +72,7 @@ matchMakingSchema.methods.searchMatch = function (): void {
 			}).then((data) => {
 				if (data){
 					//Matches oldest in queue that respect filter
-					matchmakeDone(interval, data, this);
+					matchmakeDone(data, this);
 				}
 				else{
 					if(Date.now()-startSearch > INTERSECTION_TIME_LIMIT)
@@ -83,7 +84,7 @@ matchMakingSchema.methods.searchMatch = function (): void {
 						]).then((data) => {
 							if (data)
 								//Match nearest
-								matchmakeDone(interval, data, this);
+								matchmakeDone(data, this);
 							else
 								//No one is in the matchMaking
 								matchmakeFail(this);
