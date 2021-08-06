@@ -18,8 +18,8 @@ export interface Matchmaking extends mongoose.Document{
 export function isMatchMaking(arg): arg is Matchmaking{
 	return arg &&
 		arg.playerID && typeof(arg.playerID) === 'string' &&
-		arg.min && typeof(arg.min) === 'number' &&
-		arg.max && typeof(arg.max) === 'number' &&
+		arg.min != null && typeof(arg.min) === 'number' &&
+		arg.max != null && typeof(arg.max) === 'number' &&
 		arg.timestamp && arg.timestamp instanceof Date
 }
 
@@ -43,26 +43,25 @@ let matchMakingSchema = new mongoose.Schema<Matchmaking>({
 	}
 })
 
-matchMakingSchema.methods.searchMatch = function (): void { //TODO: testing, potrebbe essere molto buggata
-	let matchmakeDone = function (interval, myId, opponentId)
-	{
-		matchmakingModel.remove({
-			$or: [{playerID: opponentId},{playerID: myId}]
-		});
+matchMakingSchema.methods.searchMatch = function (): void {
+	let matchmakeDone = function (interval, opponentPlayer, thisPlayer) {
+		thisPlayer.remove();
+		opponentPlayer.remove()
 		clearInterval(interval);
 		// TODO: pinga user
+		// console.log((thisPlayer.playerID + " " + opponentPlayer.playerID).bgWhite.black);
 	}
 
-	let matchmakeFail = function (thisPlayer)
-	{
+	let matchmakeFail = function (thisPlayer) {
 		thisPlayer.min -= RANGE_EXPANSION/2.0;
 		thisPlayer.max += RANGE_EXPANSION/2.0;
-		matchmakingModel.updateOne({playerID: thisPlayer.playerID}, {min: thisPlayer.min, max: thisPlayer.max});
+		thisPlayer.save()
 	}
 
 	let startSearch = Date.now();
 	user.getModel().findById(this.playerID, {points: 1}).then((thisPlayer)=>{
 		let interval = setInterval(()=>{
+			// console.log(`${this.playerID} ${this.min} ${this.max}; searching...`.cyan)
 			matchmakingModel.findOne({
 				playerID: {$ne: this.playerID},
 				min: {$lte: thisPlayer.points},
@@ -71,8 +70,8 @@ matchMakingSchema.methods.searchMatch = function (): void { //TODO: testing, pot
 				timestamp: "ascending"
 			}).then((data) => {
 				if (data){
-					//Match oldest in queue that respect filter
-					matchmakeDone(interval, this.playerID, data.playerID);
+					//Matches oldest in queue that respect filter
+					matchmakeDone(interval, data, this);
 				}
 				else{
 					if(Date.now()-startSearch > INTERSECTION_TIME_LIMIT)
@@ -84,16 +83,15 @@ matchMakingSchema.methods.searchMatch = function (): void { //TODO: testing, pot
 						]).then((data) => {
 							if (data)
 								//Match nearest
-								matchmakeDone(interval, this.playerID, data.playerID);
+								matchmakeDone(interval, data, this);
 							else
 								//No one is in the matchMaking
-								matchmakeFail(thisPlayer);
+								matchmakeFail(this);
 						});
 					}
-					else
-					{
+					else {
 						//Update range and wait
-						matchmakeFail(thisPlayer);
+						matchmakeFail(this);
 					}
 				}
 			});
@@ -106,9 +104,11 @@ export function getSchema() {
 	return matchMakingSchema;
 }
 
-let matchmakingModel: mongoose.Model <Matchmaking> = mongoose.model('Matchmaking', getSchema());
+let matchmakingModel;
 
 export function getModel(): mongoose.Model <Matchmaking> {
+	if (!matchmakingModel)
+		matchmakingModel = mongoose.model('Matchmaking', getSchema());
 	return matchmakingModel;
 }
 
