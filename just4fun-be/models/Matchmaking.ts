@@ -45,12 +45,15 @@ let matchMakingSchema = new mongoose.Schema<Matchmaking>({
 
 matchMakingSchema.methods.searchMatch = function (): void {
 	let interval;
+	let player = this;
+	let startSearch = Date.now();
+
 	let matchmakeDone = function (opponentPlayer, thisPlayer) {
 		thisPlayer.remove();
 		opponentPlayer.remove()
 		clearInterval(interval);
 		// TODO: pinga user
-		// console.log((thisPlayer.playerID + " " + opponentPlayer.playerID).bgWhite.black);
+		console.log((thisPlayer.playerID + " " + opponentPlayer.playerID).bgWhite.black);
 	}
 
 	let matchmakeFail = function (thisPlayer) {
@@ -59,12 +62,11 @@ matchMakingSchema.methods.searchMatch = function (): void {
 		thisPlayer.save()
 	}
 
-	let startSearch = Date.now();
 	user.getModel().findById(this.playerID, {points: 1}).then((thisPlayer)=>{
 		interval = setInterval(()=>{
 			//console.log(`${this.playerID} ${this.min} ${this.max}; searching...`.cyan)
 			matchmakingModel.findOne({
-				playerID: {$ne: this.playerID},
+				playerID: {$ne: player.playerID},
 				min: {$lte: thisPlayer.points},
 				max: {$gte: thisPlayer.points},
 			}).sort({
@@ -72,27 +74,27 @@ matchMakingSchema.methods.searchMatch = function (): void {
 			}).then((data) => {
 				if (data){
 					//Matches oldest in queue that respect filter
-					matchmakeDone(data, this);
+					matchmakeDone(data, player);
 				}
 				else{
 					if(Date.now()-startSearch > INTERSECTION_TIME_LIMIT)
 					{//Too much wait, take nearest
 						matchmakingModel.findOne({
-							playerID: {$ne: this.playerID},
+							playerID: {$ne: player.playerID},
 						}).sort([
 							[{ $abs: { $subtract: [ thisPlayer.points, "$min" ] }}, 1]
 						]).then((data) => {
 							if (data)
 								//Match nearest
-								matchmakeDone(data, this);
+								matchmakeDone(data, player);
 							else
 								//No one is in the matchMaking
-								matchmakeFail(this);
+								matchmakeFail(player);
 						});
 					}
 					else {
 						//Update range and wait
-						matchmakeFail(this);
+						matchmakeFail(player);
 					}
 				}
 			});

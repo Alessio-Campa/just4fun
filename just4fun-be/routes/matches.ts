@@ -71,7 +71,7 @@ router.post("/random", auth, (req, res, next) => {
             if (isMatchMaking(data)) m = data;
             m.searchMatch();
         }).then(()=>{
-            return res.status(200).json({error: false, message: "Match found"})
+            return res.status(200).json({error: false, message: "Matchmaking started"})
         }).catch((err) => {
             return next({status_code: 400, error: true, errormessage: err})
         })
