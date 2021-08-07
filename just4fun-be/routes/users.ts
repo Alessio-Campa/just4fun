@@ -11,23 +11,30 @@ router.get('/', (req, res, next)=>{
     user.getModel().find({}, {digest:0, salt:0}).then( (users)=>{
         return res.status(200).json( users );
     }).catch( (reason)=>{
-        return next({statusCode:404, error:true, errormessage:"DB error: "+ reason});
+        return next({statusCode:500, error:true, errormessage:"DB error: "+ reason});
     })
 })
 
-router.post('/', (req, res, next)=>{
-    let u = user.newUser( req.body );
-    if ( !req.body.password ){
-        return next({statusCode:404, error:true, errormessage:"Password field empty"});
+router.post('/', (req, res, next) => {
+    if (!req.body.mail || req.body.mail === ""){
+        return next({statusCode:400, error:true, errormessage:"Mail field required"});
     }
+    if (!req.body.name || req.body.name === ""){
+        return next({statusCode:400, error:true, errormessage:"Name field required"});
+    }
+    if (!req.body.password || req.body.password === ""){
+        return next({statusCode:400, error:true, errormessage:"Password field required"});
+    }
+
+    let u = user.newUser( req.body.mail, req.body.name );
     u.setPassword( req.body.password );
 
     u.save().then( (data=>{
         return res.status(200).json({error:false, errormessage:"", _id:data._id});
     })).catch( (reason)=>{
         if (reason.code === 11000)
-            return next( {statusCode:404, error:true, errormessage:"User already exists"} );
-        return next( {statusCode:404, error:true, errormessage:"DB error: "+reason.errmsg} );
+            return next( {statusCode:400, error:true, errormessage:"User already exists"} );
+        return next( {statusCode:500, error:true, errormessage:"DB error: "+reason.errmsg} );
     })
 });
 
@@ -35,7 +42,7 @@ router.get('/:mail', (req, res, next)=>{
     user.getModel().find( {"mail": req.params.mail}, {digest:0, salt:0} ).then( (user)=>{
         return res.status(200).json(user);
     }).catch( (reason)=>{
-        return next( {statusCode:404, error: true, errormessage:"DB error"+reason} );
+        return next( {statusCode:500, error: true, errormessage:"DB error"+reason} );
     })
 });
 
@@ -43,7 +50,7 @@ router.delete('/:mail', (req, res, next)=>{
     user.getModel().deleteMany( {"mail": req.params.mail} ).then( (user)=>{
         return res.status(200);
     }).catch( (reason)=>{
-        return next( {statusCode:404, error: true, errormessage:"DB error"+reason} );
+        return next( {statusCode:500, error: true, errormessage:"DB error"+reason} );
     })
 });
 
