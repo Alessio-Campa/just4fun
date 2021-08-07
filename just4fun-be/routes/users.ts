@@ -5,6 +5,8 @@ import auth = require("../bin/authentication");
 
 let router = express.Router();
 
+//TODO restrict to admins else 403
+
 router.get('/', (req, res, next)=>{
     user.getModel().find({}, {digest:0, salt:0}).then( (users)=>{
         return res.status(200).json( users );
@@ -32,6 +34,14 @@ router.post('/', (req, res, next)=>{
 router.get('/:mail', (req, res, next)=>{
     user.getModel().find( {"mail": req.params.mail}, {digest:0, salt:0} ).then( (user)=>{
         return res.status(200).json(user);
+    }).catch( (reason)=>{
+        return next( {statusCode:404, error: true, errormessage:"DB error"+reason} );
+    })
+});
+
+router.delete('/:mail', (req, res, next)=>{
+    user.getModel().deleteMany( {"mail": req.params.mail} ).then( (user)=>{
+        return res.status(200);
     }).catch( (reason)=>{
         return next( {statusCode:404, error: true, errormessage:"DB error"+reason} );
     })
