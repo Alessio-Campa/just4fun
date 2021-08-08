@@ -1,0 +1,32 @@
+<header>
+  <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary shadow">
+    <a class="navbar-brand" href="/">Just4Fun</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" routerLink="/">Home page</a>
+        </li>
+        <li class="nav-item <?php if($currentPage == 'gates') echo 'active'; ?>">
+          <a class="nav-link" href="/2">Page 2</a>
+        </li>
+      </ul>
+
+      <!--IF LOGGED IN-->
+      <ul class="navbar-nav navbar-right">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" style="color: #fff;" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <b>NOME UTENTE</b>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item onFocusDanger" href="/logout">Logout</a>
+          </div>
+        </li>
+      </ul>
+      <!--ENDIF-->
+    </div>
+  </nav>
+</header>
