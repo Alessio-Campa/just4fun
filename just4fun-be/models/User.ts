@@ -109,7 +109,7 @@ export function getModel(): mongoose.Model <User> {
     return userModel;
 }
 
-export function newUser (mail, username): User{
+export function newUser (mail: string, username: string): User{
     let userModel = getModel();
     return new userModel({"mail":mail, "username":username});
 }

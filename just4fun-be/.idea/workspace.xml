@@ -2,16 +2,52 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="50b6c8c6-a28e-4a48-8e0d-af753471fd40" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/just4fun.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Matchmaking.ts" beforeDir="false" afterPath="$PROJECT_DIR$/models/Matchmaking.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/app.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bin/app.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/User.ts" beforeDir="false" afterPath="$PROJECT_DIR$/models/User.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/users.ts" beforeDir="false" afterPath="$PROJECT_DIR$/routes/users.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/angular.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../just4fun-fe/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../just4fun-fe/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/app.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/app.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/app-routing.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/app.component.spec.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/header/header.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/header/header.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/header/header.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/header/header.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/header/header.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/home/home.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/home/home.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/home/home.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/environments/environment.prod.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/environments/environment.prod.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/environments/environment.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/environments/environment.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../main.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../node_modules/colors/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../node_modules/colors/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../node_modules/colors/examples/normal-usage.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../node_modules/colors/examples/safe-string.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../node_modules/colors/index.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/colors.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/custom/trap.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/custom/zalgo.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/extendStringPrototype.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/maps/america.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/maps/rainbow.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/maps/random.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/maps/zebra.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/styles.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/system/has-flag.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/system/supports-colors.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../node_modules/colors/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../node_modules/colors/safe.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../node_modules/colors/safe.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../node_modules/colors/themes/generic-logging.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../package.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +64,26 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/.env" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/bin/authentication.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/bin/socket.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/bin/www.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/bin/app.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/routes/matches.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/models/Chat.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/models/User.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/routes/users.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/routes/chats.ts" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="ProjectId" id="1vGki78QVY5bgOViP5ghX5tCdjN" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -43,8 +99,8 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="javascript.nodejs.core.library.configured.version" value="12.18.2" />
-    <property name="javascript.nodejs.core.library.typings.version" value="12.20.16" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="javascript.nodejs.core.library.typings.version" value="12.20.19" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../just4fun-fe" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="restartRequiresConfirmation" value="false" />
@@ -103,7 +159,9 @@
       <workItem from="1628178176056" duration="4859000" />
       <workItem from="1628263749767" duration="816000" />
       <workItem from="1628325775801" duration="1052000" />
-      <workItem from="1628346420132" duration="3774000" />
+      <workItem from="1628346420132" duration="5144000" />
+      <workItem from="1628430374196" duration="1325000" />
+      <workItem from="1628512256826" duration="3144000" />
     </task>
     <servers />
   </component>
@@ -128,7 +186,6 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/Matchmaking.ts</url>
           <line>72</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>

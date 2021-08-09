@@ -1,0 +1,10 @@
+<form class="form-signin" (ngSubmit)="login()">
+  <div class="text-center">
+    <h1>Just4Fun</h1>
+  </div>
+  <h4 class="mb-3 mt-3 font-weight-normal" style="text-align: center;">Login</h4>
+  <input [(ngModel)]="email" type="email" name="email"  maxlength="200" required="" class="my-form-control form-control" [ngClass]="{'is-invalid' : errorMessage}" placeholder="E-mail">
+  <input [(ngModel)]="password" type="password" name="password" required="" class="my-form-control form-control" [ngClass]="{'is-invalid' : errorMessage}" placeholder="Password">
+  <p class="text-danger" *ngIf="errorMessage" >Wrong E-mail or Password</p>
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+</form>
