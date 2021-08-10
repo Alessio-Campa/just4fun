@@ -4,9 +4,7 @@ import {Server} from "http";
 let ioServer;
 
 function startSocketIoServer(server: Server): io.Server {
-    //ioServer = new io.Server(server);
-    // @ts-ignore
-    ioServer = io(server);
+    ioServer = new io.Server(server);
 
     ioServer.on('connection', function(socket){
         console.log('connection',socket.id);
