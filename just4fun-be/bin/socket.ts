@@ -1,10 +1,24 @@
 import io = require('socket.io')
+import {Server} from "http";
 
-function startSocketIoServer(server: Partial<io.ServerOptions>): io.Server
-{
-    let ioServer = new io.Server(server);
+let ioServer;
+
+function startSocketIoServer(server: Server): io.Server {
+    ioServer = new io.Server(server);
+
+    ioServer.on('connection', function(socket){
+        console.log('connection',socket.id);
+    });
 
     return ioServer;
 }
 
-export { startSocketIoServer }
+function getIoServer(){
+    return ioServer;
+}
+
+function emitMatch(idMatch: string){
+    ioServer.emit("Match "+ idMatch)
+}
+
+export { startSocketIoServer, getIoServer }

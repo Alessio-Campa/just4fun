@@ -2,6 +2,7 @@ require('dotenv').config()
 
 import { app } from './app'
 import { AddressInfo } from "net";
+import { startSocketIoServer } from './socket'
 import http = require('http')
 import colors = require('colors'); colors.enabled = true;
 import * as mongoose from "mongoose";
@@ -12,7 +13,7 @@ let port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 const server = http.createServer(app);
 
-// Initilize socket.io
+// Initialize socket.io
 
 
 mongoose.connect( `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_ADDR}:27017/${process.env.DB_USER}`, {useNewUrlParser: true, useUnifiedTopology: true})
@@ -20,7 +21,11 @@ mongoose.connect( `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${pro
     console.log("Connected to MongoDB".bgGreen.black);
     return match.getModel().countDocuments({}); // We explicitly return a promise here
 }).then(()=>{
-    server.listen(port,  ()=> console.log( ("HTTP Server started on port "+port).bgGreen.black) );
+    server.listen(port,  () => {
+        console.log( ("HTTP Server started on port "+port).bgGreen.black)
+        startSocketIoServer(server);
+        console.log("Socket server started".bgGreen.black)
+    } );
     server.on('error', onError);
     server.on('listening', onListening);
 })
