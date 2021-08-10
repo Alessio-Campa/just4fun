@@ -10,7 +10,7 @@ import { environment } from "../../environments/environment";
 export class HomeComponent implements OnInit {
 
   constructor() { }
-  socket = io(environment.serverUrl);
+  socket = io(environment.serverUrl, { transports: ['websocket'] });
 
   ngOnInit(): void {
     console.log("127.0.0.0 sweet 127.0.0.0")
