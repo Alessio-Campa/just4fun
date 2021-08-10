@@ -5,11 +5,13 @@ import * as matchmaking from "../models/Matchmaking";
 import * as user from "../models/User";
 import auth = require("../bin/authentication");
 import {isMatchMaking, Matchmaking} from "../models/Matchmaking";
+import {getIoServer} from "../bin/socket";
 import {response} from "express";
 
 let router = express.Router();
 
 router.get("/", (req, res, next) =>{
+    getIoServer().emit('broadcast', {he:"llo"});
     let filter = {}
     if (req.body.player)
         filter["$or"] =  [{player0: req.body.player}, {player1: req.body.player}]
