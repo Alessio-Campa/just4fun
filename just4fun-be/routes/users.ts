@@ -47,7 +47,7 @@ router.post('/', (req, res, next) => {
 });
 
 router.delete('/:mail', (req, res, next)=>{
-    user.getModel().deleteMany( {"mail": req.params.mail} ).then( (user)=>{
+    user.getModel().deleteMany( {mail: req.params.mail} ).then( (user)=>{
         return res.status(200);
     }).catch( (reason)=>{
         return next( {statusCode:500, error: true, errormessage:"DB error"+reason} );

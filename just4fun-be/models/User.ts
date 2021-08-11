@@ -115,6 +115,8 @@ userSchema.methods.follow = function (followed: string): Promise<any>{
     return getModel().findOne({mail: followed}).lean().then(data => {
         if (!data)
             return {statusCode: 400, error: true, errormessage: "User doesn't exist"};
+        if (user.mail === data.mail)
+            return {statusCode: 400, error: true, errormessage: "That's cute, but you can't be friend with yourself"};
         if (user.friends.includes(followed))
             return {statusCode: 400, error: true, errormessage: "User is already friend"};
         user.friends.push(followed);
@@ -128,11 +130,15 @@ userSchema.methods.sendFriendRequest = function (receiver: string): Promise<any>
     return getModel().findOne({mail: receiver}).then(data => {
         if (!data)
             return {statusCode: 400, error: true, errormessage: "User doesn't exist"};
+        if (user.mail === data.mail)
+            return {statusCode: 400, error: true, errormessage: "That's cute, but you can't be friend with yourself"};
         if (data.friends.includes(user.mail))
             return {statusCode: 400, error: true, errormessage: "Users are already friends"};
         if (data.friendRequests.includes(user.mail))
             return {statusCode: 400, error: true, errormessage: "Friend request already sent"};
-        user.friends.push(receiver);
+
+        if (!user.friends.includes(receiver))
+            user.friends.push(receiver);
         data.friendRequests.push(user.mail);
         data.save();
     }).catch(err => {
@@ -145,7 +151,8 @@ userSchema.methods.acceptFriendRequest = function (requester: string): object{
     if (user.friendRequests.includes(requester)){
         let idx = user.friendRequests.indexOf(requester)
         user.friendRequests.splice(idx, 1);
-        user.friends.push(requester);
+        if (!user.friends.includes(requester))
+            user.friends.push(requester);
         console.log(user)
     }
     else
