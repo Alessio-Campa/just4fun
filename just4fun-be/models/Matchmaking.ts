@@ -1,6 +1,8 @@
 import mongoose = require("mongoose")
 import * as user from "./User"
 import { match } from "assert";
+import { getIoServer } from '../bin/socket'
+import {stringify} from "querystring";
 let AsyncLock = require('async-lock');
 let lock = new AsyncLock();
 
@@ -49,12 +51,19 @@ matchMakingSchema.methods.searchMatch = function (): void {
 	let interval;
 	let thisMatchmaking = this;
 	let startSearch = Date.now();
+	let ios = getIoServer();
 
 	let matchmakeDone = function (opponentPlayer, thisPlayer) {
 		thisPlayer.remove();
 		opponentPlayer.remove()
 		clearInterval(interval);
-		// TODO: pinga user
+		let message = {
+			subject: "matchMakingFound",
+			player0: thisPlayer.username,
+			player1: opponentPlayer.username
+		}
+		ios.to(opponentPlayer.username).emit(message);
+		ios.to(thisPlayer.username).emit(message);
 		console.log((thisPlayer.playerID + " " + opponentPlayer.playerID).bgWhite.black);
 	}
 

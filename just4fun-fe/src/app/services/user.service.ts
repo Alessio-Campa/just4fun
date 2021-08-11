@@ -21,6 +21,7 @@ export class UserService {
   constructor(private http: HttpClient){
     this.jwtHelper = new JwtHelperService();
 
+
     console.log('User service instantiated');
     let tok = localStorage.getItem('just4fun_token');
     if(tok && !this.jwtHelper.isTokenExpired(tok))
