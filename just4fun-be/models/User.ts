@@ -120,6 +120,7 @@ userSchema.methods.follow = function (followed: string): Promise<any>{
         if (user.friends.includes(followed))
             return {statusCode: 400, error: true, errormessage: "User is already friend"};
         user.friends.push(followed);
+        return null
     }).catch(err => {
         return {statusCode: 400, error: true, errormessage: err};
     })
@@ -141,6 +142,7 @@ userSchema.methods.sendFriendRequest = function (receiver: string): Promise<any>
             user.friends.push(receiver);
         data.friendRequests.push(user.mail);
         data.save();
+        return null;
     }).catch(err => {
         return {statusCode: 400, error: true, errormessage: err};
     })
@@ -154,6 +156,7 @@ userSchema.methods.acceptFriendRequest = function (requester: string): object{
         if (!user.friends.includes(requester))
             user.friends.push(requester);
         console.log(user)
+        return null;
     }
     else
         return {statusCode: 400, error: true, errormessage: "User doesn't exist or didn't send a friend request"};
