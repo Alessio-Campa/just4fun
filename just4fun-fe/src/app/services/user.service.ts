@@ -80,7 +80,7 @@ export class UserService {
       })
     };
 
-    return this.http.post(environment.serverUrl + '/users', user, options).pipe(
+    return this.http.post(environment.serverUrl + '/user', user, options).pipe(
       tap((data) => {
         console.log(JSON.stringify(data));
       })
@@ -113,6 +113,6 @@ export class UserService {
   }
 
   get_user_by_mail(mail: string): Observable<User>{
-    return this.http.get<User>(environment.serverUrl + '/users/' + mail);
+    return this.http.get<User>(environment.serverUrl + '/user/' + mail);
   }
 }

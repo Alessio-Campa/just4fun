@@ -2,52 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="50b6c8c6-a28e-4a48-8e0d-af753471fd40" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/just4fun.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/user-logout/user-logout.component.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/user-logout/user-logout.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/user-logout/user-logout.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/app.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bin/app.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/User.ts" beforeDir="false" afterPath="$PROJECT_DIR$/models/User.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/www.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bin/www.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/users.ts" beforeDir="false" afterPath="$PROJECT_DIR$/routes/users.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/app-routing.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/app.component.spec.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/app.module.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/header/header.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/header/header.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/header/header.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/header/header.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/header/header.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/home/home.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/home/home.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/home/home.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/environments/environment.prod.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/environments/environment.prod.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/environments/environment.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/environments/environment.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../main.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/colors/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/colors/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/colors/examples/normal-usage.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/colors/examples/safe-string.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/colors/index.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/colors.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/custom/trap.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/custom/zalgo.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/extendStringPrototype.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/maps/america.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/maps/rainbow.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/maps/random.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/maps/zebra.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/styles.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/system/has-flag.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/colors/lib/system/supports-colors.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/colors/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/colors/safe.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/colors/safe.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../node_modules/colors/themes/generic-logging.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/services/user.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/services/user.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/user-login/user-login.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/user-login/user-login.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/user-register/user-register.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/user-register/user-register.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/user-register/user-register.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/user-register/user-register.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/user-register/user-register.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/user-register/user-register.component.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,11 +130,16 @@
       <workItem from="1628346420132" duration="5144000" />
       <workItem from="1628430374196" duration="1325000" />
       <workItem from="1628512256826" duration="3144000" />
+      <workItem from="1628601639836" duration="1932000" />
+      <workItem from="1628690151299" duration="1698000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

@@ -9,7 +9,8 @@ import { HomeComponent } from './home/home.component';
 import { UserService } from "./services/user.service";
 import { UserLoginComponent } from './user-login/user-login.component';
 import { UserRegisterComponent } from './user-register/user-register.component';
-import {FormsModule} from "@angular/forms";
+import { FormsModule } from "@angular/forms";
+import { UserLogoutComponent } from './user-logout/user-logout.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import {FormsModule} from "@angular/forms";
     HeaderComponent,
     HomeComponent,
     UserLoginComponent,
-    UserRegisterComponent
+    UserRegisterComponent,
+    UserLogoutComponent
   ],
   imports: [
     HttpClientModule,

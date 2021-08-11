@@ -7,14 +7,19 @@ import http = require('http')
 import colors = require('colors'); colors.enabled = true;
 import * as mongoose from "mongoose";
 import * as match from "../models/Match";
+import io = require('socket.io')
 
 // Create HTTP server
 let port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 const server = http.createServer(app);
+// @ts-ignore
+let ios = io(server);
+ios.on('connection', function (client) {
+    console.log("Socket.io client connected".green);
+});
 
 // Initialize socket.io
-
 
 mongoose.connect( `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_ADDR}:27017/${process.env.DB_USER}`, {useNewUrlParser: true, useUnifiedTopology: true})
 .then(() => {

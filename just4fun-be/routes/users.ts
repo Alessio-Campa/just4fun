@@ -16,8 +16,8 @@ router.get('/', (req, res, next)=>{
 })
 
 router.post('/', (req, res, next) => {
-    if (!req.body.mail || req.body.mail === ""){
-        return next({statusCode:400, error:true, errormessage:"Mail field required"});
+    if (!req.body.email || req.body.email === ""){
+        return next({statusCode:400, error:true, errormessage:"Email field required"});
     }
     if (!req.body.name || req.body.name === ""){
         return next({statusCode:400, error:true, errormessage:"Name field required"});
@@ -26,7 +26,7 @@ router.post('/', (req, res, next) => {
         return next({statusCode:400, error:true, errormessage:"Password field required"});
     }
 
-    let u = user.newUser( req.body.mail, req.body.name );
+    let u = user.newUser( req.body.email, req.body.name );
     u.setPassword( req.body.password );
 
     u.save().then( (data=>{
@@ -38,16 +38,16 @@ router.post('/', (req, res, next) => {
     })
 });
 
-router.get('/:mail', (req, res, next)=>{
-    user.getModel().find( {"mail": req.params.mail}, {digest:0, salt:0} ).then( (user)=>{
+router.get('/:email', (req, res, next)=>{
+    user.getModel().find( {"mail": req.params.email}, {digest:0, salt:0} ).then( (user)=>{
         return res.status(200).json(user);
     }).catch( (reason)=>{
         return next( {statusCode:500, error: true, errormessage:"DB error"+reason} );
     })
 });
 
-router.delete('/:mail', (req, res, next)=>{
-    user.getModel().deleteMany( {"mail": req.params.mail} ).then( (user)=>{
+router.delete('/:email', (req, res, next)=>{
+    user.getModel().deleteMany( {"mail": req.params.email} ).then( (user)=>{
         return res.status(200);
     }).catch( (reason)=>{
         return next( {statusCode:500, error: true, errormessage:"DB error"+reason} );
