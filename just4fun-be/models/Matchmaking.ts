@@ -68,14 +68,12 @@ matchMakingSchema.methods.searchMatch = function (): void {
 		interval = setInterval(()=>{
 			lock.acquire('matchmaking', function (lockRelease) {
 				matchmakingModel.findOne({ _id: thisMatchmaking._id }).select("_id").lean().then(isNotMatched => {
-					if (!isNotMatched)
-					{
+					if (!isNotMatched) {
 						console.log((thisMatchmaking.playerID + " Already matched").bgWhite.black);
 						clearInterval(interval);
 						lockRelease();
 					}
-					else
-					{
+					else {
 						console.log(`${thisMatchmaking.playerID} ${thisMatchmaking.min} ${thisMatchmaking.max}; searching...`.cyan)
 						matchmakingModel.findOne({
 							playerID: {$ne: thisMatchmaking.playerID},

@@ -6,7 +6,6 @@ import passportHTTP = require('passport-http')
 import jsonWebToken = require('jsonwebtoken')
 import * as user from '../models/User'
 
-
 const JWT_EXPIRATION = '1d';
 
 declare global{

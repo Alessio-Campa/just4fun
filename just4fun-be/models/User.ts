@@ -6,6 +6,7 @@ export interface User extends mongoose.Document{
     mail: string,
     points: number,
     friends: string[],
+    friendRequests: string[]
     roles: string[],
     salt: string,
     digest: string,
@@ -15,7 +16,10 @@ export interface User extends mongoose.Document{
     hasAdminRole: ()=> boolean,
     setAdmin: (value:boolean)=>void,
     hasModeratorRole: ()=> boolean,
-    setModerator: (value:boolean)=>void
+    setModerator: (value:boolean)=>void,
+    follow: (followed:string)=>Promise<any>,
+    sendFriendRequest: (receiver:string)=>Promise<any>,
+    acceptFriendRequest: (requester:string)=>object
 }
 
 let userSchema = new mongoose.Schema<User>({
@@ -35,6 +39,11 @@ let userSchema = new mongoose.Schema<User>({
         default: 0
     },
     friends: {
+        type: [mongoose.SchemaTypes.String],
+        required: true,
+        default: []
+    },
+    friendRequests: {
         type: [mongoose.SchemaTypes.String],
         required: true,
         default: []
@@ -99,6 +108,48 @@ userSchema.methods.setModerator = function(value:boolean) {
         if(index !== -1)
             this.roles.splice(index, 1);
     }
+}
+
+userSchema.methods.follow = function (followed: string): Promise<any>{
+    let user = this
+    return getModel().findOne({mail: followed}).lean().then(data => {
+        if (!data)
+            return {statusCode: 400, error: true, errormessage: "User doesn't exist"};
+        if (user.friends.includes(followed))
+            return {statusCode: 400, error: true, errormessage: "User is already friend"};
+        user.friends.push(followed);
+    }).catch(err => {
+        return {statusCode: 400, error: true, errormessage: err};
+    })
+}
+
+userSchema.methods.sendFriendRequest = function (receiver: string): Promise<any>{
+    let user = this;
+    return getModel().findOne({mail: receiver}).then(data => {
+        if (!data)
+            return {statusCode: 400, error: true, errormessage: "User doesn't exist"};
+        if (data.friends.includes(user.mail))
+            return {statusCode: 400, error: true, errormessage: "Users are already friends"};
+        if (data.friendRequests.includes(user.mail))
+            return {statusCode: 400, error: true, errormessage: "Friend request already sent"};
+        user.friends.push(receiver);
+        data.friendRequests.push(user.mail);
+        data.save();
+    }).catch(err => {
+        return {statusCode: 400, error: true, errormessage: err};
+    })
+}
+
+userSchema.methods.acceptFriendRequest = function (requester: string): object{
+    let user = this;
+    if (user.friendRequests.includes(requester)){
+        let idx = user.friendRequests.indexOf(requester)
+        user.friendRequests.splice(idx, 1);
+        user.friends.push(requester);
+        console.log(user)
+    }
+    else
+        return {statusCode: 400, error: true, errormessage: "User doesn't exist or didn't send a friend request"};
 }
 
 

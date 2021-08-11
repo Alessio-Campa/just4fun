@@ -1,4 +1,5 @@
 import mongoose = require("mongoose")
+import {stringify} from "querystring";
 
 const ROWS: number = 6;
 const COLUMNS: number = 7;
@@ -170,6 +171,10 @@ export function getModel(): mongoose.Model< mongoose.Document > {
     if (!matchModel)
         matchModel = mongoose.model('Match', getSchema());
     return matchModel
+}
+
+export function newMatch (player0: string, player1: string): Match{
+    return new matchModel({"player0": player0, "player1": player1});
 }
 
 // utility classes

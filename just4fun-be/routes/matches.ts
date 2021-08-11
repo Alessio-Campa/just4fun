@@ -1,17 +1,14 @@
 import express = require('express');
-import {isMatch, Match} from "../models/Match";
+import auth = require("../bin/authentication");
 import * as match from "../models/Match";
 import * as matchmaking from "../models/Matchmaking";
 import * as user from "../models/User";
-import auth = require("../bin/authentication");
+import {isMatch, Match} from "../models/Match";
 import {isMatchMaking, Matchmaking} from "../models/Matchmaking";
-import {getIoServer} from "../bin/socket";
-import {response} from "express";
 
 let router = express.Router();
 
 router.get("/", (req, res, next) =>{
-    getIoServer().emit('broadcast', {he:"llo"});
     let filter = {}
     if (req.body.player)
         filter["$or"] =  [{player0: req.body.player}, {player1: req.body.player}]
@@ -29,10 +26,13 @@ router.get("/", (req, res, next) =>{
 })
 
 router.post("/", auth, (req, res, next) =>{
-    match.getModel().create({
-        player0: req.user.id,
-        player1: req.body.player1 //valore di ritorno di searchMatch
-    }).then((data)=>{
+    user.getModel().findOne({mail: req.body.player1}).select('_id').lean().then(data => {
+        if (!data)
+            return next({status_code: 400, error: true, errormessage: "Opponent doesn't exist"})
+    })
+
+    let m: Match = match.newMatch(req.user.mail, req.body.player1)
+    m.save().then((data)=>{
         return res.status(200).json({objectID:data._id})
     }).catch((err)=>{
         return next({status_code: 400, error: true, errormessage: err})
