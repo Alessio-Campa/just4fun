@@ -74,12 +74,34 @@ router.put("/:id", auth, (req, res, next) => {
         else if (req.body.friend)
             data.sendFriendRequest(req.body.friend, res, next)
         else if (req.body.accept)
-            out = data.acceptFriendRequest(req.body.accept)
+            data.acceptFriendRequest(req.body.accept, res, next)
         else
             next({statusCode: 400, error: true, errormessage: "Bad request"});
     }).catch(err => {
-        return next({statusCode: 400, error: true, errormessage: err})
-    })
-})
+        next({statusCode: 400, error: true, errormessage: err});
+    });
+});
+
+router.post('/:id/follow', auth, (req, res, next) => {
+    if (req.params.id !== req.user.email)
+        next({statusCode: 403, error: true, errormessage: "Forbidden"});
+
+    user.getModel().findOne({email: req.user.email}).then(data => {
+        data.follow(req.body.user, res, next);
+    }).catch(err => {
+        next({statusCode: 400, error: true, errormessage: err});
+    });
+});
+
+router.delete('/:id/follow', auth, (req, res, next)=>{
+    if (req.params.id !== req.user.email)
+        next({statusCode: 403, error: true, errormessage: "Forbidden"});
+
+    user.getModel().findOne({email: req.user.email}).then(data => {
+        data.unfollow(req.body.user, res, next);
+    }).catch(err => {
+        next({statusCode: 400, error: true, errormessage: err});
+    });
+});
 
 module.exports = router;

@@ -153,25 +153,24 @@ userSchema.methods.sendFriendRequest = function (receiver: string, res, next) {
     let user = this;
     return getModel().findOne({email: receiver}).then(data => {
         if (!data)
-            return {statusCode: 400, error: true, errormessage: "User doesn't exist"};
+            throw new Error("User doesn't exist");
         if (user.email === data.email)
-            return {statusCode: 400, error: true, errormessage: "That's cute, but you can't be friend with yourself"};
+            throw new Error("That's cute, but you can't be friend with yourself");
         if (data.friends.includes(user.email))
-            return {statusCode: 400, error: true, errormessage: "Users are already friends"};
+            throw new Error("Users are already friends");
         if (data.friendRequests.includes(user.email))
-            return {statusCode: 400, error: true, errormessage: "Friend request already sent"};
+            throw new Error("Friend request already sent");
 
         data.friendRequests.push(user.email);
-        data.save();
-        return null;
+        data.save().then(() => next({statusCode: 200, error: false, message: "Update successful"}));
     }).catch(err => {
-        return {statusCode: 400, error: true, errormessage: err};
-    })
+        next({statusCode: 400, error: true, errormessage: err});
+    });
 }
 
 userSchema.methods.acceptFriendRequest = function (requester: string, res, next) {
     let user = this;
-    if (user.friendRequests.includes(requester)){
+    if (user.friendRequests.includes(requester)) {
         let idx = user.friendRequests.indexOf(requester)
         user.friendRequests.splice(idx, 1);
         if (!user.friends.includes(requester))
@@ -179,8 +178,9 @@ userSchema.methods.acceptFriendRequest = function (requester: string, res, next)
         console.log(user)
         user.save().then(() => next({statusCode: 200, error: false, message: "Update successful"}));
     }
-    else
-        return {statusCode: 400, error: true, errormessage: "User doesn't exist or didn't send a friend request"};
+    else {
+        next({statusCode: 400, error: true, errormessage: "User doesn't exist or didn't send a friend request"});
+    }
 }
 
 userSchema.methods.updatePoints = function (delta: number, res, next){
