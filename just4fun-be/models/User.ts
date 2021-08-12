@@ -5,6 +5,7 @@ export interface User extends mongoose.Document{
     username: string,
     email: string,
     points: number,
+    following: string[],
     friends: string[],
     friendRequests: string[]
     roles: string[],
@@ -17,9 +18,11 @@ export interface User extends mongoose.Document{
     setAdmin: (value:boolean)=>void,
     hasModeratorRole: ()=> boolean,
     setModerator: (value:boolean)=>void,
-    follow: (followed:string)=>Promise<any>,
-    sendFriendRequest: (receiver:string)=>Promise<any>,
-    acceptFriendRequest: (requester:string)=>object
+    follow: (followed:string, res, next)=>void,
+    unfollow: (followed:string, res, next)=>void,
+    sendFriendRequest: (receiver:string, res, next)=>void,
+    acceptFriendRequest: (requester:string, res, next)=>void,
+    updatePoints: (delta: number, res, next)=>void
 }
 
 let userSchema = new mongoose.Schema<User>({
@@ -37,6 +40,11 @@ let userSchema = new mongoose.Schema<User>({
         type: mongoose.SchemaTypes.Number,
         required: true,
         default: 0
+    },
+    following: {
+        type: [mongoose.SchemaTypes.String],
+        required: true,
+        default: []
     },
     friends: {
         type: [mongoose.SchemaTypes.String],
@@ -110,23 +118,38 @@ userSchema.methods.setModerator = function(value:boolean) {
     }
 }
 
-userSchema.methods.follow = function (followed: string): Promise<any>{
+userSchema.methods.follow = function (followed: string, res, next) {
     let user = this
     return getModel().findOne({email: followed}).lean().then(data => {
-        if (!data)
-            return {statusCode: 400, error: true, errormessage: "User doesn't exist"};
-        if (user.email === data.email)
-            return {statusCode: 400, error: true, errormessage: "That's cute, but you can't be friend with yourself"};
-        if (user.friends.includes(followed))
-            return {statusCode: 400, error: true, errormessage: "User is already friend"};
-        user.friends.push(followed);
-        return null
+        let isF = isFollowable(user, data, "follow");
+        if (!isF[0])
+            throw new Error(isF[1]);
+
+        user.following.push(followed);
+
+        user.save().then(() => next({statusCode: 200, error: false, message: "Update successful"}));
     }).catch(err => {
-        return {statusCode: 400, error: true, errormessage: err};
+        next( {statusCode: 400, error: true, errormessage: err} );
     })
 }
 
-userSchema.methods.sendFriendRequest = function (receiver: string): Promise<any>{
+userSchema.methods.unfollow = function (unfollowed: string, res, next) {
+    let user = this
+    return getModel().findOne({email: unfollowed}).lean().then(data => {
+        let isF = isFollowable(user, data, "unfollow");
+        if (!isF[0])
+            throw new Error(isF[1]);
+
+        let idx = user.friendRequests.indexOf(unfollowed)
+        user.following.splice(idx, 1);
+
+        user.save().then(() => next({statusCode: 200, error: false, message: "Update successful"}));
+    }).catch(err => {
+        next( {statusCode: 400, error: true, errormessage: err} );
+    });
+}
+
+userSchema.methods.sendFriendRequest = function (receiver: string, res, next) {
     let user = this;
     return getModel().findOne({email: receiver}).then(data => {
         if (!data)
@@ -138,8 +161,6 @@ userSchema.methods.sendFriendRequest = function (receiver: string): Promise<any>
         if (data.friendRequests.includes(user.email))
             return {statusCode: 400, error: true, errormessage: "Friend request already sent"};
 
-        if (!user.friends.includes(receiver))
-            user.friends.push(receiver);
         data.friendRequests.push(user.email);
         data.save();
         return null;
@@ -148,7 +169,7 @@ userSchema.methods.sendFriendRequest = function (receiver: string): Promise<any>
     })
 }
 
-userSchema.methods.acceptFriendRequest = function (requester: string): object{
+userSchema.methods.acceptFriendRequest = function (requester: string, res, next) {
     let user = this;
     if (user.friendRequests.includes(requester)){
         let idx = user.friendRequests.indexOf(requester)
@@ -156,10 +177,15 @@ userSchema.methods.acceptFriendRequest = function (requester: string): object{
         if (!user.friends.includes(requester))
             user.friends.push(requester);
         console.log(user)
-        return null;
+        user.save().then(() => next({statusCode: 200, error: false, message: "Update successful"}));
     }
     else
         return {statusCode: 400, error: true, errormessage: "User doesn't exist or didn't send a friend request"};
+}
+
+userSchema.methods.updatePoints = function (delta: number, res, next){
+    this.points = this.points + delta > 0 ? this.points + delta : 0;
+    this.save().then(() => next({statusCode: 200, error: false, message: "Update successful"}));
 }
 
 
@@ -172,7 +198,20 @@ export function getModel(): mongoose.Model <User> {
 
 export function newUser (email: string, username: string): User{
     let userModel = getModel();
-    return new userModel({"email":email, "username":username});
+    return new userModel({"email": email, "username": username});
+}
+
+// utilities
+function isFollowable(user, followed, action): [boolean, string] {
+    if (!followed)
+        return [false, "User doesn't exist"];
+    if (user.email === followed.email)
+        return [false, "That's cute, but you can't follow yourself"];
+    if ( action === "follow" && user.following.includes(followed.email) )
+        return [false, "User is already followed"];
+    if ( action === "unfollow" && !user.following.includes(followed.email) )
+        return [false, "User is not followed"];
+    return [true, ""];
 }
 
 

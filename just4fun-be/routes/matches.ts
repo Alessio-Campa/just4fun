@@ -25,7 +25,10 @@ router.get("/", (req, res, next) =>{
     })
 })
 
-router.post("/", auth, (req, res, next) =>{
+router.post("/:id", auth, (req, res, next) =>{
+    if (req.params.id !== req.user.email)
+        next({statusCode: 403, error: true, errormessage: "Forbidden"});
+
     user.getModel().findOne({email: req.body.player1}).select('_id').lean().then(data => {
         if (!data)
             return next({status_code: 400, error: true, errormessage: "Opponent doesn't exist"})
@@ -39,8 +42,11 @@ router.post("/", auth, (req, res, next) =>{
     })
 })
 
-router.put("/:id", auth, (req, res, next)=>{
-    match.getModel().findById(req.params.id).then((data) =>{
+router.put("/:idMatch/:id", auth, (req, res, next)=>{
+    if (req.params.id !== req.user.email)
+        next({statusCode: 403, error: true, errormessage: "Forbidden"});
+
+    match.getModel().findById(req.params.idMatch).then((data) =>{
         let m: Match;
         if (isMatch(data))
             m = data;
@@ -59,7 +65,10 @@ router.put("/:id", auth, (req, res, next)=>{
     })
 })
 
-router.post("/random", auth, (req, res, next) => {
+router.post("/:id/random", auth, (req, res, next) => {
+    if (req.params.id !== req.user.email)
+        next({statusCode: 403, error: true, errormessage: "Forbidden"});
+
     let userPoints;
     user.getModel().findById(req.user.id, {points:1}).then((data)=>{
         userPoints = data.points;

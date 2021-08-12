@@ -46,7 +46,8 @@ router.post('/', (req, res, next) => {
     })
 });
 
-router.delete('/:email', (req, res, next)=>{
+router.delete('/:email', auth, (req, res, next)=>{
+    // TODO: handle authorization
     user.getModel().deleteMany( {email: req.params.email} ).then( (user)=>{
         return res.status(200);
     }).catch( (reason)=>{
@@ -54,31 +55,28 @@ router.delete('/:email', (req, res, next)=>{
     })
 });
 
-router.put("/", auth, (req, res, next) => {
+router.put("/:id", auth, (req, res, next) => {
+    if (req.params.id !== req.user.email)
+        next({statusCode: 403, error: true, errormessage: "Forbidden"});
+
     user.getModel().findOne({email: req.user.email}).then( async data => {
-        let out;
-        // TODO: eliminare questo in seguito che serve per debug al momento
-        if (req.body.resetFriends)
+        // TODO: eliminare questo in seguito che serve per debug
+        if (req.body.resetFriends) {
             data.friends = [];
-        else if (req.body.points)
-            data.points += req.body.points;
-        else if (req.body.follow)
-            out = await data.follow(req.body.follow);
+            data.following = [];
+            data.save();
+            next({statusCode: 200, error: false, errormessage: ""});
+        }
+        // TODO: togliere da qua in seguito
+        else if (req.body.points) {
+            data.updatePoints(req.body.points, res, next)
+        }
         else if (req.body.friend)
-            out = await data.sendFriendRequest(req.body.friend)
+            data.sendFriendRequest(req.body.friend, res, next)
         else if (req.body.accept)
             out = data.acceptFriendRequest(req.body.accept)
         else
-            out = {statusCode: 400, error: true, errormessage: "Bad request"}
-
-        if (out)
-            return next(out);
-
-        data.save().catch((err)=>{
-            return next({status_code:400, error:true, errormessage:"An error occurred while saving data: " + err})
-        })
-
-        return res.status(200).json("Update successful")
+            next({statusCode: 400, error: true, errormessage: "Bad request"});
     }).catch(err => {
         return next({statusCode: 400, error: true, errormessage: err})
     })
