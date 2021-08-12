@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="50b6c8c6-a28e-4a48-8e0d-af753471fd40" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/www.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bin/www.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/services/socketio.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/services/socketio.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,9 +53,9 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="javascript.nodejs.core.library.configured.version" value="12.18.2" />
-    <property name="javascript.nodejs.core.library.typings.version" value="12.20.19" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../just4fun-fe" />
+    <property name="javascript.nodejs.core.library.configured.version" value="14.17.4" />
+    <property name="javascript.nodejs.core.library.typings.version" value="14.17.4" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="restartRequiresConfirmation" value="false" />
@@ -121,6 +119,8 @@
       <workItem from="1628512256826" duration="3144000" />
       <workItem from="1628601639836" duration="1932000" />
       <workItem from="1628690151299" duration="1698000" />
+      <workItem from="1628759031001" duration="26000" />
+      <workItem from="1628759079319" duration="26000" />
     </task>
     <servers />
   </component>
@@ -141,5 +141,16 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/models/Matchmaking.ts</url>
+          <line>72</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

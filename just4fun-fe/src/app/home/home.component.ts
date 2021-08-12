@@ -17,7 +17,6 @@ export class HomeComponent implements OnInit {
     this.socket.on('broadcast', ()=>{
       console.log("Roger")
     })
-    this.socket.emit('connection');
   }
 
 

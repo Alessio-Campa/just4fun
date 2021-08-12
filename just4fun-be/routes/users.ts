@@ -15,8 +15,8 @@ router.get('/', (req, res, next)=>{
     })
 })
 
-router.get('/:mail', (req, res, next)=>{
-    user.getModel().find( {"mail": req.params.mail}, {digest:0, salt:0} ).then( (user)=>{
+router.get('/:email', (req, res, next)=>{
+    user.getModel().find( {"email": req.params.email}, {digest:0, salt:0} ).then( (user)=>{
         return res.status(200).json(user);
     }).catch( (reason)=>{
         return next( {statusCode:500, error: true, errormessage:"DB error"+reason} );
@@ -24,7 +24,7 @@ router.get('/:mail', (req, res, next)=>{
 });
 
 router.post('/', (req, res, next) => {
-    if (!req.body.mail || req.body.mail === ""){
+    if (!req.body.email || req.body.email === ""){
         return next({statusCode:400, error:true, errormessage:"Mail field required"});
     }
     if (!req.body.name || req.body.name === ""){
@@ -34,7 +34,7 @@ router.post('/', (req, res, next) => {
         return next({statusCode:400, error:true, errormessage:"Password field required"});
     }
 
-    let u = user.newUser( req.body.mail, req.body.name );
+    let u = user.newUser( req.body.email, req.body.name );
     u.setPassword( req.body.password );
 
     u.save().then( (data=>{
@@ -46,8 +46,8 @@ router.post('/', (req, res, next) => {
     })
 });
 
-router.delete('/:mail', (req, res, next)=>{
-    user.getModel().deleteMany( {mail: req.params.mail} ).then( (user)=>{
+router.delete('/:email', (req, res, next)=>{
+    user.getModel().deleteMany( {email: req.params.email} ).then( (user)=>{
         return res.status(200);
     }).catch( (reason)=>{
         return next( {statusCode:500, error: true, errormessage:"DB error"+reason} );
@@ -55,7 +55,7 @@ router.delete('/:mail', (req, res, next)=>{
 });
 
 router.put("/", auth, (req, res, next) => {
-    user.getModel().findOne({mail: req.user.mail}).then( async data => {
+    user.getModel().findOne({email: req.user.email}).then( async data => {
         let out;
         // TODO: eliminare questo in seguito che serve per debug al momento
         if (req.body.resetFriends)

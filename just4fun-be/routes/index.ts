@@ -11,7 +11,7 @@ const JWT_EXPIRATION = '1d';
 declare global{
     namespace Express{
         interface User{
-            mail: string,
+            email: string,
             username: string,
             roles: string[],
             id: string,
@@ -28,7 +28,7 @@ router.get("/", (req, res)=>{
 passport.use( new passportHTTP.BasicStrategy(
     function (username, password, done){
         console.log("New login attempt from ".yellow + username);
-        user.getModel().findOne( {mail:username}, (err, user)=>{
+        user.getModel().findOne( {email:username}, (err, user)=>{
             if (err){
                 return done( {statusCode:401, error:true, errormessage:err} );
             }
@@ -48,7 +48,7 @@ router.get('/login', passport.authenticate('basic', {session: false}), (req, res
     let tokenData = {
         username: req.user.username,
         roles: req.user.roles,
-        mail: req.user.mail,
+        email: req.user.email,
         id: req.user.id
     };
 

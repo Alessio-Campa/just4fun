@@ -62,8 +62,8 @@ matchMakingSchema.methods.searchMatch = function (): void {
 			player0: thisPlayer.username,
 			player1: opponentPlayer.username
 		}
-		ios.to(opponentPlayer.username).emit(message);
-		ios.to(thisPlayer.username).emit(message);
+		//ios.to(opponentPlayer.username).emit(message);
+		//ios.to(thisPlayer.username).emit(message);
 		console.log((thisPlayer.playerID + " " + opponentPlayer.playerID).bgWhite.black);
 	}
 

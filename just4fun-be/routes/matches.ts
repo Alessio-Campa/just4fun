@@ -26,12 +26,12 @@ router.get("/", (req, res, next) =>{
 })
 
 router.post("/", auth, (req, res, next) =>{
-    user.getModel().findOne({mail: req.body.player1}).select('_id').lean().then(data => {
+    user.getModel().findOne({email: req.body.player1}).select('_id').lean().then(data => {
         if (!data)
             return next({status_code: 400, error: true, errormessage: "Opponent doesn't exist"})
     })
 
-    let m: Match = match.newMatch(req.user.mail, req.body.player1)
+    let m: Match = match.newMatch(req.user.email, req.body.player1)
     m.save().then((data)=>{
         return res.status(200).json({objectID:data._id})
     }).catch((err)=>{

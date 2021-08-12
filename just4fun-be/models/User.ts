@@ -3,7 +3,7 @@ import * as crypto from 'crypto'
 
 export interface User extends mongoose.Document{
     username: string,
-    mail: string,
+    email: string,
     points: number,
     friends: string[],
     friendRequests: string[]
@@ -28,7 +28,7 @@ let userSchema = new mongoose.Schema<User>({
         required: true,
         unique: true
     },
-    mail: {
+    email: {
         type: mongoose.SchemaTypes.String,
         required: true,
         unique: true
@@ -112,10 +112,10 @@ userSchema.methods.setModerator = function(value:boolean) {
 
 userSchema.methods.follow = function (followed: string): Promise<any>{
     let user = this
-    return getModel().findOne({mail: followed}).lean().then(data => {
+    return getModel().findOne({email: followed}).lean().then(data => {
         if (!data)
             return {statusCode: 400, error: true, errormessage: "User doesn't exist"};
-        if (user.mail === data.mail)
+        if (user.email === data.email)
             return {statusCode: 400, error: true, errormessage: "That's cute, but you can't be friend with yourself"};
         if (user.friends.includes(followed))
             return {statusCode: 400, error: true, errormessage: "User is already friend"};
@@ -128,19 +128,19 @@ userSchema.methods.follow = function (followed: string): Promise<any>{
 
 userSchema.methods.sendFriendRequest = function (receiver: string): Promise<any>{
     let user = this;
-    return getModel().findOne({mail: receiver}).then(data => {
+    return getModel().findOne({email: receiver}).then(data => {
         if (!data)
             return {statusCode: 400, error: true, errormessage: "User doesn't exist"};
-        if (user.mail === data.mail)
+        if (user.email === data.email)
             return {statusCode: 400, error: true, errormessage: "That's cute, but you can't be friend with yourself"};
-        if (data.friends.includes(user.mail))
+        if (data.friends.includes(user.email))
             return {statusCode: 400, error: true, errormessage: "Users are already friends"};
-        if (data.friendRequests.includes(user.mail))
+        if (data.friendRequests.includes(user.email))
             return {statusCode: 400, error: true, errormessage: "Friend request already sent"};
 
         if (!user.friends.includes(receiver))
             user.friends.push(receiver);
-        data.friendRequests.push(user.mail);
+        data.friendRequests.push(user.email);
         data.save();
         return null;
     }).catch(err => {
@@ -170,9 +170,9 @@ export function getModel(): mongoose.Model <User> {
     return userModel;
 }
 
-export function newUser (mail: string, username: string): User{
+export function newUser (email: string, username: string): User{
     let userModel = getModel();
-    return new userModel({"mail":mail, "username":username});
+    return new userModel({"email":email, "username":username});
 }
 
 
