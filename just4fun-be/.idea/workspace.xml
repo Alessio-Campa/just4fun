@@ -3,9 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="50b6c8c6-a28e-4a48-8e0d-af753471fd40" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Matchmaking.ts" beforeDir="false" afterPath="$PROJECT_DIR$/models/Matchmaking.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/www.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bin/www.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/services/socketio.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/services/socketio.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/services/user.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/services/user.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,16 +141,5 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/models/Matchmaking.ts</url>
-          <line>72</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

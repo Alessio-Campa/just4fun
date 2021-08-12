@@ -8,7 +8,8 @@ import {colors} from "@angular/cli/utilities/color";
 @Injectable({
   providedIn: 'root'
 })
-export class SocketioService { //TODO: da testare
+export class SocketioService {
+  /*
   private socket;
 
   constructor() { }
@@ -31,4 +32,5 @@ export class SocketioService { //TODO: da testare
       });
     });
   }
+   */
 }
