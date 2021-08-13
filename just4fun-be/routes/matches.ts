@@ -91,6 +91,7 @@ router.post("/:id/random", auth, (req, res, next) => {
     })
 })
 
+// TODO: debug, da eliminare
 router.get("/searching", (req, res, next)=>{
     matchmaking.getModel().find().then(data => {
         return res.status(200).json(data);

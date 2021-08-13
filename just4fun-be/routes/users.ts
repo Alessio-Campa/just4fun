@@ -57,7 +57,7 @@ router.delete('/:email', auth, (req, res, next)=>{
 
 router.put("/:id", auth, (req, res, next) => {
     if (req.params.id !== req.user.email)
-        next({statusCode: 403, error: true, errormessage: "Forbidden"});
+        return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
     user.getModel().findOne({email: req.user.email}).then( async data => {
         // TODO: eliminare questo in seguito che serve per debug
@@ -67,14 +67,10 @@ router.put("/:id", auth, (req, res, next) => {
             data.save();
             next({statusCode: 200, error: false, errormessage: ""});
         }
-        // TODO: togliere da qua in seguito
+        // TODO: debug, da eliminare
         else if (req.body.points) {
             data.updatePoints(req.body.points, res, next)
         }
-        else if (req.body.friend)
-            data.sendFriendRequest(req.body.friend, res, next)
-        else if (req.body.accept)
-            data.acceptFriendRequest(req.body.accept, res, next)
         else
             next({statusCode: 400, error: true, errormessage: "Bad request"});
     }).catch(err => {
@@ -84,7 +80,7 @@ router.put("/:id", auth, (req, res, next) => {
 
 router.post('/:id/follow', auth, (req, res, next) => {
     if (req.params.id !== req.user.email)
-        next({statusCode: 403, error: true, errormessage: "Forbidden"});
+        return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
     user.getModel().findOne({email: req.user.email}).then(data => {
         data.follow(req.body.user, res, next);
@@ -95,7 +91,7 @@ router.post('/:id/follow', auth, (req, res, next) => {
 
 router.delete('/:id/follow', auth, (req, res, next)=>{
     if (req.params.id !== req.user.email)
-        next({statusCode: 403, error: true, errormessage: "Forbidden"});
+        return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
     user.getModel().findOne({email: req.user.email}).then(data => {
         data.unfollow(req.body.user, res, next);
@@ -103,5 +99,42 @@ router.delete('/:id/follow', auth, (req, res, next)=>{
         next({statusCode: 400, error: true, errormessage: err});
     });
 });
+
+router.post('/:id/friend', auth, (req, res, next) => {
+    if (req.params.id !== req.user.email)
+        return next({statusCode: 403, error: true, errormessage: "Forbidden"});
+
+    user.getModel().findOne({email: req.user.email}).then(data => {
+        data.sendFriendRequest(req.body.user, res, next);
+    }).catch(err => {
+        next({statusCode: 400, error: true, errormessage: err});
+    });
+})
+
+router.put('/:id/friend', auth, (req, res, next) => {
+    if (req.params.id !== req.user.email)
+        return next({statusCode: 403, error: true, errormessage: "Forbidden"});
+
+    user.getModel().findOne({email: req.user.email}).then(data => {
+        if (req.body.accept)
+            data.acceptFriendRequest(req.body.accept, res, next);
+        else if (req.body.refuse)
+            data.refuseFriendRequest(req.body.refuse, res, next)
+    }).catch(err => {
+        next({statusCode: 400, error: true, errormessage: err});
+    });
+})
+
+router.delete('/:id/friend', auth, (req, res, next) => {
+    if (req.params.id !== req.user.email)
+        return next({statusCode: 403, error: true, errormessage: "Forbidden"});
+
+    user.getModel().findOne({email: req.user.email}).then(data => {
+        data.removeFriend(req.body.friend, res, next);
+    }).catch(err => {
+        next({statusCode: 400, error: true, errormessage: err});
+    });
+
+})
 
 module.exports = router;

@@ -33,7 +33,7 @@ router.get("/:matchID", (req, res, next)=> {
 
 router.post("/:id", auth, (req, res, next)=> {
     if (req.params.id !== req.user.email)
-        next({statusCode: 403, error: true, errormessage: "Forbidden"});
+        return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
     chat.getModel().create({
         matchID: req.body.matchID,
@@ -46,16 +46,15 @@ router.post("/:id", auth, (req, res, next)=> {
     })
 })
 
-router.put("/:idChat/:id", auth, (req, res, next)=> {
-    if (req.params.id !== req.user.email)
-        next({statusCode: 403, error: true, errormessage: "Forbidden"});
+router.put("/:idChat/message", auth, (req, res, next)=> {
+    if (req.body.sender !== req.user.email)
+        return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
-    console.log(req.params.id)
     chat.getModel().findById(req.params.idChat).then((data)=> {
         let c: Chat;
         if (isChat(data)) c = data;
         c.messages.push({
-            sender: req.user.username,
+            sender: req.body.sender,
             text: req.body.text,
             timestamp: Date.now()
         })

@@ -22,6 +22,8 @@ export interface User extends mongoose.Document{
     unfollow: (followed:string, res, next)=>void,
     sendFriendRequest: (receiver:string, res, next)=>void,
     acceptFriendRequest: (requester:string, res, next)=>void,
+    refuseFriendRequest: (refused: string, res, next)=>void,
+    removeFriend: (user: string, res, next)=>void,
     updatePoints: (delta: number, res, next)=>void
 }
 
@@ -129,7 +131,7 @@ userSchema.methods.follow = function (followed: string, res, next) {
 
         user.save().then(() => next({statusCode: 200, error: false, message: "Update successful"}));
     }).catch(err => {
-        next( {statusCode: 400, error: true, errormessage: err} );
+        next( {statusCode: 400, error: true, errormessage: err.message} );
     })
 }
 
@@ -145,7 +147,7 @@ userSchema.methods.unfollow = function (unfollowed: string, res, next) {
 
         user.save().then(() => next({statusCode: 200, error: false, message: "Update successful"}));
     }).catch(err => {
-        next( {statusCode: 400, error: true, errormessage: err} );
+        next( {statusCode: 400, error: true, errormessage: err.message} );
     });
 }
 
@@ -164,23 +166,66 @@ userSchema.methods.sendFriendRequest = function (receiver: string, res, next) {
         data.friendRequests.push(user.email);
         data.save().then(() => next({statusCode: 200, error: false, message: "Update successful"}));
     }).catch(err => {
-        next({statusCode: 400, error: true, errormessage: err});
+        next({statusCode: 400, error: true, errormessage: err.message});
     });
 }
 
 userSchema.methods.acceptFriendRequest = function (requester: string, res, next) {
     let user = this;
     if (user.friendRequests.includes(requester)) {
-        let idx = user.friendRequests.indexOf(requester)
-        user.friendRequests.splice(idx, 1);
-        if (!user.friends.includes(requester))
+        getModel().findOne({email: requester}).then(data => {
+            data.friends.push(user.email);
+            let idx = user.friendRequests.indexOf(requester)
+            user.friendRequests.splice(idx, 1);
             user.friends.push(requester);
-        console.log(user)
-        user.save().then(() => next({statusCode: 200, error: false, message: "Update successful"}));
+
+            data.save();
+            user.save().then(() => next({statusCode: 200, error: false, message: "Update successful"}));
+        }).catch(err => {
+            next({statusCode: 500, error: true, errormessage: err.message})
+        })
     }
     else {
         next({statusCode: 400, error: true, errormessage: "User doesn't exist or didn't send a friend request"});
     }
+}
+
+userSchema.methods.refuseFriendRequest = function (refused: string, res, next){
+    if (this.friendRequests.includes(refused)){
+        let idx = this.friendRequests.indexOf(refused);
+        this.friendRequests.splice(idx, 1);
+
+        this.save().then(()=>{
+            next({statusCode: 200, error: false, message: "Update successful"});
+        }).catch(err => {
+            next({statusCode: 500, error: true, errormessage: err.message});
+        })
+    } else {
+        next({statusCode: 400, error: true, errormessage: "User doesn't exist or didn't send a friend request"});
+    }
+}
+
+userSchema.methods.removeFriend = function (friend: string, res, next){
+    let user = this;
+    if (!user.friends.includes(friend))
+        return next({statusCode: 400, error: true, errormessage: "User doesn't exist or isn't your friend"});
+
+    getModel().findOne({email: friend}).then(data => {
+        let idx = user.friends.indexOf(friend);
+        user.friends.splice(idx, 1);
+
+        idx = data.friends.indexOf(user.email);
+        data.friends.splice(idx, 1);
+
+        data.save();
+        user.save().then(() => {
+            next({statusCode: 200, error: false, message: "Update successful"});
+        }).catch(err => {
+            next({statusCode: 500, error: true, message: err});
+        })
+    }).catch(err => {
+        next({statusCode: 500, error: true, message: err});
+    });
 }
 
 userSchema.methods.updatePoints = function (delta: number, res, next){

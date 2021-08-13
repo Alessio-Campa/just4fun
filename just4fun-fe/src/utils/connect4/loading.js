@@ -32,8 +32,6 @@ for (let i = 0; i < 7; i++) {
         turn = (turn + 1) % 2;
     }
 
-
-
     board.appendChild(column)
     for (let j = 0; j < 6; j++) {
         var temp = document.getElementsByTagName("template")[0];
