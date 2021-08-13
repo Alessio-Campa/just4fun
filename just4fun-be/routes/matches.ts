@@ -65,7 +65,7 @@ router.post("/random", auth, (req, res, next) => {
         userPoints = data.points;
     }).then(()=>{
         matchmaking.getModel().create({
-            playerID: req.user.id,
+            playerID: req.user.email,
             min: userPoints,
             max: userPoints
         }).then((data)=>{

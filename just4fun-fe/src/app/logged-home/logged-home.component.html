@@ -1,0 +1,5 @@
+<div class="text-center">
+  <h2>Welcome back {{ user.username }}</h2>
+  <button (click)="matchmaking()" class="btn btn-primary" type="submit">Matchmaking</button>
+  <h3 *ngIf="matchFound">  Match found! your opponent is: {{ opponent }}</h3>
+</div>

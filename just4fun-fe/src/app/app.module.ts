@@ -11,6 +11,7 @@ import { UserLoginComponent } from './user-login/user-login.component';
 import { UserRegisterComponent } from './user-register/user-register.component';
 import { FormsModule } from "@angular/forms";
 import { UserLogoutComponent } from './user-logout/user-logout.component';
+import { LoggedHomeComponent } from './logged-home/logged-home.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { UserLogoutComponent } from './user-logout/user-logout.component';
     HomeComponent,
     UserLoginComponent,
     UserRegisterComponent,
-    UserLogoutComponent
+    UserLogoutComponent,
+    LoggedHomeComponent
   ],
   imports: [
     HttpClientModule,

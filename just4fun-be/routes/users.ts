@@ -16,7 +16,7 @@ router.get('/', (req, res, next)=>{
 })
 
 router.get('/:email', (req, res, next)=>{
-    user.getModel().find( {"email": req.params.email}, {digest:0, salt:0} ).then( (user)=>{
+    user.getModel().findOne( {email: req.params.email}, {digest:0, salt:0} ).then( (user)=>{
         return res.status(200).json(user);
     }).catch( (reason)=>{
         return next( {statusCode:500, error: true, errormessage:"DB error"+reason} );

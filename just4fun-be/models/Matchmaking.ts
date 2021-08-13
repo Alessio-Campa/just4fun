@@ -55,15 +55,16 @@ matchMakingSchema.methods.searchMatch = function (): void {
 
 	let matchmakeDone = function (opponentPlayer, thisPlayer) {
 		thisPlayer.remove();
-		opponentPlayer.remove()
+		opponentPlayer.remove();
 		clearInterval(interval);
 		let message = {
 			subject: "matchMakingFound",
-			player0: thisPlayer.username,
-			player1: opponentPlayer.username
+			player0: thisPlayer.playerID,
+			player1: opponentPlayer.playerID
 		}
-		//ios.to(opponentPlayer.username).emit(message);
-		//ios.to(thisPlayer.username).emit(message);
+		ios.emit("broadcast", message);
+		ios.to(opponentPlayer.playerID).emit("broadcast", message)
+		ios.to(thisPlayer.playerID).emit("bradcast", message)
 		console.log((thisPlayer.playerID + " " + opponentPlayer.playerID).bgWhite.black);
 	}
 
@@ -73,7 +74,7 @@ matchMakingSchema.methods.searchMatch = function (): void {
 		thisPlayer.save()
 	}
 
-	user.getModel().findById(this.playerID, {points: 1}).then((thisPlayer)=>{
+	user.getModel().findOne({email: this.playerID}, {points: 1}).then((thisPlayer)=>{
 		interval = setInterval(()=>{
 			lock.acquire('matchmaking', function (lockRelease) {
 				matchmakingModel.findOne({ _id: thisMatchmaking._id }).select("_id").lean().then(isNotMatched => {

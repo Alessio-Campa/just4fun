@@ -7,7 +7,13 @@ function startSocketIoServer(server: Server): io.Server {
     ioServer = new io.Server(server);
 
     ioServer.on('connection', function(socket){
-        console.log('connection',socket.id);
+        console.log('connection', socket.id);
+        ioServer.emit("broadcast", "welcome back dear socket" + socket.id);
+    });
+
+    ioServer.on('join', (socket, room) => {
+        socket.join(room);
+        console.log("joined " + room + " by " + socket.id)
     });
 
     return ioServer;

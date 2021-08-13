@@ -24,7 +24,7 @@ export class UserLoginComponent implements OnInit {
       console.log('Login granted: ' + JSON.stringify(d));
       console.log('User service token: ' + this.userService.token);
       this.errorMessage = false;
-      this.router.navigate(['']);
+      this.router.navigate(['loggedHome']);
     }, (err) => {
       console.log('Login error: ' + JSON.stringify(err.error));
       this.password = '';
