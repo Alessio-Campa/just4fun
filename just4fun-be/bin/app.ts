@@ -26,7 +26,7 @@ app.use('/chat', chatRouter);
 app.use('/', indexRouter);
 
 app.use( function (err, req, res, next) {
-    console.log("Request error: ".red + JSON.stringify( err ));
+    console.log("Request error: ".red + JSON.stringify(err) );
     res.status(err.statusCode || 500).json( err );
 })
 app.use( (req, res, next) => {

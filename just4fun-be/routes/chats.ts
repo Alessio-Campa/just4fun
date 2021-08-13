@@ -31,7 +31,10 @@ router.get("/:matchID", (req, res, next)=> {
     })
 })
 
-router.post("/", auth, (req, res, next)=> {
+router.post("/:id", auth, (req, res, next)=> {
+    if (req.params.id !== req.user.email)
+        next({statusCode: 403, error: true, errormessage: "Forbidden"});
+
     chat.getModel().create({
         matchID: req.body.matchID,
         members: [req.body.friend, req.user.id],
@@ -43,9 +46,12 @@ router.post("/", auth, (req, res, next)=> {
     })
 })
 
-router.put("/:id", auth, (req, res, next)=> {
+router.put("/:idChat/:id", auth, (req, res, next)=> {
+    if (req.params.id !== req.user.email)
+        next({statusCode: 403, error: true, errormessage: "Forbidden"});
+
     console.log(req.params.id)
-    chat.getModel().findById(req.params.id).then((data)=> {
+    chat.getModel().findById(req.params.idChat).then((data)=> {
         let c: Chat;
         if (isChat(data)) c = data;
         c.messages.push({
@@ -61,7 +67,8 @@ router.put("/:id", auth, (req, res, next)=> {
     })
 })
 
-// Chat deletion
+// Chat deletio
+// TODO?: da eliminare
 router.delete("/:id", (req, res, next)=> {
     chat.getModel().findByIdAndDelete(req.params.id).then(()=>{
         return res.status(200).json({error: false, message:"object deleted succesfully"})
