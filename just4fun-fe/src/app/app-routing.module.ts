@@ -15,8 +15,8 @@ const routes: Routes = [
   {path: 'login', component: UserLoginComponent},
   {path: 'logout', component: UserLogoutComponent},
   {path: 'register', component: UserRegisterComponent},
-  {path: 'loggedHome', component: LoggedHomeComponent}
 
+  {path: 'loggedHome', component: LoggedHomeComponent},
   {path: 'match', component: MatchComponent},
 ];
 
