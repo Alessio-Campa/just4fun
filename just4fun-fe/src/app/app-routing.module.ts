@@ -17,7 +17,9 @@ const routes: Routes = [
   {path: 'register', component: UserRegisterComponent},
 
   {path: 'loggedHome', component: LoggedHomeComponent},
-  {path: 'match', component: MatchComponent},
+  {path: 'match', children: [
+      {path: ':id', component: MatchComponent}
+    ]},
 ];
 
 @NgModule({

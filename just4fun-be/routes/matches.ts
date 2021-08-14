@@ -9,16 +9,16 @@ import {isMatchMaking, Matchmaking} from "../models/Matchmaking";
 let router = express.Router();
 
 router.get("/", (req, res, next) =>{
+    let limit = parseInt( <string>(req.query.limit || "0") ) || 0;
     let filter = {}
-    if (req.body.player)
-        filter["$or"] =  [{player0: req.body.player}, {player1: req.body.player}]
-    if (req.body.ended === false || req.body.ended === true)
-        if(req.body.ended)
-            filter["winner.player"] = {$ne: null}
-        else
-            filter["winner.player"] = null
+    if (req.query.player)
+        filter["$or"] =  [{player0: req.query.player}, {player1: req.query.player}]
+    if (req.query.ended === "true")
+        filter["winner.player"] = {$ne: null}
+    if (req.query.ended === "false")
+        filter["winner.player"] = null
 
-    match.getModel().find(filter).then( (data) => {
+    match.getModel().find(filter).limit(limit).then( (data) => {
         return res.status(200).json(data);
     }).catch((err)=> {
         return next({status_code:400, error:true, errormessage:err})

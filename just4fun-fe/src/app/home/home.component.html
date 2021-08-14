@@ -4,42 +4,36 @@
   </div>
 </div>
 
-<h1 *ngIf="isLogged" > HELO </h1>
-
 <div class="container">
   <div class="row" style="height: 100px">
     <div class="col-md-8">
       <div class="col-md-12 bg-dark rounded p-3">
+
         <h2 class="h2 text-center text-light mb-3">Live matches</h2>
 
-        <div class="card-deck">
-          <!-- TODO: usare ngFor o altre cose da component -->
-          <div class="card text-dark">
-            <div class="card-header">
-              <h5 class="card-title text-left">username3</h5>
-              <h5 class="card-title text-center">vs</h5>
-              <h5 class="card-title text-right">username4</h5>
-            </div>
-            <div class="card-body">
-              <img src="...">
-            </div>
-            <div class="card-footer">
-              <small class="text-muted">Last updated 3 mins ago</small>
-            </div>
-          </div>
+        <div class="row row-cols-2">
 
-          <div class="card text-dark">
-            <div class="card-header">
-              <h5 class="card-title text-left">username3</h5>
-              <h5 class="card-title text-center">vs</h5>
-              <h5 class="card-title text-right">username4</h5>
+          <div *ngFor="let match of randomMatches" class="col-6">
+            <div class="card mb-3">
+              <div class="card-header">
+                <h5 class="card-title text-left mb-0 d-flex">
+                  <div class="mr-2" style="height: 1em; width: 1em; background-color: yellow; border: solid black 1px; border-radius: 100%"></div>
+                  {{match.player0}}
+                </h5>
+                <h5 class="card-title text-center m-0"> vs </h5>
+                <h5 class="card-title text-left mt-0 d-flex">
+                  <div class="mr-2" style="height: 1em; width: 1em; background-color: red; border: solid black 1px; border-radius: 100%"></div>
+                  {{match.player1}}
+                </h5>
+              </div>
+              <div class="card-body">
+                <img src="...">
+              </div>
+              <div class="card-footer">
+                <small class="text-muted">Last updated 3 mins ago</small>
+              </div>
             </div>
-            <div class="card-body">
-              <img src="...">
-            </div>
-            <div class="card-footer">
-              <small class="text-muted">Last updated 3 mins ago</small>
-            </div>
+
           </div>
 
         </div>
@@ -52,10 +46,12 @@
         <h2 class="h2 text-center text-light mb-3">Leaderboard</h2>
 
         <ul *ngFor="let user of leaderboard; index as i" class="list-group list-group-horizontal-sm mb-1">
-          <li class="list-group-item w-25 leaderboard-position text-center"> {{i}} </li>
-          <li class="list-group-item w-75">{{user.username}}</li>
+          <li class="list-group-item w-25 leaderboard-position text-center"> {{i+1}} </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center w-75">
+            {{user.username}}
+            <span class="badge bg-primary rounded-pill text-light"> {{user.points}} </span>
+          </li>
         </ul>
-
 
       </div>
     </div>

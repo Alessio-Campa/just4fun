@@ -1,4 +1,4 @@
-import mongoose = require("mongoose")
+import * as mongoose from 'mongoose'
 import {stringify} from "querystring";
 
 const ROWS: number = 6;

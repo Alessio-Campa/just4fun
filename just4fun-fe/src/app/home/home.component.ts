@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { io } from 'socket.io-client';
 import { environment } from "../../environments/environment";
-import {UserService} from "../services/user.service";
+import { UserService } from "../services/user.service";
+import { MatchService } from "../services/match.service";
+import { map } from "rxjs/operators";
 
 @Component({
   selector: 'app-home',
@@ -12,15 +14,25 @@ export class HomeComponent implements OnInit {
 
   isLogged;
   leaderboard;
+  randomMatches;
 
-  constructor(public us: UserService) { }
+  constructor(private us: UserService, private ms: MatchService) { }
   socket = io(environment.serverUrl, { transports: ['websocket'] });
 
   ngOnInit(): void {
     this.isLogged = this.us.isLoggedIn;
     this.us.leaderboard.subscribe(data => {
       this.leaderboard = data;
-      console.log(this.leaderboard)
+    })
+
+    this.ms.randomLiveMatches.subscribe(data => {
+      console.log(data)
+      this.randomMatches = data
+    }, ()=>{}, ()=>{
+      this.randomMatches.forEach(e => {
+        this.us.get_user_by_mail(e.player0).subscribe(data => e.player0 = data.username)
+        this.us.get_user_by_mail(e.player1).subscribe(data => e.player1 = data.username)
+      })
     })
 
     console.log("127.0.0.0 sweet 127.0.0.0");
