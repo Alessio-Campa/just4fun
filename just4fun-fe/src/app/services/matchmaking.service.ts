@@ -20,7 +20,8 @@ export class MatchmakingService {
       'Authorization': 'Bearer ' + this.token,
       'Content-Type': 'application/json'}
     //console.log(headers)
-    return this.http.post(environment.serverUrl + '/match/random',{user: this.userService.mail}, {headers})
+    //console.log(this.userService.email);
+    return this.http.post(environment.serverUrl + '/match/random',{user: this.userService.email}, {headers})
       /*
       .pipe(tap( (data: any) => {
         //console.log(JSON.stringify(data));
@@ -30,9 +31,10 @@ export class MatchmakingService {
   }
 
   ngOnInit(): void {
+    /*
     this.ios.connect().subscribe((m) => {
       console.log(m);
-    });
-    this.match();
+    });*/
+    //this.match();
   }
 }

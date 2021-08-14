@@ -14,26 +14,21 @@ import {SocketioService} from "../services/socketio.service";
 })
 export class LoggedHomeComponent implements OnInit {
 
-  socket = io(environment.serverUrl, { transports: ['websocket'] });
+  //socket = io(environment.serverUrl, { transports: ['websocket'] });
   user = this.userService;
   matchFound: boolean = false;
-  opponent;
+  matchSearching: boolean = false;
+  player0;
+  player1;
 
   constructor(public userService: UserService, public router: Router, public matchmakingService: MatchmakingService,
               public ios: SocketioService) { }
 
   matchmaking() {
+    this.matchFound = false;
+    this.matchSearching = true;
     this.matchmakingService.ngOnInit();
-    this.matchmakingService.match().subscribe((data) => {
-      console.log("resonse: " + JSON.stringify(data));
-      this.socket.on('broadcast', (message) => {
-        console.log("New socket message: " + message.subject + "\n your opponent is " + message.player1)
-        this.matchFound = true;
-        this.userService.get_user_by_mail(message.player1).subscribe((data) =>{
-          this.opponent = data.username;
-        });
-      })
-    });
+    this.matchmakingService.match().subscribe();
   }
 
   ngOnInit(): void {
@@ -41,7 +36,15 @@ export class LoggedHomeComponent implements OnInit {
       this.router.navigate(['']);
       return;
     }
-    //console.log(this.user)
+    this.ios.ngOnInit();
+    this.ios.connect().subscribe((message)=>{
+      if (message.subject == 'matchMakingFound') {
+        this.matchSearching = false;
+        this.matchFound = true;
+        this.userService.get_user_by_mail(message.player0).subscribe(data => this.player0 = data.username);
+        this.userService.get_user_by_mail(message.player1).subscribe(data => this.player1 = data.username);
+      }
+    });
     console.log("127.0.0.0 sweet logged 127.0.0.0")
   }
 

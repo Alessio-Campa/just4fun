@@ -13,19 +13,21 @@ export class SocketioService {
 
   connect(): Observable< any > {
 
-    this.socket = io(environment.serverUrl);
-
-    this.socket.emit('join', this.userService.mail);
+    this.socket = io(environment.serverUrl, { transports: ['websocket'] });
 
     return new Observable( (observer) => {
       this.socket.on('broadcast', (m) => {
-        console.log('Socket.io message received: ' + JSON.stringify(m) );
-        observer.next( m );
+        console.log('Socket.io message received: ' + JSON.stringify(m));
+        observer.next(m);
+      });
+
+      this.socket.on('welcome', () => {
+        this.socket.emit('join', this.userService.email);
       });
 
       this.socket.on('error', (err) => {
-        console.log('Socket.io error: ' + err );
-        observer.error( err );
+        console.log('Socket.io error: ' + err);
+        observer.error(err);
       });
 
       return { unsubscribe() {
@@ -34,37 +36,8 @@ export class SocketioService {
 
     });
   }
+
+  ngOnInit(): void {
+    console.log("socket initialized");
+  }
 }
-
-/*
-  private socket: Socket;
-
-  private constructor() { }
-
-  getSocket(): Socket {
-    if (this.socket === null) {
-      this.socket = io(environment.serverUrl);
-    }
-    return this.socket;
-  }*/
-
-/*
-connect(): Observable<any> {
-
-  this.socket = io(environment.serverUrl);
-
-  return new Observable((observer) => {
-    this.socket.join(UserService.prototype.username)
-
-    this.socket.on('broadcast', (message) => {
-      console.log(colors.cyan('Socket.io: ' + UserService.prototype.username + ' has recived a new message: ' + JSON.stringify(message.subject)));
-      observer.next(message);
-    });
-
-    this.socket.on('error', (error) => {
-      console.log('Socket.io error: ' + error);
-      observer.error(error);
-    });
-  });
-}
- */

@@ -25,6 +25,32 @@ router.get("/", (req, res, next) =>{
     })
 })
 
+router.post("/random", auth, (req, res, next) => {
+    if (req.body.user !== req.user.email)
+        return next({statusCode: 403, error: true, errormessage: "Forbidden"});
+
+    let userPoints;
+    user.getModel().findById(req.user.id, {points:1}).then((data)=>{
+        userPoints = data.points;
+    }).then(()=>{
+        matchmaking.getModel().create({
+            playerID: req.user.email,
+            min: userPoints,
+            max: userPoints
+        }).then((data)=>{
+            let m: Matchmaking;
+            if (isMatchMaking(data)) m = data;
+            m.searchMatch();
+        }).then(()=>{
+            return res.status(200).json({error: false, message: "Matchmaking started"})
+        }).catch((err) => {
+            return next({status_code: 400, error: true, errormessage: err})
+        })
+    }).catch((err) => {
+        return next({status_code: 400, error: true, errormessage: err})
+    })
+})
+
 router.post("/:id", auth, (req, res, next) =>{
     if (req.params.id !== req.user.email)
         next({statusCode: 403, error: true, errormessage: "Forbidden"});
@@ -62,32 +88,6 @@ router.put("/:idMatch/:id", auth, (req, res, next)=>{
         return res.status(200).json({error: false, edit:"Added disk in column: " + req.body.column})
     }).catch((err) => {
         return next({status_code:400, error: true, errormessage: err})
-    })
-})
-
-router.post("/random", auth, (req, res, next) => {
-    if (req.body.user !== req.user.email)
-        next({statusCode: 403, error: true, errormessage: "Forbidden"});
-
-    let userPoints;
-    user.getModel().findById(req.user.id, {points:1}).then((data)=>{
-        userPoints = data.points;
-    }).then(()=>{
-        matchmaking.getModel().create({
-            playerID: req.user.email,
-            min: userPoints,
-            max: userPoints
-        }).then((data)=>{
-            let m: Matchmaking;
-            if (isMatchMaking(data)) m = data;
-            m.searchMatch();
-        }).then(()=>{
-            return res.status(200).json({error: false, message: "Matchmaking started"})
-        }).catch((err) => {
-            return next({status_code: 400, error: true, errormessage: err})
-        })
-    }).catch((err) => {
-        return next({status_code: 400, error: true, errormessage: err})
     })
 })
 

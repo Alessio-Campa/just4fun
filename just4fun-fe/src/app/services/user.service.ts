@@ -10,7 +10,7 @@ import {JwtHelperService} from '@auth0/angular-jwt';
 export interface TokenData {
   id: string;
   username: string;
-  mail: string;
+  email: string;
   roles: string[];
 }
 
@@ -97,8 +97,8 @@ export class UserService {
     return (jwtDecode(this.token) as TokenData).username;
   }
 
-  get mail() {
-    return (jwtDecode(this.token) as TokenData).mail;
+  get email() {
+    return (jwtDecode(this.token) as TokenData).email;
   }
 
   get id() {
