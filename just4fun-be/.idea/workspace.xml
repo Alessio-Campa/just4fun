@@ -2,7 +2,27 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="50b6c8c6-a28e-4a48-8e0d-af753471fd40" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/match/board.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/match/match.component.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/match/match.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/match/match.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../just4fun-fe/src/utils/connect4/animation.ts_old" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/app-routing.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/header/header.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/header/header.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/home/home.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/home/home.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/home/home.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/home/home.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/logged-home/logged-home.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/services/matchmaking.service.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/assets/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/utils/connect4/animation.html" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/utils/connect4/animation.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/utils/connect4/loading.js" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/utils/connect4/loading.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/utils/connect4/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/utils/connect4/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/tsconfig.app.json" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/tsconfig.app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,16 +48,16 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/bin/app.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.env" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/bin/authentication.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/bin/socket.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/bin/www.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/bin/app.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/routes/matches.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/models/Chat.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/models/User.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/routes/users.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/bin/authentication.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/models/Chat.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/routes/matches.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/bin/socket.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/routes/chats.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/.env" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1vGki78QVY5bgOViP5ghX5tCdjN" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -53,13 +73,13 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="javascript.nodejs.core.library.configured.version" value="14.17.4" />
-    <property name="javascript.nodejs.core.library.typings.version" value="14.17.4" />
+    <property name="javascript.nodejs.core.library.configured.version" value="12.18.2" />
+    <property name="javascript.nodejs.core.library.typings.version" value="12.20.19" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="ts.external.directory.path" value="C:\Users\Mario\Documents\GitHub\just4fun\just4fun-be\node_modules\typescript\lib" />
+    <property name="ts.external.directory.path" value="C:\Users\Admin\WebStormProjects\just4fun\just4fun-be\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -118,9 +138,10 @@
       <workItem from="1628430374196" duration="1325000" />
       <workItem from="1628512256826" duration="3144000" />
       <workItem from="1628601639836" duration="1932000" />
-      <workItem from="1628690151299" duration="1698000" />
-      <workItem from="1628759031001" duration="26000" />
-      <workItem from="1628759079319" duration="26000" />
+      <workItem from="1628690151299" duration="2306000" />
+      <workItem from="1628776218628" duration="3584000" />
+      <workItem from="1628859473598" duration="2620000" />
+      <workItem from="1628929845471" duration="1200000" />
     </task>
     <servers />
   </component>
@@ -147,7 +168,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/models/Matchmaking.ts</url>
-          <line>72</line>
+          <line>81</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>

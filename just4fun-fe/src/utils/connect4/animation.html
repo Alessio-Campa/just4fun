@@ -4,21 +4,20 @@
   <meta charset="UTF-8">
   <title>Game animations</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
-<template>
-  <div class="cell" style="width: 80px; height: 80px; padding: 10px; background-color: #4444ff">
-    <div style="width: 100%; height: 100%; background-color: #333333; border-radius: 100%; border:2px solid #3333ee">
-    </div>
-  </div>
-</template>
-
 <body>
+
+<div id="cellTemplate" hidden>
+  <div class="cell">
+    <div class="cellDisk"></div>
+  </div>
+</div>
 
 <h1 id="a">Connect 4</h1>
 
 <div id="board" style="width: 700px; margin: auto">
-
 </div>
 
 </body>

@@ -11,6 +11,7 @@ import { UserLoginComponent } from './user-login/user-login.component';
 import { UserRegisterComponent } from './user-register/user-register.component';
 import { FormsModule } from "@angular/forms";
 import { UserLogoutComponent } from './user-logout/user-logout.component';
+import { MatchComponent } from './match/match.component';
 import { LoggedHomeComponent } from './logged-home/logged-home.component';
 
 @NgModule({
@@ -21,6 +22,7 @@ import { LoggedHomeComponent } from './logged-home/logged-home.component';
     UserLoginComponent,
     UserRegisterComponent,
     UserLogoutComponent,
+    MatchComponent,
     LoggedHomeComponent
   ],
   imports: [

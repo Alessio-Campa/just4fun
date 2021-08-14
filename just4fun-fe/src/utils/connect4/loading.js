@@ -5,15 +5,6 @@ let falling = [false, false, false, false, false, false, false]
 
 let cols = []
 
-function sleep(milliseconds) {
-    const date = Date.now();
-    let currentDate = null;
-    do {
-        currentDate = Date.now();
-    } while (currentDate - date < milliseconds);
-    return 1
-}
-
 for (let i = 0; i < 7; i++) {
     let column = document.createElement('div')
     column.numeroColonna = i
@@ -34,8 +25,8 @@ for (let i = 0; i < 7; i++) {
 
     board.appendChild(column)
     for (let j = 0; j < 6; j++) {
-        var temp = document.getElementsByTagName("template")[0];
-        var clon = temp.content.cloneNode(true);
+        let temp = document.getElementsByTagName("template")[0];
+        let clon = temp.content.cloneNode(true);
         column.appendChild(clon);
     }
     cols.push(column)
