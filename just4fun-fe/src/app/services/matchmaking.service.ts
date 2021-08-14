@@ -20,7 +20,7 @@ export class MatchmakingService {
       'Authorization': 'Bearer ' + this.token,
       'Content-Type': 'application/json'}
     //console.log(headers)
-    return this.http.post(environment.serverUrl + '/match/random',{}, {headers})
+    return this.http.post(environment.serverUrl + '/match/random',{user: this.userService.mail}, {headers})
       /*
       .pipe(tap( (data: any) => {
         //console.log(JSON.stringify(data));

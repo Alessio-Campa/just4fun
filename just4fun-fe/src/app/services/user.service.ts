@@ -116,4 +116,9 @@ export class UserService {
   get_user_by_mail(mail: string): Observable<User>{
     return this.http.get<User>(environment.serverUrl + '/user/' + mail);
   }
+
+  get leaderboard(): Observable<any>{
+    return this.http.get<User[]>(environment.serverUrl + '/user/leaderboard');
+  }
+
 }

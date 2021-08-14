@@ -65,8 +65,8 @@ router.put("/:idMatch/:id", auth, (req, res, next)=>{
     })
 })
 
-router.post("/:id/random", auth, (req, res, next) => {
-    if (req.params.id !== req.user.email)
+router.post("/random", auth, (req, res, next) => {
+    if (req.body.user !== req.user.email)
         next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
     let userPoints;

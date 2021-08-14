@@ -4,6 +4,8 @@
   </div>
 </div>
 
+<h1 *ngIf="isLogged" > HELO </h1>
+
 <div class="container">
   <div class="row" style="height: 100px">
     <div class="col-md-8">
@@ -49,18 +51,18 @@
       <div class="col-md-12 bg-dark rounded p-3">
         <h2 class="h2 text-center text-light mb-3">Leaderboard</h2>
 
-        <ul class="list-group">
-          <li class="list-group-item">Cras justo odio</li>
-          <li class="list-group-item">Dapibus ac facilisis in</li>
-          <li class="list-group-item">Morbi leo risus</li>
-          <li class="list-group-item">Porta ac consectetur ac</li>
-          <li class="list-group-item">Vestibulum at eros</li>
+        <ul *ngFor="let user of leaderboard; index as i" class="list-group list-group-horizontal-sm mb-1">
+          <li class="list-group-item w-25 leaderboard-position text-center"> {{i}} </li>
+          <li class="list-group-item w-75">{{user.username}}</li>
         </ul>
+
 
       </div>
     </div>
   </div>
 </div>
+
+
 <div class="row justify-content-center">
   <button class="btn btn-lg btn-primary m-1"> Start new game </button>
   <button class="btn btn-lg btn-primary m-1"> test button </button>
