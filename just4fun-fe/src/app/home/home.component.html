@@ -1,3 +1,9 @@
+<div id="cellTemplate" hidden>
+  <div class="cell">
+    <div class="cellDisk"></div>
+  </div>
+</div>
+
 <div class="row mb-5">
   <div class="col-12 text-center align-self-center" style="padding: 0">
     <img src="/assets/img/logo.png" alt="logo just4fun" style="max-height: 50px; max-width: 95%">
@@ -13,8 +19,8 @@
 
         <div class="row row-cols-2">
 
-          <div *ngFor="let match of randomMatches" class="col-6">
-            <div class="card mb-3">
+          <a *ngFor="let match of randomMatches; index as i; let last = last" href="/match/{{match._id}}" class="col-6">
+            <div class="card mb-3" style="cursor: pointer">
               <div class="card-header">
                 <h5 class="card-title text-left mb-0 d-flex">
                   <div class="mr-2" style="height: 1em; width: 1em; background-color: yellow; border: solid black 1px; border-radius: 100%"></div>
@@ -27,15 +33,16 @@
                 </h5>
               </div>
               <div class="card-body">
-                <img src="...">
+                <div id="mini-board-{{i}}" style="width: 80% ; margin: auto; background-color: #dddddd">
+
+                </div>
               </div>
               <div class="card-footer">
-                <small class="text-muted">Last updated 3 mins ago</small>
+                <small class="text-muted"> Started on: {{match.matchStart | date:'M/d/yy, HH:mm'}}</small>
               </div>
             </div>
-
-          </div>
-
+            {{ngForCallback(last)}}
+          </a>
         </div>
 
       </div>
@@ -59,7 +66,7 @@
 </div>
 
 
-<div class="row justify-content-center">
+<div class="row justify-content-center" hidden>
   <button class="btn btn-lg btn-primary m-1"> Start new game </button>
   <button class="btn btn-lg btn-primary m-1"> test button </button>
 </div>

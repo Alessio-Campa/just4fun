@@ -1,3 +1,37 @@
 .leaderboard-position{
   background-color: rgba(255, 255, 255, 0.75);
 }
+
+a{
+  text-decoration: none;
+  cursor: auto;
+  color: black;
+}
+
+.card{
+  transition: 0.3s;
+}
+
+.card:hover{
+  opacity: 0.75;
+}
+
+.cellDisk {
+  width: 100%;
+  padding-top: 85.71%;
+  background-color: #333333;
+  border-radius: 100%;
+  border: 2px solid #3333ee;
+}
+
+.cell {
+  display: block;
+  width: 100%;
+  height: auto;
+  padding: 2px;
+  background-color: #4444ff;
+}
+
+.board-column{
+  width: 40px;
+}

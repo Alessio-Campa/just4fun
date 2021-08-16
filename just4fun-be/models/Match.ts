@@ -29,7 +29,7 @@ export function isMatch(arg): arg is Match{
     return arg &&
         arg.player0 && typeof(arg.player0) == 'string' &&
         arg.player1 && typeof(arg.player1) == 'string' &&
-        arg.turn && typeof(arg.turn) == 'number' &&
+        arg.turn !== null && typeof(arg.turn) == 'number' &&
         arg.board && Array.isArray(arg.board) &&
         arg.moves && Array.isArray(arg.moves) &&
         arg.matchStart && arg.matchStart instanceof Date &&
@@ -86,7 +86,7 @@ let matchSchema = new mongoose.Schema<Match>({
 
 matchSchema.methods.makeMove = function (player: string, column: number): void {
     if (this.winner.player !== null) throw new Error("Match ended")
-    if ((this.turn == 0 && player != this.player0) || (this.turn == 1 && player != this.player1)) throw new Error("Not your turn"); //Not your turn
+    if ((this.turn == 0 && player != this.player0) || (this.turn == 1 && player != this.player1)) throw new Error("Not your turn");
 
     let row;
     try{

@@ -3,10 +3,14 @@ const COLUMNS: number = 7;
 const colors: string[] = ["#ff4c4c ", "#ffff4c"];
 
 export class Board {
-  constructor(_$board: any) {
+  constructor(_$board: any, board: number[][]) {
     this.$board = $(_$board);
+    console.log(this.$board)
     for(let i = 0; i < COLUMNS; ++i) {
-      this.columns[i] = new Column(this);
+      let column = [];
+      board.forEach(c => column.unshift( c[i] ));
+
+      this.columns[i] = new Column(this, column);
       this.$board.append(this.columns[i].$element);
     }
   }
@@ -26,14 +30,18 @@ export class Board {
 }
 
 export class Column {
-  constructor(private parent: Board) {
+  constructor(private parent: Board, col: number[]) {
     let that = this;
     this.$element = $('<div/>');
     this.$element.css("float", "left");
     this.$cells = [];
     for (let j = 0; j < ROWS; j++) {
-      this.$cells[j] = $("#cellTemplate .cell").clone(true, true)
+      this.$cells[j] = $("#cellTemplate .cell").clone(true, true);
       this.$element.append(this.$cells[j]);
+      if (col[j] !== null){
+        that.$cells[j].find('.cellDisk').css('backgroundColor', colors[col[j]]);
+        that.occupied++;
+      }
     }
 
     this.$element.on('mouseenter', function () {

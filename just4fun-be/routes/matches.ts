@@ -51,9 +51,17 @@ router.post("/random", auth, (req, res, next) => {
     })
 })
 
+router.get("/:id", (req, res, next) =>{
+    match.getModel().findById(req.params.id).then( (data) => {
+        return res.status(200).json(data);
+    }).catch((err)=> {
+        return next({status_code:400, error:true, errormessage:err})
+    })
+})
+
 router.post("/:id", auth, (req, res, next) =>{
     if (req.params.id !== req.user.email)
-        next({statusCode: 403, error: true, errormessage: "Forbidden"});
+        return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
     user.getModel().findOne({email: req.body.player1}).select('_id').lean().then(data => {
         if (!data)
@@ -70,7 +78,7 @@ router.post("/:id", auth, (req, res, next) =>{
 
 router.put("/:idMatch/:id", auth, (req, res, next)=>{
     if (req.params.id !== req.user.email)
-        next({statusCode: 403, error: true, errormessage: "Forbidden"});
+        return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
     match.getModel().findById(req.params.idMatch).then((data) =>{
         let m: Match;
@@ -78,16 +86,16 @@ router.put("/:idMatch/:id", auth, (req, res, next)=>{
             m = data;
 
         // check if user is player 0 or 1
-        if (req.user.username !== m.player0 && req.user.username !== m.player1)
+        if (req.user.email !== m.player0 && req.user.email !== m.player1)
             return next({status_code: 403, error: true, errormessage: "User is not player for this match"})
-        m.makeMove(req.user.username, req.body.column);
+        m.makeMove(req.user.email, req.body.column);
         m.save().catch((err)=>{
             return next({status_code:400, error:true, errormessage:"An error occurred while saving data: " + err})
         })
     }).then(() => {
         return res.status(200).json({error: false, edit:"Added disk in column: " + req.body.column})
     }).catch((err) => {
-        return next({status_code:400, error: true, errormessage: err})
+        return next({status_code:400, error: true, errormessage: err.message})
     })
 })
 

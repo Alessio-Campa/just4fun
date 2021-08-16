@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Board } from "./board";
 import { Router } from "@angular/router";
+import { MatchService } from "../services/match.service";
+import { Match } from "../../../../just4fun-be/models/Match";
 
 @Component({
   selector: 'app-match',
@@ -9,14 +11,17 @@ import { Router } from "@angular/router";
 })
 export class MatchComponent implements OnInit {
 
-  matchID;
+  match: Match;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private ms: MatchService) { }
 
   ngOnInit(): void {
-    new Board('#board');
-    this.matchID = this.router.url.split('/').pop()
-    console.log(this.matchID)
+    let matchID = this.router.url.split('/').pop();
+
+    this.ms.getMatchById(matchID).subscribe( data => {
+      this.match = data;
+      new Board('#board', this.match.board);
+    });
   }
 
 }

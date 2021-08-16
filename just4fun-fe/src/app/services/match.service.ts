@@ -4,6 +4,7 @@ import {UserService} from "./user.service";
 import {environment} from "../../environments/environment";
 import {Match} from "../../../../just4fun-be/models/Match";
 import { map } from "rxjs/operators";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,10 @@ export class MatchService {
       }
     };
     return this.http.get<Match[]>(environment.serverUrl + "/match", options)
+  }
+
+  getMatchById(id: string): Observable<Match>{
+    return this.http.get<Match>(environment.serverUrl + '/match/' + id)
   }
 
 
