@@ -34,6 +34,7 @@ export class Column {
     let that = this;
     this.$element = $('<div/>');
     this.$element.css("float", "left");
+    this.$element.css('width', '14.28%')
     this.$cells = [];
     for (let j = 0; j < ROWS; j++) {
       this.$cells[j] = $("#cellTemplate .cell").clone(true, true);
