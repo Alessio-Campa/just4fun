@@ -6,6 +6,8 @@ import * as user from "../models/User";
 import {isMatch, Match} from "../models/Match";
 import {isMatchMaking, Matchmaking} from "../models/Matchmaking";
 import {getIoServer} from "../bin/socket";
+import jwt_decode from "jwt-decode";
+import {User} from "../models/User";
 
 let router = express.Router();
 
@@ -55,18 +57,20 @@ router.post("/random", auth, (req, res, next) => {
 router.get("/:id", (req, res, next) =>{
     match.getModel().findById(req.params.id).then( (data) => {
         let ios = getIoServer();
+        let u: User = req.headers.authorization ? jwt_decode(req.headers.authorization.split(' ')[1]) : null;
         let m: Match;
         if (isMatch(data))
             m = data;
-        if (req.user.email === m.player0 || req.user.email === m.player1) {
-            ios.to(req.user.email).emit('readyToPlay', m);
-        }
-        else {
-            ios.to(req.user.email).emit('readyToWatch', m);
+        console.log(u);
+        if (u) {
+            if (u.email === m.player0 || u.email === m.player1)
+                ios.to(req.user.email).emit('readyToPlay', m);
+            else
+                ios.to(req.user.email).emit('readyToWatch', m);
         }
         return res.status(200).json(data);
     }).catch((err)=> {
-        return next({status_code:400, error:true, errormessage:err})
+        return next({status_code:400, error:true, errormessage:err.message})
     })
 })
 
