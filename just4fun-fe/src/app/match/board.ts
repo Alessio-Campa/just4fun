@@ -3,14 +3,14 @@ const COLUMNS: number = 7;
 const colors: string[] = ["#ff4c4c ", "#ffff4c"];
 
 export class Board {
-  constructor(_$board: any, board: number[][]) {
+  constructor(_$board: any, board: number[][], myTest) {
     this.$board = $(_$board);
     console.log(this.$board)
     for(let i = 0; i < COLUMNS; ++i) {
       let column = [];
       board.forEach(c => column.unshift( c[i] ));
 
-      this.columns[i] = new Column(this, column);
+      this.columns[i] = new Column(this, column, myTest, i);
       this.$board.append(this.columns[i].$element);
     }
   }
@@ -30,7 +30,7 @@ export class Board {
 }
 
 export class Column {
-  constructor(private parent: Board, col: number[]) {
+  constructor(private parent: Board, col: number[], myTest, index) {
     let that = this;
     this.$element = $('<div/>');
     this.$element.css("float", "left");
@@ -59,6 +59,7 @@ export class Column {
 
     this.$element.on('click', function () {
       if(that.occupied < ROWS) {
+        myTest(index); //TODO: da testare dopo aver fixato l'angular guardone
         let currentOccupied = that.occupied;
         let currentColor = colors[parent.turn];
         that.occupied++;

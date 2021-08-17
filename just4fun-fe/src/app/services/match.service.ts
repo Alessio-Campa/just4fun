@@ -31,5 +31,12 @@ export class MatchService {
     return this.http.get<Match>(environment.serverUrl + '/match/' + id)
   }
 
+  placeDisk(matchID, playerID, column):Observable<any> {
+    console.log('doing a move');
+    let headers = {
+      'Authorization': 'Bearer ' + this.userService.token,
+      'Content-Type': 'application/json'}
+    return this.http.put(environment.serverUrl + '/' + matchID + '/' + playerID,{column: column}, {headers} );
+  }
 
 }

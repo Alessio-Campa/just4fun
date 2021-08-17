@@ -5,6 +5,7 @@ import * as matchmaking from "../models/Matchmaking";
 import * as user from "../models/User";
 import {isMatch, Match} from "../models/Match";
 import {isMatchMaking, Matchmaking} from "../models/Matchmaking";
+import {getIoServer} from "../bin/socket";
 
 let router = express.Router();
 
@@ -53,6 +54,16 @@ router.post("/random", auth, (req, res, next) => {
 
 router.get("/:id", (req, res, next) =>{
     match.getModel().findById(req.params.id).then( (data) => {
+        let ios = getIoServer();
+        let m: Match;
+        if (isMatch(data))
+            m = data;
+        if (req.user.email === m.player0 || req.user.email === m.player1) {
+            ios.to(req.user.email).emit('readyToPlay', m);
+        }
+        else {
+            ios.to(req.user.email).emit('readyToWatch', m);
+        }
         return res.status(200).json(data);
     }).catch((err)=> {
         return next({status_code:400, error:true, errormessage:err})
@@ -68,12 +79,8 @@ router.post("/:id", auth, (req, res, next) =>{
             return next({status_code: 400, error: true, errormessage: "Opponent doesn't exist"})
     })
 
-    let m: Match = match.newMatch(req.user.email, req.body.player1)
-    m.save().then((data)=>{
-        return res.status(200).json({objectID:data._id})
-    }).catch((err)=>{
-        return next({status_code: 400, error: true, errormessage: err})
-    })
+    let m: Match = match.newMatch(req.user.email, req.body.player1, next)
+    return res.status(200).json({objectID:m._id});
 })
 
 router.put("/:idMatch/:id", auth, (req, res, next)=>{

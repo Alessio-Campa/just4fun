@@ -1,5 +1,6 @@
 import * as mongoose from 'mongoose'
 import {stringify} from "querystring";
+import {getIoServer} from "../bin/socket";
 
 const ROWS: number = 6;
 const COLUMNS: number = 7;
@@ -102,7 +103,15 @@ matchSchema.methods.makeMove = function (player: string, column: number): void {
         this.winner.positions = winner.cells;
         this.markModified("winner")
     }
-
+    let ios = getIoServer();
+    let message = {
+        subject: "newMove",
+        matchID: this.id,
+        column: column, //in teoria non serve
+        player: player //in teoria non serve
+    }
+    ios.to(this.id + 'watchers').emit(message);
+    ios.to(this.id + 'players').emit(message);
     this.turn = (this.turn + 1) % 2 //switch turn
 }
 
@@ -173,8 +182,12 @@ export function getModel(): mongoose.Model< mongoose.Document > {
     return matchModel
 }
 
-export function newMatch (player0: string, player1: string): Match{
-    return new matchModel({"player0": player0, "player1": player1});
+export function newMatch (player0: string, player1: string, next): Match{
+    let m: Match = new matchModel({"player0": player0, "player1": player1});
+    m.save().catch((err)=>{
+        return next({status_code: 400, error: true, errormessage: err})
+    });
+    return m;
 }
 
 // utility classes

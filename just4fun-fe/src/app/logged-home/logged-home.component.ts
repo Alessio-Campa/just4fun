@@ -43,6 +43,9 @@ export class LoggedHomeComponent implements OnInit {
         this.matchFound = true;
         this.userService.get_user_by_mail(message.player0).subscribe(data => this.player0 = data.username);
         this.userService.get_user_by_mail(message.player1).subscribe(data => this.player1 = data.username);
+        setTimeout(()=>{
+          this.router.navigate(['match/' + message.matchID]);
+        }, 1000);
       }
     });
     console.log("127.0.0.0 sweet logged 127.0.0.0")

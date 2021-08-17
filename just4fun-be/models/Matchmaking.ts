@@ -3,6 +3,7 @@ import * as user from "./User"
 import { match } from "assert";
 import { getIoServer } from '../bin/socket'
 import {stringify} from "querystring";
+import {Match, newMatch} from "./Match";
 let AsyncLock = require('async-lock');
 let lock = new AsyncLock();
 
@@ -57,10 +58,12 @@ matchMakingSchema.methods.searchMatch = function (): void {
 		thisPlayer.remove();
 		opponentPlayer.remove();
 		clearInterval(interval);
+		let match:Match = newMatch(thisPlayer.playerID, opponentPlayer.playerID, ()=>{});
 		let message = {
 			subject: "matchMakingFound",
-			player0: thisPlayer.playerID,
-			player1: opponentPlayer.playerID
+			matchID: match._id,
+			player0: match.player0,
+			player1: match.player1
 		}
 		ios.to(thisPlayer.playerID).emit("broadcast", message)
 		ios.to(opponentPlayer.playerID).emit("bradcast", message)
