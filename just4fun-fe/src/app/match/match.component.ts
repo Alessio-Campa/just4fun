@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Board } from "./board";
+import { PlayableBoard } from "../../assets/js/board";
 import { Router } from "@angular/router";
 import {UserService} from "../services/user.service";
 import {SocketioService} from "../services/socketio.service";
@@ -13,16 +13,10 @@ import { Match, MatchService } from "../services/match.service";
 export class MatchComponent implements OnInit {
 
   match: Match;
+  board;
 
   constructor(private router: Router, private ms: MatchService, private userService: UserService,
               private ios: SocketioService) { }
-
-  makeAMove(column): void {
-    this.ms.placeDisk(this.match._id, this.userService.email, column).subscribe((data)=>{
-      console.log(data);
-      console.log("disk inserted");
-    });
-  }
 
   ngOnInit(): void {
     let matchID = this.router.url.split('/').pop();
@@ -34,11 +28,23 @@ export class MatchComponent implements OnInit {
     });
     this.ms.getMatchById(matchID).subscribe( data => {
       this.match = data;
-      new Board('#board', this.match.board, (c)=>{
-        this.makeAMove(c);
+      this.board = new PlayableBoard('#board', this.match.board,this.match.turn, (c)=>{
+        this.makeMove(c);
       });
 
     });
+  }
+
+  makeMove(column): void {
+    this.ms.placeDisk(this.match._id, this.userService.email, column).subscribe(
+      (data)=>{
+        this.board.changeTurn()
+        console.log(data);
+        console.log("disk inserted");
+      },
+        err => {
+        console.log(err);
+      });
   }
 
 }

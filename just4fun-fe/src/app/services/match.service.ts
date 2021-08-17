@@ -50,7 +50,7 @@ export class MatchService {
     let headers = {
       'Authorization': 'Bearer ' + this.userService.token,
       'Content-Type': 'application/json'}
-    return this.http.put(environment.serverUrl + '/' + matchID + '/' + playerID,{column: column}, {headers} );
+    return this.http.put(environment.serverUrl + '/match/' + matchID + '/' + playerID,{column: column}, {headers} );
   }
 
 }

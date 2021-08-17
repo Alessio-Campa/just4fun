@@ -3,7 +3,7 @@ import { io } from 'socket.io-client';
 import { environment } from "../../environments/environment";
 import { UserService } from "../services/user.service";
 import { Match, MatchService } from "../services/match.service";
-import { Board } from "./boardPreview";
+import { Board } from "../../assets/js/board";
 
 @Component({
   selector: 'app-home',
