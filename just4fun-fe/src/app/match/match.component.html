@@ -3,7 +3,10 @@
     <div class="cellDisk"></div>
   </div>
 </div>
-
+<div>
+  <h1 *ngIf="yourTurn">It's your turn </h1>
+  <h1 *ngIf="!yourTurn">It's not your turn </h1>
+</div>
 <div class="container align-content-center">
   <div class="row mt-4">
     <div class="col-md-8 mb-4">

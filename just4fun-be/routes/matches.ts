@@ -10,6 +10,7 @@ import jwt_decode from "jwt-decode";
 import {User} from "../models/User";
 
 let router = express.Router();
+let ios = getIoServer();
 
 router.get("/", (req, res, next) =>{
     let limit = parseInt( <string>(req.query.limit || "0") ) || 0;
@@ -56,7 +57,6 @@ router.post("/random", auth, (req, res, next) => {
 
 router.get("/:id", (req, res, next) =>{
     match.getModel().findById(req.params.id).then( (data) => {
-        let ios = getIoServer();
         let u: User = req.headers.authorization ? jwt_decode(req.headers.authorization.split(' ')[1]) : null;
         let m: Match;
 

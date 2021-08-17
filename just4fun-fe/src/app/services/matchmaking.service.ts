@@ -13,7 +13,7 @@ export class MatchmakingService {
   constructor(private http: HttpClient, private userService: UserService, private ios: SocketioService) { }
   token: string;
 
-  match(): Observable<any>{ //to localhost:3000/match/random
+  match(): Observable<any>{
     this.token = this.userService.token;
     console.log('searching for a match');
     let headers = {

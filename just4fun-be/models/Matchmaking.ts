@@ -64,9 +64,9 @@ matchMakingSchema.methods.searchMatch = function (): void {
 			matchID: match._id,
 			player0: match.player0,
 			player1: match.player1
-		}
-		ios.to(thisPlayer.playerID).emit("broadcast", message)
-		ios.to(opponentPlayer.playerID).emit("bradcast", message)
+		};
+		ios.to(thisPlayer.playerID).emit("broadcast", message);
+		ios.to(opponentPlayer.playerID).emit("broadcast", message);
 		console.log((thisPlayer.playerID + " " + opponentPlayer.playerID).bgWhite.black);
 	}
 

@@ -52,5 +52,4 @@ export class MatchService {
       'Content-Type': 'application/json'}
     return this.http.put(environment.serverUrl + '/match/' + matchID + '/' + playerID,{column: column}, {headers} );
   }
-
 }

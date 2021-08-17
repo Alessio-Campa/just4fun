@@ -29,7 +29,7 @@ function startSocketIoServer(server: Server): io.Server {
                     di messaggi che non potrebbero leggere.
              */
             socket.join(matchID + 'players');
-            console.log((socket.id + " started watching at the match: " + matchID).yellow)
+            console.log((socket.id + " started playing at the match: " + matchID).yellow)
         });
     });
 

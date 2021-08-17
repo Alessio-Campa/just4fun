@@ -107,11 +107,11 @@ matchSchema.methods.makeMove = function (player: string, column: number): void {
     let message = {
         subject: "newMove",
         matchID: this.id,
-        column: column, //in teoria non serve
+        column: column,
         player: player //in teoria non serve
     }
-    ios.to(this.id + 'watchers').emit(message);
-    ios.to(this.id + 'players').emit(message);
+    ios.to(this.id + 'watchers').emit("broadcast", message);
+    ios.to(this.id + 'players').emit("broadcast", message);
     this.turn = (this.turn + 1) % 2 //switch turn
 }
 

@@ -14,20 +14,27 @@ export class MatchComponent implements OnInit {
 
   match: Match;
   board;
+  yourTurn;
 
   constructor(private router: Router, private ms: MatchService, private userService: UserService,
               private ios: SocketioService) { }
 
   ngOnInit(): void {
     let matchID = this.router.url.split('/').pop();
-    this.ios.connect().subscribe((message)=>{
-      let subject = message.subject;
-      if (subject === 'newMove') {
-        //TODO: replicare la mossa.
-      }
-    });
+
     this.ms.getMatchById(matchID).subscribe( data => {
       this.match = data;
+      this.yourTurn = this.match.player0 === this.userService.email && this.match.turn === 0;
+
+      this.ios.connect(matchID, (this.userService.email === this.match.player0 || this.userService.email === this.match.player1)).subscribe((message)=>{
+        let subject = message.subject;
+        if (subject === 'newMove') {
+          console.log("new move from player: " + message.player);
+          this.yourTurn ? this.yourTurn = false : this.yourTurn = true;
+          //TODO: insert disk as opponent.
+        }
+      });
+
       this.board = new PlayableBoard('#board', this.match.board,this.match.turn, (c)=>{
         this.makeMove(c);
       });
