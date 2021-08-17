@@ -4,7 +4,6 @@ import { environment } from "../../environments/environment";
 import {UserService} from "../services/user.service";
 import {Router} from "@angular/router";
 import {MatchmakingService} from "../services/matchmaking.service";
-import * as http from "http";
 import {SocketioService} from "../services/socketio.service";
 
 @Component({
