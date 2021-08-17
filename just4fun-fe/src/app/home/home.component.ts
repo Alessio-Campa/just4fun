@@ -2,9 +2,8 @@ import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 import { io } from 'socket.io-client';
 import { environment } from "../../environments/environment";
 import { UserService } from "../services/user.service";
-import { MatchService } from "../services/match.service";
+import { Match, MatchService } from "../services/match.service";
 import { Board } from "./boardPreview";
-import { Match } from "../../../../just4fun-be/models/Match";
 
 @Component({
   selector: 'app-home',

@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Board } from "./board";
 import { Router } from "@angular/router";
-import { MatchService } from "../services/match.service";
-import { Match } from "../../../../just4fun-be/models/Match";
 import {UserService} from "../services/user.service";
 import {SocketioService} from "../services/socketio.service";
+import { Match, MatchService } from "../services/match.service";
 
 @Component({
   selector: 'app-match',

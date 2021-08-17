@@ -4,7 +4,6 @@ import {tap} from "rxjs/operators";
 import {Observable} from "rxjs";
 import jwtDecode from 'jwt-decode';
 import {environment} from "../../environments/environment";
-import { User } from '../../../../just4fun-be/models/User';
 import {JwtHelperService} from '@auth0/angular-jwt';
 
 export interface TokenData {
@@ -12,6 +11,19 @@ export interface TokenData {
   username: string;
   email: string;
   roles: string[];
+}
+
+export interface User {
+  _id: string,
+  username: string,
+  email: string,
+  points: number,
+  following: string[],
+  friends: string[],
+  friendRequests: string[],
+  roles: string[],
+  salt: string,
+  digest: string
 }
 
 @Injectable({
@@ -117,7 +129,7 @@ export class UserService {
     return this.http.get<User>(environment.serverUrl + '/user/' + mail);
   }
 
-  get leaderboard(): Observable<any>{
+  get leaderboard(): Observable<User[]>{
     return this.http.get<User[]>(environment.serverUrl + '/user/leaderboard');
   }
 
