@@ -59,14 +59,14 @@ router.get("/:id", (req, res, next) =>{
         let ios = getIoServer();
         let u: User = req.headers.authorization ? jwt_decode(req.headers.authorization.split(' ')[1]) : null;
         let m: Match;
+
         if (isMatch(data))
             m = data;
-        console.log(u);
         if (u) {
             if (u.email === m.player0 || u.email === m.player1)
-                ios.to(req.user.email).emit('readyToPlay', m);
+                ios.to(u.email).emit('readyToPlay', m);
             else
-                ios.to(req.user.email).emit('readyToWatch', m);
+                ios.to(u.email).emit('readyToWatch', m);
         }
         return res.status(200).json(data);
     }).catch((err)=> {
