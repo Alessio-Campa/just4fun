@@ -20,6 +20,11 @@ export interface Matchmaking extends mongoose.Document{
 	searchMatch: ()=> void
 }
 
+export function cleanMatchmaking()
+{
+	getModel().deleteMany({}); //Delete all pending matchmaking
+}
+
 export function isMatchMaking(arg): arg is Matchmaking{
 	return arg &&
 		arg.playerID && typeof(arg.playerID) === 'string' &&
@@ -79,7 +84,7 @@ matchMakingSchema.methods.searchMatch = function (): void {
 	user.getModel().findOne({email: this.playerID}, {points: 1}).then((thisPlayer)=>{
 		interval = setInterval(()=>{
 			lock.acquire('matchmaking', function (lockRelease) {
-				matchmakingModel.findOne({ _id: thisMatchmaking._id }).select("_id").lean().then(isNotMatched => {
+				getModel().findOne({ _id: thisMatchmaking._id }).select("_id").lean().then(isNotMatched => {
 					if (!isNotMatched) {
 						console.log((thisMatchmaking.playerID + " Already matched").bgWhite.black);
 						clearInterval(interval);
@@ -87,7 +92,7 @@ matchMakingSchema.methods.searchMatch = function (): void {
 					}
 					else {
 						console.log(`${thisMatchmaking.playerID} ${thisMatchmaking.min} ${thisMatchmaking.max}; searching...`.cyan)
-						matchmakingModel.findOne({
+						getModel().findOne({
 							playerID: {$ne: thisMatchmaking.playerID},
 							min: {$lte: thisPlayer.points},
 							max: {$gte: thisPlayer.points},
@@ -100,7 +105,7 @@ matchMakingSchema.methods.searchMatch = function (): void {
 								lockRelease();
 							} else {
 								if (Date.now() - startSearch > INTERSECTION_TIME_LIMIT) {//Too much wait, take nearest
-									matchmakingModel.findOne({
+									getModel().findOne({
 										playerID: {$ne: thisMatchmaking.playerID},
 									}).sort([
 										[{$abs: {$subtract: [thisPlayer.points, "$min"]}}, 1]
@@ -134,7 +139,6 @@ export function getSchema() {
 }
 
 let matchmakingModel;
-
 export function getModel(): mongoose.Model <Matchmaking> {
 	if (!matchmakingModel)
 		matchmakingModel = mongoose.model('Matchmaking', getSchema());

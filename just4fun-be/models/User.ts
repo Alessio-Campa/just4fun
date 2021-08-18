@@ -11,8 +11,10 @@ export interface User extends mongoose.Document{
     roles: string[],
     salt: string,
     digest: string,
+    isPasswordTemporary: boolean,
+    avatar: string,
 
-    setPassword: (pwd:string)=>void,
+    setPassword: (pwd:string, temporary:boolean = false)=>void,
     validatePassword: (pwd:string)=>boolean,
     hasAdminRole: ()=> boolean,
     setAdmin: (value:boolean)=>void,
@@ -70,11 +72,20 @@ let userSchema = new mongoose.Schema<User>({
     digest: {
         type: mongoose.SchemaTypes.String,
         required: false
+    },
+    isPasswordTemporary: {
+        type: mongoose.SchemaTypes.Boolean,
+        required: false
+    },
+    avatar: {
+        type: String,
+        required: false
     }
 
 })
 
-userSchema.methods.setPassword = function( pwd:string ){
+userSchema.methods.setPassword = function(pwd:string, temporary:boolean = false) {
+    this.isPasswordTemporary = temporary;
     this.salt = crypto.randomBytes(16).toString('hex');
 
     let hmac = crypto.createHmac('sha512', this.salt);
@@ -82,7 +93,7 @@ userSchema.methods.setPassword = function( pwd:string ){
     this.digest = hmac.digest('hex');
 }
 
-userSchema.methods.validatePassword = function(pwd: string): boolean{
+userSchema.methods.validatePassword = function(pwd: string): boolean {
     let hmac = crypto.createHmac('sha512', this.salt);
     hmac.update( pwd );
     let digest = hmac.digest('hex');

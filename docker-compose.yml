@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  be:
+    restart: always
+    network_mode: host
+    build:
+      context: ./just4fun-be
+      network: host
+    ports:
+      - "3000:3000"
+
+  fe:
+    restart: always
+    network_mode: host
+    build:
+      context: ./just4fun-fe
+      network: host
+    ports:
+      - "4200:4200"

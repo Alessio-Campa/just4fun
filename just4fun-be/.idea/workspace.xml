@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="50b6c8c6-a28e-4a48-8e0d-af753471fd40" name="Default Changelist" comment="fixing socket">
+    <list default="true" id="50b6c8c6-a28e-4a48-8e0d-af753471fd40" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/just4fun-be.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/just4fun-be.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/socket.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bin/socket.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Match.ts" beforeDir="false" afterPath="$PROJECT_DIR$/models/Match.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/www.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bin/www.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/Matchmaking.ts" beforeDir="false" afterPath="$PROJECT_DIR$/models/Matchmaking.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/User.ts" beforeDir="false" afterPath="$PROJECT_DIR$/models/User.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/routes/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/matches.ts" beforeDir="false" afterPath="$PROJECT_DIR$/routes/matches.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/match/match.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/match/match.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/match/match.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/match/match.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/services/match.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/services/match.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/services/matchmaking.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/services/matchmaking.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/services/socketio.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/services/socketio.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/users.ts" beforeDir="false" afterPath="$PROJECT_DIR$/routes/users.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/angular.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/environments/environment.prod.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/environments/environment.prod.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,11 +61,10 @@
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="javascript.nodejs.core.library.configured.version" value="14.17.3" />
-    <property name="javascript.nodejs.core.library.typings.version" value="14.17.3" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="javascript.nodejs.core.library.configured.version" value="12.18.2" />
+    <property name="javascript.nodejs.core.library.typings.version" value="12.20.19" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="restartRequiresConfirmation" value="false" />
@@ -127,17 +127,13 @@
       <workItem from="1628430374196" duration="1325000" />
       <workItem from="1628512256826" duration="3144000" />
       <workItem from="1628601639836" duration="1932000" />
-      <workItem from="1628690151299" duration="1698000" />
-      <workItem from="1628759031001" duration="26000" />
-      <workItem from="1628759079319" duration="26000" />
-      <workItem from="1628837078997" duration="7182000" />
-      <workItem from="1628865598094" duration="4858000" />
-      <workItem from="1628928115841" duration="14000" />
-      <workItem from="1628937626154" duration="14183000" />
-      <workItem from="1628959609502" duration="1204000" />
-      <workItem from="1629015818039" duration="543000" />
-      <workItem from="1629118255840" duration="11244000" />
-      <workItem from="1629180368721" duration="19842000" />
+      <workItem from="1628690151299" duration="2306000" />
+      <workItem from="1628776218628" duration="3584000" />
+      <workItem from="1628859473598" duration="2620000" />
+      <workItem from="1628929845471" duration="1201000" />
+      <workItem from="1629122187050" duration="1648000" />
+      <workItem from="1629125052570" duration="2757000" />
+      <workItem from="1629188689431" duration="9715000" />
     </task>
     <servers />
   </component>
@@ -159,8 +155,15 @@
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixing socket" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixing socket" />
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/models/Matchmaking.ts</url>
+          <line>88</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
