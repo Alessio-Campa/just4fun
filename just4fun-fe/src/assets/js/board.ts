@@ -18,6 +18,10 @@ export class Board {
     this.$board.append(this.columns[i].$element);
   }
 
+  public insertDisk(column: number, player: number) { //TODO: da testare, non ancora usato
+    this.columns[column].insertDisk(colors[player]);
+  }
+
   public $board: JQuery;
   protected _turn: number = 0;
   protected columns: Column[] = [];
@@ -47,6 +51,11 @@ export class PlayableBoard extends Board{
     this._turn = (this.turn + 1)%2;
   }
 
+  public insertDisk(column: number, player: number) {
+    this.columns[column].insertDisk(colors[player]);
+    this.changeTurn();
+  }
+
   _playerTurn;
 
 }
@@ -63,14 +72,16 @@ export class Column {
       this.$cells[j] = $("#cellTemplate .cell").clone(true, true)
       this.$element.append(this.$cells[j]);
 
-      if (col[j] !== null)
+      if (col[j] !== null){
         that.$cells[j].find('.cellDisk').css('backgroundColor', colors[col[j]]);
+        that.occupied++;
+      }
 
     }
   }
 
-  public insertDisk(column, color, occupied){
-    for (let j = 0; j < ROWS - occupied; j++) {
+  public insertDisk(color){
+    for (let j = 0; j < ROWS - this.occupied; j++) {
       setTimeout(() => {
         if (j > 0)
           this.$cells[j - 1].find('.cellDisk').css('backgroundColor', '');
@@ -78,10 +89,12 @@ export class Column {
         this.$cells[j].find('.cellDisk').css('backgroundColor', color);
       }, j * 50)
     }
+    this.occupied++;
   }
 
   $element: JQuery;
   $cells: JQuery[];
+  occupied = 0;
 }
 
 
@@ -115,17 +128,25 @@ export class PlayableColumn extends Column{
     this.$element.on('click', function () {
       if(that.occupied < ROWS && parent.turn == parent.playerTurn) {
         myTest(index); //TODO: da testare dopo aver fixato l'angular guardone
-        that.insertDisk(index, colors[parent.turn], that.occupied);
-
+        that.insertDisk(colors[parent.turn]);
         if (that.isMouseInside) {
           that.$element.trigger('mouseenter');
         }
+        that.$element.trigger('mouseleave');
       }
     });
   }
 
-  public insertDisk(column, color, occupied){
-    super.insertDisk(column, color, occupied);
+  public insertDisk(color){
+    for (let j = 0; j < ROWS - this.occupied; j++) {
+      setTimeout(() => {
+        if (j > 0)
+          this.$cells[j - 1].find('.cellDisk').css('backgroundColor', '');
+
+        this.$cells[j].find('.cellDisk').css('backgroundColor', color);
+      }, j * 50)
+    }
+    this.occupied++;
   }
 
   $element
