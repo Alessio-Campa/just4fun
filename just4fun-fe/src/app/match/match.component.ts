@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PlayableBoard } from "../../assets/js/board";
+import {Board, PlayableBoard} from "../../assets/js/board";
 import { Router } from "@angular/router";
 import {UserService} from "../services/user.service";
 import {SocketioService} from "../services/socketio.service";
@@ -14,7 +14,6 @@ export class MatchComponent implements OnInit {
 
   match: Match;
   board;
-  yourTurn;
 
   constructor(private router: Router, private ms: MatchService, private userService: UserService,
               private ios: SocketioService) { }
@@ -24,20 +23,29 @@ export class MatchComponent implements OnInit {
 
     this.ms.getMatchById(matchID).subscribe( data => {
       this.match = data;
-      this.yourTurn = this.match.player0 === this.userService.email && this.match.turn === 0;
+      let isPlayer = this.userService.isLoggedIn && (this.userService.email === this.match.player0 || this.userService.email === this.match.player1)
+      let playerTurn = isPlayer && this.userService.email === this.match.player0 ? 0 : isPlayer && this.userService.email === this.match.player1 ? 1 : null
 
-      this.ios.connect(matchID, (this.userService.email === this.match.player0 || this.userService.email === this.match.player1)).subscribe((message)=>{
+      this.userService.get_user_by_mail(this.match.player0).subscribe(data => this.match.player0 = data.username);
+      this.userService.get_user_by_mail(this.match.player1).subscribe(data => this.match.player1 = data.username);
+
+      this.ios.connect(matchID, isPlayer).subscribe((message)=>{
         let subject = message.subject;
         if (subject === 'newMove') {
           console.log("new move from player: " + message.player);
-          this.yourTurn ? this.yourTurn = false : this.yourTurn = true;
           //TODO: insert disk as opponent.
         }
       });
 
-      this.board = new PlayableBoard('#board', this.match.board,this.match.turn, (c)=>{
-        this.makeMove(c);
-      });
+
+      if (isPlayer){
+        this.board = new PlayableBoard('#board', this.match.board,this.match.turn, playerTurn, (c)=>{
+          this.makeMove(c);
+        });
+      } else {
+        this.board = new Board('#board', this.match.board)
+      }
+
 
     });
   }

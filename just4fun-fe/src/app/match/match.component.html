@@ -3,10 +3,18 @@
     <div class="cellDisk"></div>
   </div>
 </div>
-<div>
-  <h1 *ngIf="yourTurn">It's your turn </h1>
-  <h1 *ngIf="!yourTurn">It's not your turn </h1>
+
+<div class="container">
+  <h1 *ngIf="match && match.turn === 0" class="h1 mb-0 d-flex justify-content-center">
+    <div class="mr-2" style="height: 1em; width: 1em; background-color: red; border: solid black 1px; border-radius: 100%"></div>
+    <b>{{match.player0}}</b>'s turn
+  </h1>
+  <h1 *ngIf="match && match.turn === 1" class="h1 mb-0 d-flex justify-content-center">
+    <div class="mr-2" style="height: 1em; width: 1em; background-color: yellow; border: solid black 1px; border-radius: 100%"></div>
+    <b>{{match.player1}}</b>'s turn
+  </h1>
 </div>
+
 <div class="container align-content-center">
   <div class="row mt-4">
     <div class="col-md-8 mb-4">
