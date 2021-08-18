@@ -8,6 +8,7 @@ import {UserLogoutComponent} from "./user-logout/user-logout.component";
 import {UserRegisterComponent} from "./user-register/user-register.component";
 import {MatchComponent} from "./match/match.component";
 import {LoggedHomeComponent} from "./logged-home/logged-home.component";
+import {ProfileComponent} from "./profile/profile.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -20,6 +21,7 @@ const routes: Routes = [
   {path: 'match', children: [
       {path: ':id', component: MatchComponent}
     ]},
+  {path: 'profile', component: ProfileComponent}
 ];
 
 @NgModule({

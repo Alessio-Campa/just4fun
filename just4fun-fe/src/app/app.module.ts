@@ -14,6 +14,7 @@ import { UserLogoutComponent } from './user-logout/user-logout.component';
 import { MatchComponent } from './match/match.component';
 import { LoggedHomeComponent } from './logged-home/logged-home.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     UserRegisterComponent,
     UserLogoutComponent,
     MatchComponent,
-    LoggedHomeComponent
+    LoggedHomeComponent,
+    ProfileComponent
   ],
   imports: [
     HttpClientModule,
