@@ -68,7 +68,7 @@ function getBind(address: string | AddressInfo): string
 {
     return typeof address === 'string'
         ? 'pipe ' + address
-        : 'port ' + address.port;
+        : 'port ' + (address ? address.port : '');
 }
 
 /**

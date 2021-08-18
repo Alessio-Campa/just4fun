@@ -22,8 +22,7 @@ export interface User {
   friends: string[],
   friendRequests: string[],
   roles: string[],
-  salt: string,
-  digest: string
+  avatar: string
 }
 
 @Injectable({
@@ -79,11 +78,12 @@ export class UserService {
     localStorage.removeItem('just4fun_token');
   }
 
-  register(email: string, name: string, password: string): Observable<any>{
+  register(email: string, name: string, password: string, avatar: string): Observable<any>{
     let user = {
       name: name,
       email: email,
-      password: password
+      password: password,
+      avatar: avatar
     }
 
     let options = {

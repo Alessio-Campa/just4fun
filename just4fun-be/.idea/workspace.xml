@@ -2,17 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="50b6c8c6-a28e-4a48-8e0d-af753471fd40" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/just4fun-be.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/just4fun-be.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/app.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bin/app.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/www.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bin/www.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Matchmaking.ts" beforeDir="false" afterPath="$PROJECT_DIR$/models/Matchmaking.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/User.ts" beforeDir="false" afterPath="$PROJECT_DIR$/models/User.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/routes/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/matches.ts" beforeDir="false" afterPath="$PROJECT_DIR$/routes/matches.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/users.ts" beforeDir="false" afterPath="$PROJECT_DIR$/routes/users.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/angular.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/environments/environment.prod.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/environments/environment.prod.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/services/user.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/services/user.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/user-login/user-login.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/user-login/user-login.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/user-logout/user-logout.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/user-logout/user-logout.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/user-register/user-register.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/user-register/user-register.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/user-register/user-register.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/user-register/user-register.component.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,16 +41,16 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/routes/users.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/.env" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/models/Chat.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/routes/chats.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/bin/authentication.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/bin/app.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/bin/www.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/models/User.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/routes/matches.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/bin/socket.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/bin/www.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/bin/app.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/routes/matches.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/models/Chat.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/models/User.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/routes/users.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/routes/chats.ts" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1vGki78QVY5bgOViP5ghX5tCdjN" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -68,7 +71,7 @@
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="ts.external.directory.path" value="C:\Users\Mario\Documents\GitHub\just4fun\just4fun-be\node_modules\typescript\lib" />
+    <property name="ts.external.directory.path" value="C:\Users\Admin\WebStormProjects\just4fun\just4fun-be\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -133,7 +136,7 @@
       <workItem from="1628929845471" duration="1201000" />
       <workItem from="1629122187050" duration="1648000" />
       <workItem from="1629125052570" duration="2757000" />
-      <workItem from="1629188689431" duration="9715000" />
+      <workItem from="1629188689431" duration="15751000" />
     </task>
     <servers />
   </component>

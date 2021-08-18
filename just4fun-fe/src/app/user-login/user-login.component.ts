@@ -26,7 +26,10 @@ export class UserLoginComponent implements OnInit {
       this.errorMessage = false;
       this.router.navigate(['loggedHome']);
     }, (err) => {
-      console.log('Login error: ' + JSON.stringify(err.error));
+      if(err.status == 422)
+      {//Inserted a temporary password
+        this.router.navigate(['register', {mod_email: this.email}]);
+      }
       this.password = '';
       this.errorMessage = true;
     });

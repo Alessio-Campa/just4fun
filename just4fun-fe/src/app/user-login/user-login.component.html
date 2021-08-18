@@ -2,13 +2,13 @@
   <div class="text-center">
     <img src="/assets/img/logo.png" alt="logo just4fun" style="max-height: 50px; max-width: 95%">
   </div>
-  <h4 class="mb-3 mt-3 font-weight-normal" style="text-align: center;">Login</h4>
+  <h4 class="mb-3 mt-3 font-weight-normal text-white" style="text-align: center;">Login</h4>
   <input [(ngModel)]="email" type="email" name="email"  maxlength="200" required="" class="my-form-control form-control" [ngClass]="{'is-invalid' : errorMessage}" placeholder="E-mail">
   <input [(ngModel)]="password" type="password" name="password" required="" class="my-form-control form-control" [ngClass]="{'is-invalid' : errorMessage}" placeholder="Password">
 
   <div class="form-group form-check">
     <input id="remember" [(ngModel)]="remember" type="checkbox" name="remember" required="" class="form-check-input" [ngClass]="{'is-invalid' : errorMessage}">
-    <label class="form-check-label" for="remember">Remember Me</label>
+    <label class="form-check-label text-white" for="remember">Remember Me</label>
   </div>
 
   <p class="text-danger" *ngIf="errorMessage" >Wrong E-mail or Password</p>

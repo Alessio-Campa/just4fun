@@ -13,6 +13,7 @@ import { FormsModule } from "@angular/forms";
 import { UserLogoutComponent } from './user-logout/user-logout.component';
 import { MatchComponent } from './match/match.component';
 import { LoggedHomeComponent } from './logged-home/logged-home.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { LoggedHomeComponent } from './logged-home/logged-home.component';
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    ImageCropperModule
   ],
   providers: [
     {provide: UserService, useClass: UserService}

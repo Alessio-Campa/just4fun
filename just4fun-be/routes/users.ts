@@ -8,7 +8,7 @@ let router = express.Router();
 //TODO restrict to admins else 403
 
 router.get('/', (req, res, next) => {
-    user.getModel().find({}, {digest:0, salt:0}).then( (users)=>{
+    user.getModel().find({}, {digest:0, salt:0, isPasswordTemporary:0, avatar:0}).then( (users)=>{
         return res.status(200).json( users );
     }).catch( (reason)=>{
         return next({statusCode:500, error:true, errormessage:"DB error: "+ reason});
@@ -16,7 +16,7 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/leaderboard', (req, res, next) => {
-    user.getModel().find({}, {digest:0, salt:0}).limit(10).sort({points: -1}).then( (users)=>{
+    user.getModel().find({}, {digest:0, salt:0, isPasswordTemporary:0, avatar:0}).limit(10).sort({points: -1}).then( (users)=>{
         return res.status(200).json( users );
     }).catch( (reason)=>{
         return next({statusCode:500, error:true, errormessage:"DB error: "+ reason});
@@ -24,7 +24,7 @@ router.get('/leaderboard', (req, res, next) => {
 })
 
 router.get('/:email', (req, res, next) => {
-    user.getModel().findOne( {email: req.params.email}, {digest:0, salt:0} ).then( (user)=>{
+    user.getModel().findOne( {email: req.params.email}, {digest:0, isPasswordTemporary:0, salt:0} ).then( (user)=>{
         return res.status(200).json(user);
     }).catch( (reason)=>{
         return next( {statusCode:500, error: true, errormessage:"DB error"+reason} );
@@ -41,22 +41,25 @@ router.post('/', (req, res, next) => {
     if (!req.body.password || req.body.password === ""){
         return next({statusCode:400, error:true, errormessage:"Password field required"});
     }
+    if (!req.body.avatar || req.body.avatar === ""){
+        return next({statusCode:400, error:true, errormessage:"avatar field required"});
+    }
 
     let u: User;
     if(false) //Create moderator
     {
-        u = user.newUser(req.body.email, "");
+        u = user.newUser(req.body.email, "", "");
         u.setPassword(req.body.password, true);
         u.setModerator(true);
     }
     else
     {
-        u = user.newUser(req.body.email, req.body.name);
+        u = user.newUser(req.body.email, req.body.name, req.body.avatar);
         u.setPassword(req.body.password);
     }
 
     u.save().then( (data=>{
-        return next( {statusCode: 400, error:false, errormessage:"", _id:data._id});
+        return next( {statusCode: 201, error:false, errormessage:"", _id:data._id});
     })).catch( (reason)=>{
         if (reason.code === 11000)
             return next( {statusCode: 400, error: true, errormessage: "User already exists"} );

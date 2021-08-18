@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from "../services/user.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {NgxDropzoneChangeEvent} from "ngx-dropzone";
+import {ImageCroppedEvent, LoadedImage} from "ngx-image-cropper";
 
 @Component({
   selector: 'app-user-register',
@@ -9,15 +11,33 @@ import {Router} from "@angular/router";
 })
 export class UserRegisterComponent implements OnInit {
 
+  public isModeratorRegistration = false;
+
   public errorMessage = '';
-  public username = '';
   public email = '';
+  public username = '';
+  public oldPassword = '';
   public password = '';
   public password2 = '';
+  public croppedAvatar = '';
 
-  constructor(public userService: UserService, public router: Router) { }
+  constructor(public userService: UserService, public router: Router, private route: ActivatedRoute) {
+    let mod_email = this.route.snapshot.paramMap.get('mod_email');
+    if(mod_email) {
+      this.isModeratorRegistration = true;
+      this.email = mod_email;
+    }
+  }
 
   ngOnInit(): void {
+  }
+
+  imageChangedEvent: Event;
+  fileChangeEvent(event: Event) {
+    this.imageChangedEvent = event;
+  }
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedAvatar = event.base64;
   }
 
   register() {
@@ -26,32 +46,39 @@ export class UserRegisterComponent implements OnInit {
       this.errorMessage = 'The two password are not equal';
       console.log('Login error: ' + this.errorMessage);
     }
-    else
-    {
-      if(this.password === '')
-      {
+    else {
+      if (this.password === '') {
         this.errorMessage = 'Please insert a password';
         console.log('Login error: ' + this.errorMessage);
       }
-      else
-      {
-        if(this.email === '' || this.username === '')
-        {
+      else {
+        if (this.email === '' || this.username === '') {
           this.errorMessage = 'Please insert an email and a username';
           console.log('Login error: ' + this.errorMessage);
         }
-        else
-        {
-          this.userService.register(this.email, this.username, this.password).subscribe( (d) => {
-            console.log('Registration Done!');
-            this.errorMessage = '';
-            this.router.navigate(['login']);
-          }, (err) => {
-            this.errorMessage = JSON.stringify(err.error.errormessage);
-            console.log('Registration error: ' + this.errorMessage);
-            this.password = '';
-            this.password2 = '';
-          });
+        else {
+          if (!this.croppedAvatar) {
+            this.errorMessage = 'Please insert an avatar';
+            console.log('Login error: ' + this.errorMessage);
+          }
+          else {
+            if(this.isModeratorRegistration)
+            {
+
+            }
+            else {
+              this.userService.register(this.email, this.username, this.password, this.croppedAvatar).subscribe((d) => {
+                console.log('Registration Done!');
+                this.errorMessage = '';
+                this.router.navigate(['login']);
+              }, (err) => {
+                this.errorMessage = JSON.stringify(err.error.errormessage);
+                console.log('Registration error: ' + this.errorMessage);
+                this.password = '';
+                this.password2 = '';
+              });
+            }
+          }
         }
       }
     }

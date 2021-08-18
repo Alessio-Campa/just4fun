@@ -31,10 +31,10 @@ passport.use( new passportHTTP.BasicStrategy(
         console.log("New login attempt from ".yellow + username);
         user.getModel().findOne( {email:username}, (err, user: User)=>{
             if (err) {
-                return done( {statusCode:401, error:true, errormessage:err} );
+                return done({statusCode:401, error:true, errormessage:err} );
             }
             if (!user) {
-                return done(null, false,{statusCode:401, error:true, errormessage:"Invalid user"});
+                return done({statusCode:401, error:true, errormessage:"Invalid user"});
             }
             if (user.validatePassword(password)) {
                 if(!user.isPasswordTemporary)
@@ -43,11 +43,11 @@ passport.use( new passportHTTP.BasicStrategy(
                 }
                 else
                 {
-                    return done(null, false, {statusCode: 422, error: true, errormessage: "Please change your temporary password"})
+                    return done({statusCode: 422, error: true, errormessage: "Please change your temporary password"});
                 }
             }
             else {
-                return done(null, false, {statusCode: 401, error: true, errormessage: "Invalid password"})
+                return done({statusCode: 401, error: true, errormessage: "Invalid password"});
             }
         })
     }

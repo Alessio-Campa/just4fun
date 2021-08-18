@@ -14,7 +14,7 @@ export interface User extends mongoose.Document{
     isPasswordTemporary: boolean,
     avatar: string,
 
-    setPassword: (pwd:string, temporary:boolean = false)=>void,
+    setPassword: (pwd:string, temporary?:boolean)=>void,
     validatePassword: (pwd:string)=>boolean,
     hasAdminRole: ()=> boolean,
     setAdmin: (value:boolean)=>void,
@@ -252,9 +252,9 @@ export function getModel(): mongoose.Model <User> {
     return userModel;
 }
 
-export function newUser (email: string, username: string): User{
+export function newUser (email: string, username: string, avatar: string): User{
     let userModel = getModel();
-    return new userModel({"email": email, "username": username});
+    return new userModel({"email": email, "username": username, "avatar": avatar});
 }
 
 // utilities

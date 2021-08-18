@@ -2,14 +2,31 @@
   <div class="text-center">
     <img src="/assets/img/logo.png" alt="logo just4fun" style="max-height: 50px; max-width: 95%">
   </div>
-  <h4 class="mb-3 mt-3 font-weight-normal" style="text-align: center;">Sign up</h4>
+  <h4 *ngIf="!isModeratorRegistration" class="mb-3 mt-3 font-weight-normal text-white" style="text-align: center;">Sign up</h4>
+  <h4 *ngIf="isModeratorRegistration" class="mb-3 mt-3 font-weight-normal text-white" style="text-align: center;">Complete registration</h4>
 
   <div>
-    <input [(ngModel)]="email" type="email" name="email"  maxlength="200" required="" class="my-form-control form-control" [ngClass]="{'is-invalid' : errorMessage}" placeholder="E-mail">
-    <input [(ngModel)]="username" type="text" name="email"  maxlength="200" required="" class="my-form-control form-control" [ngClass]="{'is-invalid' : errorMessage}" placeholder="Username">
+    <input [(ngModel)]="email" type="email" name="email"  maxlength="200" required="" class="my-form-control form-control" [disabled]="isModeratorRegistration" [ngClass]="{'is-invalid' : errorMessage}" placeholder="E-mail">
+    <input [(ngModel)]="username" type="text" name="username"  maxlength="200" required="" class="my-form-control form-control" [ngClass]="{'is-invalid' : errorMessage}" placeholder="Username">
+
+    <input [(ngModel)]="oldPassword" *ngIf="isModeratorRegistration" type="password" name="oldPassword" required="" class="my-form-control form-control" [ngClass]="{'is-invalid' : errorMessage}" placeholder="Old Password">
+
     <input [(ngModel)]="password" type="password" name="password" required="" class="my-form-control form-control" [ngClass]="{'is-invalid' : errorMessage}" placeholder="Password">
     <input [(ngModel)]="password2" type="password" name="password2" required="" class="my-form-control form-control" [ngClass]="{'is-invalid' : errorMessage}" placeholder="Repeat Password">
   </div>
+
+  <h5 class="mb-0"><label for="avatar" class="text-white mb-0">Select Avatar</label></h5>
+  <input id="avatar" class="text-white" type="file" (change)="fileChangeEvent($event)">
+  <image-cropper
+    class="mb-3"
+    [imageChangedEvent]="imageChangedEvent"
+    [maintainAspectRatio]="true"
+    [aspectRatio]="1 / 1"
+    [resizeToWidth]="500"
+    [resizeToHeight]="500"
+    format="png"
+    (imageCropped)="imageCropped($event)"
+  ></image-cropper>
 
   <p class="text-danger" *ngIf="errorMessage" >{{ errorMessage }}</p>
   <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
