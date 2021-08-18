@@ -3,6 +3,7 @@ require('dotenv').config()
 import { app } from './app'
 import { AddressInfo } from "net";
 import { startSocketIoServer } from './socket'
+import { cleanMatchmaking } from '../models/Matchmaking'
 import http = require('http')
 import colors = require('colors'); colors.enabled = true;
 import * as mongoose from "mongoose";
@@ -19,8 +20,10 @@ mongoose.connect( `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${pro
 .then(() => {
     console.log("Connected to MongoDB".bgGreen.black);
     return match.getModel().countDocuments({}); // We explicitly return a promise here
+}).then(()=> {
+    cleanMatchmaking();
 }).then(()=>{
-    server.listen(port,  () => {
+    server.listen(port, '0.0.0.0',  () => {
         console.log( ("HTTP Server started on port "+port).bgGreen.black)
         startSocketIoServer(server);
         console.log("Socket server started".bgGreen.black)

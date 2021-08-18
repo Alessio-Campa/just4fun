@@ -1,7 +1,7 @@
 {
   "name": "just4fun-be",
   "version": "0.0.1",
-  "description": "",
+  "description": "Connect 4 multiplayer",
   "main": "www.js",
   "scripts": {
     "compile": "tsc",
