@@ -41,6 +41,20 @@ export class MatchService {
     return this.http.get<Match[]>(environment.serverUrl + "/match", options)
   }
 
+  getUserMatches(mail: string, areEnded: boolean) {
+    let options = {
+      headers: new HttpHeaders({
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json',
+      }),
+      params:{
+        ended: areEnded,
+        player: mail
+      }
+    };
+    return this.http.get<Match[]>(environment.serverUrl + "/match", options)
+  }
+
   getMatchById(id: string): Observable<Match>{
     return this.http.get<Match>(environment.serverUrl + '/match/' + id)
   }

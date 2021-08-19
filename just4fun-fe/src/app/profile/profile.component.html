@@ -2,10 +2,14 @@
 
   <div class="col col-5">
     <div class="col-12 bg-dark p-3 rounded text-light d-flex">
-      <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="rounded-circle w-50 mr-3" alt="user profile image">
+      <img src="{{user.avatar}}" class="rounded-circle w-50 mr-3" alt="user profile image">
       <div class="h-auto w-100 d-flex flex-wrap align-items-center">
-        <h3 class="h3 text-center mb-n5">[username]</h3>
-        <h3 class="h3 text-center mt-n5"> [points] </h3>
+
+        <div class="w-100">
+          <h3 class="h3 text-center "> {{user.username}} </h3>
+          <h3 class="h3 text-center rounded-pill bg-primary"> {{user.points}} </h3>
+        </div>
+
       </div>
     </div>
   </div>
@@ -14,6 +18,28 @@
     <div class="col-12 bg-dark p-3 rounded text-light h-100">
 
       <h3 class="h3 text-center"> Quick actions </h3>
+
+      <div class="row row-cols-3">
+
+        <div class="col">
+          <button type="button" class="btn btn-primary col p-3">
+            <img src="assets/img/person-plus.svg" class="bi bi-person-plus">
+          </button>
+        </div>
+
+        <div class="col">
+          <button type="button" class="btn btn-primary col p-3">
+            <img src="assets/img/person-plus.svg" class="bi bi-person-plus">
+          </button>
+        </div>
+
+        <div class="col">
+          <button type="button" class="btn btn-primary col p-3">
+            <img src="assets/img/person-plus.svg" class="bi bi-person-plus">
+          </button>
+        </div>
+
+      </div>
 
     </div>
   </div>
@@ -25,6 +51,26 @@
     <div class="col-12 bg-dark p-3 rounded text-light">
 
       <h3 class="h3 text-center"> Ongoing matches </h3>
+
+      <ul *ngFor="let match of ongoingMatches; index as i" class="list-group list-group-horizontal-sm mb-1">
+        <li class="p-0 list-group-item d-flex justify-content-between align-items-center w-100 text-dark rounded">
+
+          <div class="m-3">
+            <h6 class="card-title text-left mb-0 d-flex">
+              <div class="mr-2" style="height: 1em; width: 1em; background-color: red; border: solid black 1px; border-radius: 100%"></div>
+              {{match.player0}}
+            </h6>
+            <h6 class="card-title text-left mb-0 d-flex">
+              <div class="mr-2" style="height: 1em; width: 1em; background-color: yellow; border: solid black 1px; border-radius: 100%"></div>
+              {{match.player1}}
+            </h6>
+          </div>
+
+          <h5 *ngIf="(match.turn == 0 && match.player0 == user.email) || (match.turn == 1 && match.player1 == user.email)" class="h6 w-25 m-0 text-center">Your turn</h5>
+          <h5 *ngIf="(match.turn == 0 && match.player0 != user.email) || (match.turn == 1 && match.player1 != user.email)" class="h6 w-25 m-0 text-center">Their turn</h5>
+
+        </li>
+      </ul>
 
     </div>
   </div>
