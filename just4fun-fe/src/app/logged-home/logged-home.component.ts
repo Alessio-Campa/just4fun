@@ -31,10 +31,6 @@ export class LoggedHomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (!this.userService.isLoggedIn) {
-      this.router.navigate(['']);
-      return;
-    }
     this.ios.ngOnInit();
     this.ios.connect().subscribe((message)=>{
       if (message.subject == 'matchMakingFound') {

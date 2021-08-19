@@ -17,7 +17,6 @@ const routes: Routes = [
   {path: 'logout', component: UserLogoutComponent},
   {path: 'register', component: UserRegisterComponent},
 
-  {path: 'loggedHome', component: LoggedHomeComponent},
   {path: 'match', children: [
       {path: ':id', component: MatchComponent}
     ]},

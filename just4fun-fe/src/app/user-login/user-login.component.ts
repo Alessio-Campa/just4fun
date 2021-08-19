@@ -24,7 +24,7 @@ export class UserLoginComponent implements OnInit {
       console.log('Login granted: ' + JSON.stringify(d));
       console.log('User service token: ' + this.userService.token);
       this.errorMessage = false;
-      this.router.navigate(['loggedHome']);
+      this.router.navigate(['']);
     }, (err) => {
       if(err.status == 422)
       {//Inserted a temporary password
