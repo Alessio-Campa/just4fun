@@ -56,6 +56,13 @@ export class PlayableBoard extends Board{
     this.changeTurn();
   }
 
+  public endMatch(){
+    for (let i = 0; i < this.columns.length; ++i) {
+      let col = this.columns[i] as PlayableColumn;
+      col.end = true;
+    }
+  }
+
   _playerTurn;
 
 }
@@ -110,7 +117,7 @@ export class PlayableColumn extends Column{
 
     this.$element.on('mouseenter', function () {
       that.isMouseInside = true;
-      if (parent.turn == parent.playerTurn){
+      if (parent.turn == parent.playerTurn && !that.end){
         if (that.occupied === ROWS)
           that.$element.find('.cellDisk').css('boxShadow',  "0px 0px 10px 4px red inset");
         else
@@ -126,7 +133,7 @@ export class PlayableColumn extends Column{
     });
 
     this.$element.on('click', function () {
-      if(that.occupied < ROWS && parent.turn == parent.playerTurn) {
+      if(that.occupied < ROWS && parent.turn == parent.playerTurn && !that.end) {
         myTest(index); //TODO: da testare dopo aver fixato l'angular guardone
         that.insertDisk(colors[parent.turn]);
         if (that.isMouseInside) {
@@ -137,6 +144,7 @@ export class PlayableColumn extends Column{
     });
   }
 
+  /* in teoria eliminabile, lo tengo per sicurezza
   public insertDisk(color){
     for (let j = 0; j < ROWS - this.occupied; j++) {
       setTimeout(() => {
@@ -147,10 +155,11 @@ export class PlayableColumn extends Column{
       }, j * 50)
     }
     this.occupied++;
-  }
+  }*/
 
   $element
   $cells
   isMouseInside = false;
   occupied = 0;
+  public end = false;
 }

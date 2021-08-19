@@ -41,12 +41,14 @@ export class MatchComponent implements OnInit {
             this.board.insertDisk(message.column, (message.player === this.match.player0 ? 0 : 1));
           }
         }
-        if (subject === 'matchEnd') {
-          //TODO: gestire fine partita
+        if (subject === 'matchEnded') {
+          this.match.winner.player = message.win.player;
+          this.match.winner.positions = message.win.positions;
+          this.board.endMatch();
         }
       });
 
-      if (isPlayer){
+      if (isPlayer && this.match.winner.player === null){
         this.board = new PlayableBoard('#board', this.match.board,this.match.turn, playerTurn, (c)=>{
           this.makeMove(c);
         });

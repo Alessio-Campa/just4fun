@@ -87,21 +87,8 @@ let matchSchema = new mongoose.Schema<Match>({
 
 matchSchema.methods.makeMove = function (player: string, column: number): void {
     let ios = getIoServer();
-    if (this.winner.player !== null) { throw new Error("Match ended");
-    /*
-        let message = {
-            subject: "matchEnded",
-            matchID: this.id,
-            test: this.winner,
-            //todo: aggiungere eventualmente le celle che segnalano la vittoria
-            winner: this.winner.player
-        }
-        ios.to(this.id + 'watchers').emit("broadcast", message);
-        ios.to(this.id + 'players').emit("broadcast", message);
-     */
-    }
+    if (this.winner.player !== null) throw new Error("Match ended");
     if ((this.turn == 0 && player != this.player0) || (this.turn == 1 && player != this.player1)) throw new Error("Not your turn");
-
     let row;
     try{
         row = this.insertDisk(column);
@@ -109,13 +96,7 @@ matchSchema.methods.makeMove = function (player: string, column: number): void {
         return e
     }
     this.moves.push(column)
-
     let winner = this.checkWin(row, column);
-    if(winner.winner !== null){
-        this.winner.player = winner.winner;
-        this.winner.positions = winner.cells;
-        this.markModified("winner")
-    }
     let message = {
         subject: "newMove",
         matchID: this.id,
@@ -124,6 +105,18 @@ matchSchema.methods.makeMove = function (player: string, column: number): void {
     }
     ios.to(this.id + 'watchers').emit("broadcast", message);
     ios.to(this.id + 'players').emit("broadcast", message);
+    if(winner.winner !== null){
+        this.winner.player = winner.winner;
+        this.winner.positions = winner.cells;
+        this.markModified("winner")
+        let message = {
+            subject: "matchEnded",
+            matchID: this.id,
+            win: this.winner,
+        }
+        ios.to(this.id + 'watchers').emit("broadcast", message);
+        ios.to(this.id + 'players').emit("broadcast", message);
+    }
     this.turn = (this.turn + 1) % 2 //switch turn
 }
 

@@ -99,7 +99,11 @@ router.put("/:idMatch/:id", auth, (req, res, next)=>{
         // check if user is player 0 or 1
         if (req.user.email !== m.player0 && req.user.email !== m.player1)
             return next({status_code: 403, error: true, errormessage: "User is not player for this match"})
-        m.makeMove(req.user.email, req.body.column);
+        try {
+            m.makeMove(req.user.email, req.body.column);
+        } catch (e) {
+            console.log(e.message);
+        }
         m.save().catch((err)=>{
             return next({status_code:400, error:true, errormessage:"An error occurred while saving data: " + err})
         })
