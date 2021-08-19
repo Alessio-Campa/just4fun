@@ -86,7 +86,20 @@ let matchSchema = new mongoose.Schema<Match>({
 })
 
 matchSchema.methods.makeMove = function (player: string, column: number): void {
-    if (this.winner.player !== null) throw new Error("Match ended")
+    let ios = getIoServer();
+    if (this.winner.player !== null) { throw new Error("Match ended");
+    /*
+        let message = {
+            subject: "matchEnded",
+            matchID: this.id,
+            test: this.winner,
+            //todo: aggiungere eventualmente le celle che segnalano la vittoria
+            winner: this.winner.player
+        }
+        ios.to(this.id + 'watchers').emit("broadcast", message);
+        ios.to(this.id + 'players').emit("broadcast", message);
+     */
+    }
     if ((this.turn == 0 && player != this.player0) || (this.turn == 1 && player != this.player1)) throw new Error("Not your turn");
 
     let row;
@@ -103,7 +116,6 @@ matchSchema.methods.makeMove = function (player: string, column: number): void {
         this.winner.positions = winner.cells;
         this.markModified("winner")
     }
-    let ios = getIoServer();
     let message = {
         subject: "newMove",
         matchID: this.id,

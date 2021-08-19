@@ -104,7 +104,7 @@ router.put("/:idMatch/:id", auth, (req, res, next)=>{
             return next({status_code:400, error:true, errormessage:"An error occurred while saving data: " + err})
         })
     }).then(() => {
-        return next({status_code:200,error: false, edit:"Added disk in column: " + req.body.column})
+        return res.status(200).json({error: false, edit:"Added disk in column: " + req.body.column})
     }).catch((err) => {
         return next({status_code:400, error: true, errormessage: err.message})
     })
