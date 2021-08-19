@@ -22,6 +22,13 @@ export class Board {
     this.columns[column].insertDisk(colors[player]);
   }
 
+  public highlightVictory(cells): void {
+    cells.forEach((element) => {
+      this.columns[element[1]].highlightCell(ROWS - element[0] - 1);
+    });
+  }
+
+
   public $board: JQuery;
   protected _turn: number = 0;
   protected columns: Column[] = [];
@@ -97,6 +104,10 @@ export class Column {
       }, j * 50)
     }
     this.occupied++;
+  }
+
+  public highlightCell(row):void {
+    this.$cells[row].find('.cellDisk').css('boxShadow',  "0px 0px 10px 4px cyan inset");
   }
 
   $element: JQuery;

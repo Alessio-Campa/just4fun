@@ -45,6 +45,7 @@ export class MatchComponent implements OnInit {
           this.match.winner.player = message.win.player;
           this.match.winner.positions = message.win.positions;
           this.board.endMatch();
+          this.board.highlightVictory(message.win.positions)
         }
       });
 
@@ -53,7 +54,8 @@ export class MatchComponent implements OnInit {
           this.makeMove(c);
         });
       } else {
-        this.board = new Board('#board', this.match.board)
+        this.board = new Board('#board', this.match.board);
+        this.board.highlightVictory(this.match.winner.positions)
       }
 
     });
