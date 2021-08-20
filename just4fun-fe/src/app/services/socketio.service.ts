@@ -39,7 +39,6 @@ export class SocketioService {
         else {
           this.socket.emit('watching', matchID);
         }
-
       });
 
       this.socket.on('error', (err) => {

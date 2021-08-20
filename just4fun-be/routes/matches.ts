@@ -1,5 +1,5 @@
 import express = require('express');
-import auth = require("../bin/authentication");
+import { express_jwt_auth } from "../bin/authentication";
 import * as match from "../models/Match";
 import * as matchmaking from "../models/Matchmaking";
 import * as user from "../models/User";
@@ -29,7 +29,7 @@ router.get("/", (req, res, next) =>{
     })
 })
 
-router.post("/random", auth, (req, res, next) => {
+router.post("/random", express_jwt_auth, (req, res, next) => {
     if (req.body.user !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
@@ -74,7 +74,7 @@ router.get("/:id", (req, res, next) =>{
     })
 })
 
-router.post("/:id", auth, (req, res, next) =>{
+router.post("/:id", express_jwt_auth, (req, res, next) =>{
     if (req.params.id !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
@@ -87,7 +87,7 @@ router.post("/:id", auth, (req, res, next) =>{
     return res.status(200).json({objectID:m._id});
 })
 
-router.put("/:idMatch/:id", auth, (req, res, next)=>{
+router.put("/:idMatch/:id", express_jwt_auth, (req, res, next)=>{
     if (req.params.id !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 

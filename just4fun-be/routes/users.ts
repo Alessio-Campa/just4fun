@@ -1,7 +1,8 @@
 import express = require('express')
 import {User} from "../models/User";
 import * as user from "../models/User";
-import auth = require("../bin/authentication");
+import { express_jwt_auth } from "../bin/authentication";
+import * as passport from "passport";
 
 let router = express.Router();
 
@@ -9,7 +10,7 @@ let router = express.Router();
 
 router.get('/', (req, res, next) => {
     user.getModel().find({}, {digest:0, salt:0, isPasswordTemporary:0, avatar:0}).then( (users)=>{
-        return res.status(200).json( users );
+        return res.status(200).json(users);
     }).catch( (reason)=>{
         return next({statusCode:500, error:true, errormessage:"DB error: "+ reason});
     })
@@ -67,7 +68,7 @@ router.post('/', (req, res, next) => {
     })
 });
 
-router.delete('/:email', auth, (req, res, next)=>{
+router.delete('/:email', express_jwt_auth, (req, res, next)=>{
     // TODO: handle authorization
     user.getModel().deleteMany( {email: req.params.email} ).then( (user)=>{
         return res.status(200);
@@ -76,30 +77,54 @@ router.delete('/:email', auth, (req, res, next)=>{
     })
 });
 
-router.put("/:id", auth, (req, res, next) => {
+router.put("/:id", passport.authenticate(['basic', 'jwt'], {session: false}), (req, res, next) => {
     if (req.params.id !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
-    user.getModel().findOne({email: req.user.email}).then( async data => {
-        // TODO: eliminare questo in seguito che serve per debug
-        if (req.body.resetFriends) {
-            data.friends = [];
-            data.following = [];
-            data.save();
-            next({statusCode: 200, error: false, errormessage: ""});
+    let acceptedFields = ['username', 'avatar', 'password'];
+    let haveSetAllFields = true;
+    user.getModel().findOne({email: req.user.email}).then( (u: User) => {
+        for (let f in acceptedFields) {
+            let field = acceptedFields[f];
+            if(req.body.hasOwnProperty(field))
+                if(field !== 'password')
+                    u[field] = req.body[field];
+                else
+                    u.setPassword(req.body[field]);
+            else
+                haveSetAllFields = false;
         }
-        // TODO: debug, da eliminare
-        else if (req.body.points) {
-            //ata.updatePoints(req.body.points, res, next) // da mario: ho riusato la funzione updatePoints, questo non funziona più
-        }
-        else
-            next({statusCode: 400, error: true, errormessage: "Bad request"});
+        if (haveSetAllFields)
+            u.isPasswordTemporary = false;
+        u.save().then(() => {
+            return next({statusCode: 200, error: false, errormessage: ""});
+        }).catch(err => {
+            return next({statusCode: 500, error: true, errormessage: err});
+        });
     }).catch(err => {
-        next({statusCode: 400, error: true, errormessage: err});
+        return next({statusCode: 500, error: true, errormessage: err});
     });
+
+    // user.getModel().findOne({email: req.user.email}).then( async data => {
+    //     // TODO: eliminare questo in seguito che serve per debug
+    //     if (req.body.resetFriends) {
+    //         data.friends = [];
+    //         data.following = [];
+    //         data.save();
+    //         next({statusCode: 200, error: false, errormessage: ""});
+    //     }
+    //     // TODO: debug, da eliminare
+    //     else if (req.body.points) {
+    //         data.updatePoints(req.body.points, res, next)
+    //     }
+    //     else
+    //         next({statusCode: 400, error: true, errormessage: "Bad request"});
+    // }).catch(err => {
+    //     next({statusCode: 400, error: true, errormessage: err});
+    // });
 });
 
-router.post('/:id/follow', auth, (req, res, next) => {
+router.post('/:id/follow', express_jwt_auth, (req, res, next) => {
     if (req.params.id !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
@@ -110,7 +135,7 @@ router.post('/:id/follow', auth, (req, res, next) => {
     });
 });
 
-router.delete('/:id/follow', auth, (req, res, next)=>{
+router.delete('/:id/follow', express_jwt_auth, (req, res, next)=>{
     if (req.params.id !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
@@ -121,7 +146,7 @@ router.delete('/:id/follow', auth, (req, res, next)=>{
     });
 });
 
-router.post('/:id/friend', auth, (req, res, next) => {
+router.post('/:id/friend', express_jwt_auth, (req, res, next) => {
     if (req.params.id !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
@@ -132,7 +157,7 @@ router.post('/:id/friend', auth, (req, res, next) => {
     });
 })
 
-router.put('/:id/friend', auth, (req, res, next) => {
+router.put('/:id/friend', express_jwt_auth, (req, res, next) => {
     if (req.params.id !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
@@ -146,7 +171,7 @@ router.put('/:id/friend', auth, (req, res, next) => {
     });
 })
 
-router.delete('/:id/friend', auth, (req, res, next) => {
+router.delete('/:id/friend', express_jwt_auth, (req, res, next) => {
     if (req.params.id !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 

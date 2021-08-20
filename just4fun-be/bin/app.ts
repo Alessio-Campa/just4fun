@@ -4,6 +4,8 @@ import path = require('path');
 import cors = require('cors');
 import cookieParser = require('cookie-parser');
 import bodyparser = require('body-parser')
+import passport = require("passport");
+import { initializeAuthentication } from "./authentication"
 
 let matchRouter = require('../routes/matches');
 let chatRouter = require('../routes/chats');
@@ -20,10 +22,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 app.use(bodyparser.json({limit: '1mb'}));
 
+app.use(passport.initialize());
+app.use(passport.session());
+initializeAuthentication();
+
+app.use('/', indexRouter);
 app.use('/user', userRouter);
 app.use('/match', matchRouter);
 app.use('/chat', chatRouter);
-app.use('/', indexRouter);
 
 app.use( function (err, req, res, next) {
     console.log("Request error: ".red + JSON.stringify(err) );

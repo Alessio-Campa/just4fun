@@ -51,11 +51,20 @@ export class UserService {
     return this._token;
   }
 
-  login(mail: string, password: string, remember: boolean): Observable<any>{
+  public static basicAuth(user:string, password:string)
+  {
+    return 'Basic ' + btoa(user + ':' + password);
+  }
+  public tokenAuth()
+  {
+    return 'Bearer ' + this.token;
+  }
+
+  login(mail: string, password: string, remember: boolean): Observable<User>{
     console.log('Login: ' + mail + ' ' + password);
     let options = {
       headers: new HttpHeaders({
-        authorization: 'Basic ' + btoa(mail + ':' + password),
+        'authorization': UserService.basicAuth(mail, password),
         'cache-control': 'no-cache',
         'Content-Type': 'application/x-www-form-urlencoded'
       })
@@ -78,7 +87,7 @@ export class UserService {
     localStorage.removeItem('just4fun_token');
   }
 
-  register(email: string, name: string, password: string, avatar: string): Observable<any>{
+  register(email: string, name: string, password: string, avatar: string): Observable<User>{
     let user = {
       name: name,
       email: email,
@@ -93,7 +102,28 @@ export class UserService {
       })
     };
 
-    return this.http.post(environment.serverUrl + '/user', user, options).pipe(
+    return this.http.post<User>(environment.serverUrl + '/user', user, options).pipe(
+      tap((data) => {
+        console.log(JSON.stringify(data));
+      })
+    );
+  }
+  completeRegistration(email: string, name: string, oldPassword: string, newPassword: string, avatar: string): Observable<User>{
+    let data = {
+      name: name,
+      password: newPassword,
+      avatar: avatar
+    }
+
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': UserService.basicAuth(email, oldPassword),
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json',
+      })
+    };
+
+    return this.http.put<User>(environment.serverUrl + '/user/'+email, data, options).pipe(
       tap((data) => {
         console.log(JSON.stringify(data));
       })

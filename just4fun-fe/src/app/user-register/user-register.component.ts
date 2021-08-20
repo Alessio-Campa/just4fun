@@ -63,7 +63,16 @@ export class UserRegisterComponent implements OnInit {
           else {
             if(this.isModeratorRegistration)
             {
-
+              this.userService.completeRegistration(this.email, this.username, this.oldPassword, this.password, this.croppedAvatar).subscribe((d) => {
+                console.log('Completed Registration!');
+                this.errorMessage = '';
+                this.router.navigate(['login']);
+              }, (err) => {
+                this.errorMessage = JSON.stringify(err.error.errormessage);
+                console.log('Complete Registration error: ' + this.errorMessage);
+                this.password = '';
+                this.password2 = '';
+              });
             }
             else {
               this.userService.register(this.email, this.username, this.password, this.croppedAvatar).subscribe((d) => {

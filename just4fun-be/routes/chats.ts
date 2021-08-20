@@ -1,13 +1,13 @@
 import express = require('express')
 import {isChat, Chat} from "../models/Chat";
 import * as chat from "../models/Chat";
-import auth = require("../bin/authentication");
+import { express_jwt_auth } from "../bin/authentication";
 import jwt_decode from "jwt-decode"
 import {User} from "../models/User";
 
 let router = express.Router();
 
-router.get("/", auth, (req, res, next)=>{
+router.get("/", express_jwt_auth, (req, res, next)=>{
     chat.getModel().findOne({matchID: null, members: {$all: [req.user.id, req.body.friend]}} ).then((data) => {
         return res.status(200).json(data);
     }).catch((err) => {
@@ -31,7 +31,7 @@ router.get("/:matchID", (req, res, next)=> {
     })
 })
 
-router.post("/:id", auth, (req, res, next)=> {
+router.post("/:id", express_jwt_auth, (req, res, next)=> {
     if (req.params.id !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
@@ -46,7 +46,7 @@ router.post("/:id", auth, (req, res, next)=> {
     })
 })
 
-router.put("/:idChat/message", auth, (req, res, next)=> {
+router.put("/:idChat/message", express_jwt_auth, (req, res, next)=> {
     if (req.body.sender !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 

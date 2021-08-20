@@ -11,13 +11,11 @@ import {SocketioService} from "./socketio.service";
 })
 export class MatchmakingService {
   constructor(private http: HttpClient, private userService: UserService, private ios: SocketioService) { }
-  token: string;
 
   match(): Observable<any>{
-    this.token = this.userService.token;
     console.log('searching for a match');
     let headers = {
-      'Authorization': 'Bearer ' + this.token,
+      'Authorization': this.userService.tokenAuth(),
       'Content-Type': 'application/json'}
     //console.log(headers)
     //console.log(this.userService.email);
