@@ -1,5 +1,6 @@
 import * as mongoose from 'mongoose'
 import * as crypto from 'crypto'
+import {Match} from "./Match";
 
 export interface User extends mongoose.Document{
     username: string,
@@ -26,7 +27,7 @@ export interface User extends mongoose.Document{
     acceptFriendRequest: (requester:string, res, next)=>void,
     refuseFriendRequest: (refused: string, res, next)=>void,
     removeFriend: (user: string, res, next)=>void,
-    updatePoints: (delta: number, res, next)=>void
+    updatePoints: (loserEmail)=>void
 }
 
 let userSchema = new mongoose.Schema<User>({
@@ -239,9 +240,15 @@ userSchema.methods.removeFriend = function (friend: string, res, next){
     });
 }
 
-userSchema.methods.updatePoints = function (delta: number, res, next){
-    this.points = this.points + delta > 0 ? this.points + delta : 0;
-    this.save().then(() => next({statusCode: 200, error: false, message: "Update successful"}));
+userSchema.methods.updatePoints = function (loserEmail){
+    getModel().findOne({email: loserEmail}).then((loser) => {
+        let newPoints = Math.round(20 + ((loser.points - this.points)/10));
+        if (newPoints <= 10) newPoints = 10;
+        if (newPoints >= 30) newPoints = 30;
+        this.points += newPoints;
+        //this.points = this.points + delta > 0 ? this.points + delta : 0;
+        this.save();
+    });
 }
 
 

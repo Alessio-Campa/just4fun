@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose'
 import {stringify} from "querystring";
 import {getIoServer} from "../bin/socket";
+import * as user from "./User";
 
 const ROWS: number = 6;
 const COLUMNS: number = 7;
@@ -116,6 +117,19 @@ matchSchema.methods.makeMove = function (player: string, column: number): void {
         }
         ios.to(this.id + 'watchers').emit("broadcast", message);
         ios.to(this.id + 'players').emit("broadcast", message);
+        let myTest;
+        let loser;
+        if (this.winner.player === 0) {
+            myTest = this.player0;
+            loser = this.player1;
+        } else {
+            loser = this.player0;
+            myTest = this.player1;
+        }
+
+        user.getModel().findOne({email: myTest}).then((theWinner) => {
+            theWinner.updatePoints(loser);
+        });
     }
     this.turn = (this.turn + 1) % 2 //switch turn
 }

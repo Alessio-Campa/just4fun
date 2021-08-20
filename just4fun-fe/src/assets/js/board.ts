@@ -36,8 +36,8 @@ export class Board {
 
 
 export class PlayableBoard extends Board{
-  constructor(_$board: any, board: number[][], turn: number, playerTurn, myTest) {
-    super(_$board, board, myTest);
+  constructor(_$board: any, board: number[][], turn: number, playerTurn, LambdaSocket) {
+    super(_$board, board, LambdaSocket);
     this._turn = turn;
     this._playerTurn = playerTurn;
   }
@@ -117,7 +117,7 @@ export class Column {
 
 
 export class PlayableColumn extends Column{
-  constructor(protected parent: PlayableBoard, col: number[], myTest, index) {
+  constructor(protected parent: PlayableBoard, col: number[], LambdaSocket, index) {
     super(parent, col);
     let that = this;
     for (let j = 0; j < ROWS; j++) {
@@ -139,13 +139,13 @@ export class PlayableColumn extends Column{
 
     this.$element.on('mouseleave', function () {
       that.isMouseInside = false;
-      if (parent.turn == parent.playerTurn)
+      if (parent.turn == parent.playerTurn && !that.end)
         that.$element.find('.cellDisk').css('boxShadow',  "");
     });
 
     this.$element.on('click', function () {
       if(that.occupied < ROWS && parent.turn == parent.playerTurn && !that.end) {
-        myTest(index); //TODO: da testare dopo aver fixato l'angular guardone
+        LambdaSocket(index);
         that.insertDisk(colors[parent.turn]);
         if (that.isMouseInside) {
           that.$element.trigger('mouseenter');
@@ -153,6 +153,10 @@ export class PlayableColumn extends Column{
         that.$element.trigger('mouseleave');
       }
     });
+  }
+
+  public highlightCell(row):void {
+    this.$cells[row].find('.cellDisk').css('boxShadow',  "0px 0px 10px 4px cyan inset");
   }
 
   /* in teoria eliminabile, lo tengo per sicurezza

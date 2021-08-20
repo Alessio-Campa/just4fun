@@ -90,7 +90,7 @@ router.put("/:id", auth, (req, res, next) => {
         }
         // TODO: debug, da eliminare
         else if (req.body.points) {
-            data.updatePoints(req.body.points, res, next)
+            //ata.updatePoints(req.body.points, res, next) // da mario: ho riusato la funzione updatePoints, questo non funziona più
         }
         else
             next({statusCode: 400, error: true, errormessage: "Bad request"});
