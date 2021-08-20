@@ -1,0 +1,75 @@
+<div class="container row mb-4">
+
+  <div class="col col-5">
+    <div class="col-12 bg-dark p-3 rounded text-light d-flex h-100">
+      <img *ngIf="!user" src="https://images.squarespace-cdn.com/content/v1/5ae870b68ab722f5dd511045/1539886538377-BS2BOP9V9UBXS5KJNM4S/loading-gif-png-5.gif" class="w-50 mr-3">
+      <img *ngIf="user" src="{{user.avatar}}" class="rounded-circle w-50 mr-3" alt="user profile image">
+      <div class="h-auto w-100 d-flex flex-wrap align-items-center">
+
+        <div class="w-100">
+          <h3 class="h3 text-center "> {{user.username}} </h3>
+          <h3 class="h3 text-center rounded-pill bg-primary"> {{user.points}} </h3>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="col col-7">
+    <div class="col-12 bg-dark p-3 rounded text-light h-100">
+
+      <h3 class="h3 text-center"> Quick actions </h3>
+
+      <div class="row row-cols-3 h-100">
+
+        <div class="col h-100 text-center">
+          <button type="button" id="followButton" class="btn square m-3 p-2" [ngStyle]="{'background-color': (isFollowed ? 'red' : 'lime')}" (click)="isFollowed ? unfollow() : follow()">
+            <img *ngIf="isFollowed" src="assets/img/person-fill.svg" class="bi bi-person-plus" style="height: 4em">
+            <img *ngIf="!isFollowed" src="assets/img/person.svg" class="bi bi-person-plus" style="height: 4em">
+          </button>
+          <p class="m-n2"> {{isFollowed ? 'Unfollow' : 'Follow'}} </p>
+        </div>
+
+        <div class="col h-100 text-center">
+          <button type="button" class="btn square m-3 p-2" [ngStyle]="{'background-color': (isFriend ? 'red' : hasRequested ? 'yellow' : 'lime')}" (click)="isFriend ? unfriend() : hasRequested ? unrequest() : sendRequest()" [disabled]="hasRequested" >
+            <img *ngIf="!isFriend && !hasRequested" src="assets/img/people.svg" class="bi bi-person-plus" style="height: 4em">
+            <img *ngIf="hasRequested" src="assets/img/clock.svg" class="bi bi-person-plus" style="height: 4em">
+            <img *ngIf="isFriend" src="assets/img/people-fill.svg" class="bi bi-person-plus" style="height: 4em">
+          </button>
+          <p class="m-n2"> {{isFriend ? 'Unfriend' : hasRequested ? 'Waiting request' : 'Send friend request'}} </p>
+        </div>
+
+        <div class="col h-100 text-center">
+          <button type="button" class="btn btn-primary square m-3 p-2 disabled" disabled>
+            <img src="assets/img/crossed-flags.png" class="bi bi-person-plus" style="height: 4em">
+          </button>
+          <p class="m-n2">New match</p>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="container row">
+  <div class="col-12">
+
+    <div class="col-12 bg-dark p-3 rounded text-light h-100 position-relative">
+      <!-- TODO: mettere la navigazione con freccette -->
+      <div class="row position-relative">
+        <div class="col blur h-100 w-100">
+          <h2 class="h2 text-center"> Statistics </h2>
+          <h4>Never gonna give you up, never gonna let you down, never gonna run around and desert you</h4>
+        </div>
+        <div class="col position-absolute h-100">
+          <h4 class="h4 text-center text-danger bg-dark shadow"> <b>Statistics for this user are not visible because they are not your friend</b> </h4>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+

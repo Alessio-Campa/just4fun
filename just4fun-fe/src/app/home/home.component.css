@@ -8,11 +8,10 @@ a{
   color: black;
 }
 
-.card{
+.hoverable{
   transition: 0.3s;
 }
-
-.card:hover{
+.hoverable:hover{
   opacity: 0.75;
 }
 

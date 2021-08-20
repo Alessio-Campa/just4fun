@@ -8,11 +8,18 @@ import {User} from "../models/User";
 let router = express.Router();
 
 router.get("/", express_jwt_auth, (req, res, next)=>{
+    chat.getModel().find().then(data => {
+        return res.status(200).json(data)
+    }).catch(err => {
+        return next({status_code: 400, error: true, errormessage: err})
+    })
+    /*
     chat.getModel().findOne({matchID: null, members: {$all: [req.user.id, req.body.friend]}} ).then((data) => {
         return res.status(200).json(data);
     }).catch((err) => {
         return next({status_code: 400, error: true, errormessage: err})
     })
+     */
 })
 
 router.get("/:matchID", (req, res, next)=> {
@@ -37,7 +44,7 @@ router.post("/:id", express_jwt_auth, (req, res, next)=> {
 
     chat.getModel().create({
         matchID: req.body.matchID,
-        members: [req.body.friend, req.user.id],
+        members: [req.body.friend, req.user.email],
         messages: []
     }).then((data)=> {
         return res.status(200).json({error: false, objectId: data._id})
@@ -62,7 +69,7 @@ router.put("/:idChat/message", express_jwt_auth, (req, res, next)=> {
     }).then(() => {
         return res.status(200).json({error: false, message: "Object created"})
     }).catch((err) => {
-        return next({status_code: 400, error: true, errormessage: err})
+        return next({status_code: 400, error: true, errormessage: err.message})
     })
 })
 

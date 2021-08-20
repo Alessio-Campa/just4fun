@@ -12,6 +12,7 @@ export class ProfileComponent implements OnInit {
 
   user: User;
   ongoingMatches: Match[];
+  endedMatches: Match[];
 
   constructor(private userService: UserService, private router: Router, private matchService: MatchService) {
     if(!this.userService.isLoggedIn)
@@ -22,8 +23,11 @@ export class ProfileComponent implements OnInit {
     this.userService.get_user_by_mail( this.userService.email ).subscribe(data => {
       this.user = data;
     });
-    this.matchService.getUserMatches( this.userService.email, false ).subscribe( data => {
+    this.matchService.getUserMatches( this.userService.email, "false" ).subscribe( data => {
       this.ongoingMatches = data;
+    })
+    this.matchService.getUserMatches( this.userService.email, "true" ).subscribe( data => {
+      this.endedMatches = data;
     })
   }
 

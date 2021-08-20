@@ -130,6 +130,56 @@ export class UserService {
     );
   }
 
+  follow(sender: string, receiver: string): Observable<any>{
+    let token = this.token
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + token,
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json',
+      })
+    };
+
+    return this.http.post(`${environment.serverUrl}/user/${sender}/follow`, {user: receiver}, options).pipe(
+      tap(data => {
+        console.log(JSON.stringify(data))
+      })
+    );
+  }
+
+  unfollow(sender: string, receiver: string): Observable<any>{
+    let token = this.token;
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + token,
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json',
+      }),
+      body: {
+        user: receiver
+      }
+    };
+
+    return this.http.delete(`${environment.serverUrl}/user/${sender}/follow`, options)
+  }
+
+  sendFriendRequest(sender: string, receiver: string): Observable<any>{
+    let token = this.token;
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + token,
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json',
+      })
+    };
+    let body = {
+      user: receiver
+    }
+
+    return this.http.post(`${environment.serverUrl}/user/${sender}/friend`, body, options);
+
+  }
+
   get isLoggedIn()
   {
     return this.token != '';

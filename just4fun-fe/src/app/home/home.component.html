@@ -24,7 +24,7 @@
         <div class="row row-cols-2">
 
           <a *ngFor="let match of randomMatches; index as i; let last = last" href="/match/{{match._id}}" class="col-6">
-            <div class="card mb-3" style="cursor: pointer">
+            <div class="card mb-3 hoverable" style="cursor: pointer">
               <div class="card-header">
                 <h5 class="card-title text-left mb-0 d-flex">
                   <div class="mr-2" style="height: 1em; width: 1em; background-color: red; border: solid black 1px; border-radius: 100%"></div>
@@ -55,13 +55,15 @@
       <div class="col-md-12 bg-dark rounded p-3">
         <h2 class="h2 text-center text-light mb-3">Leaderboard</h2>
 
-        <ul *ngFor="let user of leaderboard; index as i" class="list-group list-group-horizontal-sm mb-1">
-          <li class="list-group-item w-25 leaderboard-position text-center"> {{i+1}} </li>
-          <li class="list-group-item d-flex justify-content-between align-items-center w-75">
-            {{user.username}}
-            <span class="badge bg-primary rounded-pill text-light"> {{user.points}} </span>
-          </li>
-        </ul>
+        <a *ngFor="let user of leaderboard; index as i" href="/user/{{user.email}}" style="cursor: pointer">
+          <ul class="list-group list-group-horizontal-sm mb-1 hoverable">
+            <li class="list-group-item w-25 leaderboard-position text-center"> {{i+1}} </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center w-75">
+              {{user.username}}
+              <span class="badge bg-primary rounded-pill text-light"> {{user.points}} </span>
+            </li>
+          </ul>
+        </a>
 
       </div>
     </div>

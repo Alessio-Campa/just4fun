@@ -30,6 +30,10 @@ export interface User extends mongoose.Document{
     updatePoints: (loserEmail)=>void
 }
 
+export function isUser(arg): arg is User{
+    return true;
+}
+
 let userSchema = new mongoose.Schema<User>({
     username: {
         type: mongoose.SchemaTypes.String,
@@ -148,13 +152,13 @@ userSchema.methods.follow = function (followed: string, res, next) {
 }
 
 userSchema.methods.unfollow = function (unfollowed: string, res, next) {
-    let user = this
+    let user = this;
     return getModel().findOne({email: unfollowed}).lean().then(data => {
         let isF = isFollowable(user, data, "unfollow");
         if (!isF[0])
             throw new Error(isF[1]);
 
-        let idx = user.friendRequests.indexOf(unfollowed)
+        let idx = user.following.indexOf(unfollowed)
         user.following.splice(idx, 1);
 
         user.save().then(() => next({statusCode: 200, error: false, message: "Update successful"}));

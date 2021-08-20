@@ -1,5 +1,5 @@
 import express = require('express')
-import {User} from "../models/User";
+import {isUser, User} from "../models/User";
 import * as user from "../models/User";
 import { express_jwt_auth } from "../bin/authentication";
 import * as passport from "passport";
@@ -151,9 +151,11 @@ router.post('/:id/friend', express_jwt_auth, (req, res, next) => {
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
     user.getModel().findOne({email: req.user.email}).then(data => {
+        let u: User;
+        if (isUser(data)) u = data;
         data.sendFriendRequest(req.body.user, res, next);
     }).catch(err => {
-        next({statusCode: 400, error: true, errormessage: err});
+        next({statusCode: 400, error: true, errormessage: err.message});
     });
 })
 
