@@ -39,5 +39,9 @@ export class ProfileComponent implements OnInit {
     })
   }
 
+  navigateChats(){
+    this.router.navigate([`messages/${this.user.email}`])
+  }
+
 
 }

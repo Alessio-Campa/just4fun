@@ -11,6 +11,7 @@ import {LoggedHomeComponent} from "./logged-home/logged-home.component";
 import {ProfileComponent} from "./profile/profile.component";
 import {UserViewComponent} from "./user-view/user-view.component";
 import {MatchmakingComponent} from "./matchmaking/matchmaking.component";
+import {ChatComponent} from "./chat/chat.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -26,7 +27,10 @@ const routes: Routes = [
   {path: 'user', children: [
       {path: ':mail', component: UserViewComponent}
     ]},
-  {path: 'matchmaking', component: MatchmakingComponent}
+  {path: 'matchmaking', component: MatchmakingComponent},
+  {path: 'messages', children: [
+      {path: ':mail', component: ChatComponent}
+    ]}
 ];
 
 @NgModule({

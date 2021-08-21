@@ -1,7 +1,7 @@
 import mongoose = require("mongoose")
 
 export interface Chat extends mongoose.Document{
-    idMatch: string,
+    matchID: string,
     members: string[],
     messages: {
         sender: string,
@@ -19,7 +19,8 @@ export function isChat(arg: any): arg is Chat{
 let chatSchema = new mongoose.Schema<Chat>({
     matchID: {
         type: mongoose.SchemaTypes.String,
-        required: false
+        required: false,
+        default: null
     },
     members: {
         type: [mongoose.SchemaTypes.String],

@@ -8,33 +8,19 @@ import {User} from "../models/User";
 let router = express.Router();
 
 router.get("/", express_jwt_auth, (req, res, next)=>{
-    chat.getModel().find().then(data => {
+    let filter = {};
+    if (req.query.user)
+        filter['members'] = req.query.user;
+    if (req.query.matchID === 'null')
+        filter['matchID'] = { $exists: false };
+    else if (req.query.matchID)
+        filter['matchID'] = req.query.matchID;
+
+
+    chat.getModel().find(filter).then(data => {
         return res.status(200).json(data)
     }).catch(err => {
-        return next({status_code: 400, error: true, errormessage: err})
-    })
-    /*
-    chat.getModel().findOne({matchID: null, members: {$all: [req.user.id, req.body.friend]}} ).then((data) => {
-        return res.status(200).json(data);
-    }).catch((err) => {
-        return next({status_code: 400, error: true, errormessage: err})
-    })
-     */
-})
-
-router.get("/:matchID", (req, res, next)=> {
-    let user;
-    //optional authentication with bearer token
-    if( req.headers['authorization'] !== undefined ){
-        let token: User = jwt_decode(req.headers.authorization.split(" ")[1])
-        user = token.id
-    }
-
-    chat.getModel().findOne({matchID: req.params.matchID}).then( (data)=> {
-        // TODO: ritornare messaggi in base chi sei (giocatore o fuori)
-        return res.status(200).json( data );
-    }).catch((err)=> {
-        return next({status_code: 400, error: true, errormessage: err})
+        return next({status_code: 500, error: true, errormessage: err})
     })
 })
 
@@ -73,7 +59,7 @@ router.put("/:idChat/message", express_jwt_auth, (req, res, next)=> {
     })
 })
 
-// Chat deletio
+// Chat deletion
 // TODO?: da eliminare
 router.delete("/:id", (req, res, next)=> {
     chat.getModel().findByIdAndDelete(req.params.id).then(()=>{
