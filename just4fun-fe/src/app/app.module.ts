@@ -17,7 +17,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { ProfileComponent } from './profile/profile.component';
 import { UserViewComponent } from './user-view/user-view.component';
 import { MatchmakingComponent } from './matchmaking/matchmaking.component';
-import { ChatComponent } from './chat/chat.component';
+import { ChatsComponent } from './chats/chats.component';
+import { MessagesComponent } from './messages/messages.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ChatComponent } from './chat/chat.component';
     ProfileComponent,
     UserViewComponent,
     MatchmakingComponent,
-    ChatComponent
+    ChatsComponent,
+    MessagesComponent
   ],
   imports: [
     HttpClientModule,

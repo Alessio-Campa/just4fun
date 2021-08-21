@@ -250,8 +250,9 @@ userSchema.methods.updatePoints = function (loserEmail){
         if (newPoints <= 10) newPoints = 10;
         if (newPoints >= 30) newPoints = 30;
         this.points += newPoints;
-        //this.points = this.points + delta > 0 ? this.points + delta : 0;
-        this.save();
+        loser.points -= newPoints;
+        if (loser.points < 0) loser.points = 0;
+        this.save().then(()=> loser.save());
     });
 }
 

@@ -17,12 +17,15 @@ export class MatchComponent implements OnInit {
   board;
   username0;
   username1;
+  ableToViewMessages: boolean = false;
 
   constructor(private router: Router, private ms: MatchService, private userService: UserService,
               private ios: SocketioService) { }
 
   ngOnInit(): void {
     let matchID = this.router.url.split('/').pop();
+
+    if (this.userService.isLoggedIn) this.ableToViewMessages = true;
 
     this.ms.getMatchById(matchID).subscribe( data => {
       this.match = data;

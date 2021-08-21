@@ -53,6 +53,7 @@ router.put("/:idChat/message", express_jwt_auth, (req, res, next)=> {
         })
         data.save()
     }).then(() => {
+        // TODO: notificare quelli che guardano/l'altro user, fa mario
         return res.status(200).json({error: false, message: "Object created"})
     }).catch((err) => {
         return next({status_code: 400, error: true, errormessage: err.message})
