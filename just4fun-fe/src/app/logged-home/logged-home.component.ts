@@ -23,13 +23,6 @@ export class LoggedHomeComponent implements OnInit {
   constructor(public userService: UserService, public router: Router, public matchmakingService: MatchmakingService,
               public ios: SocketioService) { }
 
-  matchmaking() {
-    this.matchFound = false;
-    this.matchSearching = true;
-    this.matchmakingService.ngOnInit();
-    this.matchmakingService.match().subscribe();
-  }
-
   ngOnInit(): void {
     this.ios.ngOnInit();
     this.ios.connect().subscribe((message)=>{
@@ -44,6 +37,14 @@ export class LoggedHomeComponent implements OnInit {
       }
     });
     console.log("127.0.0.0 sweet logged 127.0.0.0")
+  }
+
+  matchmaking() {
+    this.matchFound = false;
+    this.matchSearching = true;
+    this.matchmakingService.ngOnInit();
+    this.matchmakingService.match().subscribe();
+    //this.router.navigate(['/matchmaking'])
   }
 
 }

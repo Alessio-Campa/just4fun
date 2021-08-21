@@ -10,6 +10,7 @@ import {MatchComponent} from "./match/match.component";
 import {LoggedHomeComponent} from "./logged-home/logged-home.component";
 import {ProfileComponent} from "./profile/profile.component";
 import {UserViewComponent} from "./user-view/user-view.component";
+import {MatchmakingComponent} from "./matchmaking/matchmaking.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -25,6 +26,7 @@ const routes: Routes = [
   {path: 'user', children: [
       {path: ':mail', component: UserViewComponent}
     ]},
+  {path: 'matchmaking', component: MatchmakingComponent}
 ];
 
 @NgModule({

@@ -17,6 +17,8 @@ export class UserViewComponent implements OnInit {
   hasRequested: boolean = false;
   private me: User;
 
+  isLoading = {user: -1, buttons: -1}
+
   constructor(private router: Router, private userService: UserService) {
     if (this.userService.isLoggedIn && this.userService.email === this.router.url.split('/').pop()){
       this.router.navigate(['/profile'])
@@ -29,6 +31,7 @@ export class UserViewComponent implements OnInit {
     this.userService.get_user_by_mail(userMail).subscribe(data => {
       this.user = data;
     }, ()=>{}, ()=>{
+      this.isLoading.user++;
       this.userService.get_user_by_mail(this.userService.email).subscribe(data => {
         this.me = data;
 
@@ -41,6 +44,8 @@ export class UserViewComponent implements OnInit {
         if (this.me.following.includes(userMail)){
           this.isFollowed = true;
         }
+      }, ()=>{}, ()=>{
+        this.isLoading.buttons++;
       });
     });
 

@@ -14,6 +14,8 @@ export class ProfileComponent implements OnInit {
   ongoingMatches: Match[];
   endedMatches: Match[];
 
+  isLoading = {user: -1, matches: -2, statistics: -1};
+
   constructor(private userService: UserService, private router: Router, private matchService: MatchService) {
     if(!this.userService.isLoggedIn)
       router.navigate(['/login']);
@@ -22,12 +24,18 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.userService.get_user_by_mail( this.userService.email ).subscribe(data => {
       this.user = data;
+    }, ()=>{}, ()=>{
+      this.isLoading.user++;
     });
     this.matchService.getUserMatches( this.userService.email, "false" ).subscribe( data => {
       this.ongoingMatches = data;
+    }, ()=>{}, ()=>{
+      this.isLoading.matches++;
     })
     this.matchService.getUserMatches( this.userService.email, "true" ).subscribe( data => {
       this.endedMatches = data;
+    }, ()=>{}, ()=>{
+      this.isLoading.matches++;
     })
   }
 

@@ -1,8 +1,8 @@
 <div class="container row mb-4">
 
-  <div class="col col-5">
+  <div *ngIf="!isLoading.user" class="col col-5" id="userInfoDiv">
     <div class="col-12 bg-dark p-3 rounded text-light d-flex h-100">
-      <img src="{{user.avatar}}" class="rounded-circle w-50 h-50 mr-3" alt="user profile image">
+      <img *ngIf="user" src="{{user.avatar}}" class="rounded-circle w-50 mr-3" alt="user profile image">
       <div class="h-auto w-100 d-flex flex-wrap align-items-center">
 
         <div class="w-100">
@@ -13,30 +13,38 @@
       </div>
     </div>
   </div>
+  <div *ngIf="isLoading.user" class="col col-5" id="userInfoDiv-loading">
+    <div class="col-12 bg-dark p-3 rounded h-100 d-flex justify-content-center">
+      <img src="assets/img/loading.gif" class="m-auto" style="height: 5em; width: 5em">
+    </div>
+  </div>
 
-  <div class="col col-7">
+  <div class="col col-7" id="quickActionsDiv">
     <div class="col-12 bg-dark p-3 rounded text-light h-100">
 
       <h3 class="h3 text-center"> Quick actions </h3>
 
-      <div class="row row-cols-3">
+      <div class="row row-cols-3 h-100">
 
-        <div class="col">
-          <button type="button" class="btn btn-primary col p-3">
-            <img src="assets/img/person-plus.svg" class="bi bi-person-plus">
+        <div class="col h-100 text-center">
+          <button type="button" class="btn btn-primary square m-3 p-2" >
+            <img src="assets/img/gear.svg" class="bi" style="height: 4em">
           </button>
+          <p class="m-n2 w-75 ml-auto mr-auto">Settings</p>
         </div>
 
-        <div class="col">
-          <button type="button" class="btn btn-primary col p-3">
-            <img src="assets/img/person-plus.svg" class="bi bi-person-plus">
+        <div class="col h-100 text-center">
+          <button type="button" class="btn btn-primary square m-3 p-2">
+            <img src="assets/img/chat-text.svg" class="bi" style="height: 4em">
           </button>
+          <p class="m-n2 w-75 ml-auto mr-auto">Chats and friend requests</p>
         </div>
 
-        <div class="col">
-          <button type="button" class="btn btn-primary col p-3">
-            <img src="assets/img/person-plus.svg" class="bi bi-person-plus">
+        <div class="col h-100 text-center">
+          <button type="button" class="btn btn-primary square m-3 p-2">
+            <img src="assets/img/shuffle.svg" class="bi" style="height: 4em">
           </button>
+          <p class="m-n2 w-75 ml-auto mr-auto">Random match</p>
         </div>
 
       </div>
@@ -47,8 +55,8 @@
 
 <div class="container row mb-4">
 
-  <div class="col col-6">
-    <div class="col-12 bg-dark p-3 rounded text-light">
+  <div *ngIf="!isLoading.matches" class="col col-6" id="activeMatchesDiv">
+    <div class="col-12 bg-dark p-3 rounded text-light h-100">
 
       <h3 class="h3 text-center"> Ongoing matches </h3>
 
@@ -76,11 +84,16 @@
 
     </div>
   </div>
+  <div *ngIf="isLoading.matches" class="col col-6" id="activeMatchesDiv-loading">
+    <div class="col-12 bg-dark p-3 rounded text-light h-100 d-flex justify-content-center">
+      <img src="assets/img/loading.gif" class="m-auto" style="height: 5em; width: 5em">
+    </div>
+  </div>
 
-  <div class="col col-6">
+  <div *ngIf="!isLoading.matches" class="col col-6" id="finishedMatchesDiv">
     <div class="col-12 bg-dark p-3 rounded text-light h-100 ">
 
-      <h3 class="h3 text-center"> Finished matches</h3>
+      <h3 class="h3 text-center"> Last matches</h3>
 
       <a *ngFor="let match of endedMatches; index as i" href="/match/{{match._id}}" style="cursor: pointer">
         <ul class="list-group list-group-horizontal-sm mb-1">
@@ -97,8 +110,10 @@
               </h6>
             </div>
 
-            <div *ngIf="match.winner.player === 0" class="mr-2" style="height: 1em; width: 1em; background-color: red; border: solid black 1px; border-radius: 100%"></div>
-            <div *ngIf="match.winner.player === 1" class="mr-2" style="height: 1em; width: 1em; background-color: yellow; border: solid black 1px; border-radius: 100%"></div>
+            <div style="width: 10%">
+              <div *ngIf="match.winner.player === 0" class="mr-2" style="height: 1em; width: 1em; background-color: red; border: solid black 1px; border-radius: 100%"></div>
+              <div *ngIf="match.winner.player === 1" class="mr-2" style="height: 1em; width: 1em; background-color: yellow; border: solid black 1px; border-radius: 100%"></div>
+            </div>
 
           </li>
         </ul>
@@ -106,6 +121,12 @@
 
     </div>
   </div>
+  <div *ngIf="isLoading.matches" class="col col-6" id="finishedMatchesDiv-loading">
+    <div class="col-12 bg-dark p-3 rounded text-light h-100 d-flex justify-content-center">
+      <img src="assets/img/loading.gif" class="m-auto" style="height: 5em; width: 5em">
+    </div>
+  </div>
+
 </div>
 
 <div class="container row">
@@ -114,12 +135,9 @@
     <div class="col-12 bg-dark p-3 rounded text-light h-100 position-relative">
       <!-- TODO: mettere la navigazione con freccette -->
       <div class="row position-relative">
-        <div class="col blur h-100 w-100">
+        <div class="col h-100 w-100">
           <h2 class="h2 text-center"> Statistics </h2>
           <h4>Never gonna give you up, never gonna let you down, never gonna run around and desert you</h4>
-        </div>
-        <div class="col position-absolute h-100">
-          <h4 class="h4 text-center text-danger bg-dark shadow"> <b>Statistics for this user are not visible because they are not your friend</b> </h4>
         </div>
       </div>
 
