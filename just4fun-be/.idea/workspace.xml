@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="50b6c8c6-a28e-4a48-8e0d-af753471fd40" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../just4fun-fe/src/environments/environment.prod.example.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/authentication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bin/authentication.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/routes/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/users.ts" beforeDir="false" afterPath="$PROJECT_DIR$/routes/users.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/environments/environment.prod.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/environments/environment.prod.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,7 +133,7 @@
       <workItem from="1629387040208" duration="8258000" />
       <workItem from="1629467451255" duration="4829000" />
       <workItem from="1629557987314" duration="5285000" />
-      <workItem from="1629617436678" duration="2309000" />
+      <workItem from="1629617436678" duration="2705000" />
     </task>
     <servers />
   </component>

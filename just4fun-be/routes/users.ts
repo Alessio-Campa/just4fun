@@ -60,7 +60,7 @@ router.get('/:email', passport_auth(['anonymous', 'jwt']), (req, res, next) => {
         return res.status(200).json(user);
     }).catch((err) => {
         return next( {statusCode:500, error: true, errormessage:"DB error"+err.errormessage} );
-    })
+    });
 });
 
 router.post('/', passport_auth(['anonymous', 'jwt']), (req, res, next) => {
@@ -98,11 +98,22 @@ router.post('/', passport_auth(['anonymous', 'jwt']), (req, res, next) => {
 
 router.delete('/:email', passport_auth('jwt'), (req, res, next)=>{
     if((req.user as User).hasModeratorRole()) {
-        user.getModel().deleteMany({email: req.params.email}).then((user) => {
-            return next({statusCode:200, error: false, errormessage:""});
-        }).catch((err)=>{
+        user.getModel().findOne({email: req.params.email}).then((u) => {
+           if(!u.hasModeratorRole())
+           {
+               u.delete().then(() => {
+                   return next({statusCode:200, error: false, errormessage:""});
+               }).catch((err)=>{
+                   return next({statusCode:500, error: true, errormessage:"DB error"+err.errormessage});
+               });
+           }
+           else
+           {
+               return next({statusCode:403, error: true, errormessage:"You cannot delete a moderator"});
+           }
+        }).catch((err) => {
             return next({statusCode:500, error: true, errormessage:"DB error"+err.errormessage});
-        })
+        });
     }
     else
     {
