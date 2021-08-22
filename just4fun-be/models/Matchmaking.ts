@@ -63,16 +63,18 @@ matchMakingSchema.methods.searchMatch = function (): void {
 		thisPlayer.remove();
 		opponentPlayer.remove();
 		clearInterval(interval);
-		let match:Match = newMatch(thisPlayer.playerID, opponentPlayer.playerID, ()=>{});
-		let message = {
-			subject: "matchMakingFound",
-			matchID: match._id,
-			player0: match.player0,
-			player1: match.player1
-		};
-		ios.to(thisPlayer.playerID).emit("broadcast", message);
-		ios.to(opponentPlayer.playerID).emit("broadcast", message);
-		console.log((thisPlayer.playerID + " " + opponentPlayer.playerID).bgWhite.black);
+		let match:Match = newMatch(thisPlayer.playerID, opponentPlayer.playerID);
+		match.save().then(() => {
+			let message = {
+				subject: "matchMakingFound",
+				matchID: match._id,
+				player0: match.player0,
+				player1: match.player1
+			};
+			ios.to(thisPlayer.playerID).emit("broadcast", message);
+			ios.to(opponentPlayer.playerID).emit("broadcast", message);
+			console.log((thisPlayer.playerID + " " + opponentPlayer.playerID).bgWhite.black);
+		});
 	}
 
 	let matchmakeFail = function (thisPlayer) {
