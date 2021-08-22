@@ -35,11 +35,16 @@ export class ChatsComponent implements OnInit {
     });
     this.userMail = this.router.url.split('/').pop()
     this.chatService.getChatsByUser(this.userService.email).subscribe(data => {
+      console.log(data)
       this.chats = data;
       if (this.chats.length > 0)
         this.selectedChat = this.chats[0]
-      console.log(data)
     })
+  }
+
+  onChatSelect(i): void {
+    this.selectedChat = this.chats[i];
+    console.log(this.selectedChat)
   }
 
 }

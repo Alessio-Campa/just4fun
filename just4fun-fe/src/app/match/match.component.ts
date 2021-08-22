@@ -17,7 +17,7 @@ export class MatchComponent implements OnInit {
   board;
   username0;
   username1;
-  ableToViewMessages: boolean = false;
+  canViewMessages: boolean = false;
 
   constructor(private router: Router, private ms: MatchService, private userService: UserService,
               private ios: SocketioService) { }
@@ -25,7 +25,7 @@ export class MatchComponent implements OnInit {
   ngOnInit(): void {
     let matchID = this.router.url.split('/').pop();
 
-    if (this.userService.isLoggedIn) this.ableToViewMessages = true;
+    if (this.userService.isLoggedIn) this.canViewMessages = true;
 
     this.ms.getMatchById(matchID).subscribe( data => {
       this.match = data;

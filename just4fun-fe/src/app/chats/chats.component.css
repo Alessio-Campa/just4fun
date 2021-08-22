@@ -1,0 +1,14 @@
+.hoverable{
+  transition: 0.3s;
+}
+.hoverable:hover{
+  opacity: 0.75;
+}
+
+.message-preview {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* number of lines to show */
+  -webkit-box-orient: vertical;
+}

@@ -30,14 +30,13 @@
 
       </div>
     </div>
-    <div *ngIf="ableToViewMessages" class="col-md-4 mb-4">
-      <!--
-        solo se siamo loggati possiamo vedere la chat,
-        sennò un player potrebbe facilmente spiare la chat degli spettatori
-      -->
+    <div *ngIf="canViewMessages" class="col-md-4 mb-4">
+
       <div class="col-md-12" style="width: 700px; margin: auto">
         <div style="width: 100%; height: 100px; background-color: grey">
-          <app-messages></app-messages>
+          <!-- TODO: pigliare la chat da db
+          <app-messages [chat]=""></app-messages>
+          -->
         </div>
       </div>
     </div>
