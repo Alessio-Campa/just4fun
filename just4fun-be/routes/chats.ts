@@ -11,13 +11,16 @@ router.get("/", express_jwt_auth, (req, res, next)=>{
     let filter = {};
     if (req.query.user)
         filter['members'] = req.query.user;
+
     if (req.query.matchID === 'null')
-        filter['matchID'] = { $exists: false };
+        filter['matchID'] = null;
     else if (req.query.matchID)
         filter['matchID'] = req.query.matchID;
 
 
+
     chat.getModel().find(filter).then(data => {
+        console.log(data)
         return res.status(200).json(data)
     }).catch(err => {
         return next({status_code: 500, error: true, errormessage: err})

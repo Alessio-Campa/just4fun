@@ -5,7 +5,8 @@ import {environment} from "../../environments/environment";
 import {UserService} from "./user.service";
 
 export interface Chat{
-  idMatch: string,
+  _id: string,
+  matchID: string,
   members: string[],
   messages: {
     sender: string,
@@ -27,10 +28,13 @@ export class ChatService {
         'Authorization': this.userService.tokenAuth(),
         'cache-control': 'no-cache',
         'Content-Type': 'application/json',
-      })
+      }),
+      params:{
+        matchID: matchId
+      }
     };
 
-    return this.http.get<Chat>(`${environment.serverUrl}/chat/${matchId}`, options);
+    return this.http.get<Chat>(`${environment.serverUrl}/chat`, options);
   }
 
   getChatsByUser(user: string): Observable<any>{
@@ -47,6 +51,22 @@ export class ChatService {
     };
 
     return this.http.get<Chat[]>(`${environment.serverUrl}/chat`, options);
+  }
+
+  sendMessage(sender, message, chatID): Observable<any>{
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': this.userService.tokenAuth(),
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json',
+      })
+    };
+    let body = {
+      sender: sender,
+      text: message
+    }
+
+    return this.http.put(`${environment.serverUrl}/chat/${chatID}/message`, body, options);
   }
 
 }

@@ -5,24 +5,21 @@
       da riprogettare come container di messages
     -->
 
-    <div *ngFor="let chat of chats" class="card mt-2 p-2">
+    <div *ngFor="let chat of chats; index as i" class="card mt-2 p-2 hoverable" style="cursor: pointer" (click)="onChatSelect(i)">
       <b class="mb-1 text-center"> {{chat.members[0] == userMail ? chat.members[1] : chat.members[0]}} </b>
-      <div class="d-flex justify-content-between">
-        <small>{{chat.messages[chat.messages.length-1].sender}}:  <span class="text-secondary"> {{chat.messages[chat.messages.length-1].text}} </span></small>
-        <small class="small text-secondary text-right h-100 mt-1" style="font-size: 0.5em"> {{chat.messages[chat.messages.length-1].timestamp | date: 'HH:mm'}} </small>
+      <div *ngIf="chat.messages.length > 0" class="d-flex justify-content-between">
+        <small class="message-preview">{{chat.messages[chat.messages.length-1].sender}}:  <span class="text-secondary"> {{chat.messages[chat.messages.length-1].text}} </span></small>
+
+        <div class="h-100">
+          <small class="small text-secondary text-right h-100" style="font-size: 0.5em; bottom: 0"> {{chat.messages[chat.messages.length-1].timestamp | date: 'HH:mm'}} </small>
+        </div>
+
       </div>
     </div>
 
   </div>
-  <div class="container-fluid h-100 w-75 bg-dark overflow-auto rounded p-1">
-    <div class="w-100 bg-secondary rounded mr-n2">
-      <h1 class="text-center"> {{selectedChat.members[0] == userMail ? selectedChat.members[1] : selectedChat.members[0]}} </h1>
-    </div>
-    <div *ngFor="let message of selectedChat.messages" class="card m-2 mt-1 p-2 w-75" [ngClass]="{'float-right': message.sender === userMail, 'float-left': message.sender !== userMail}">
-      <b class="mb-1"> {{message.sender}} </b>
-      {{message.text}}
-      <small class="small text-secondary text-right"> {{message.timestamp | date: 'dd MMM, HH:mm'}} </small>
-    </div>
+  <div class="container h-100 w-75 bg-dark rounded p-1 ">
+    <app-messages [chat]="selectedChat"></app-messages>
   </div>
 
 </div>
