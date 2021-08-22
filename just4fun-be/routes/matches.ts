@@ -87,7 +87,7 @@ router.post("/:id", express_jwt_auth, (req, res, next) =>{
     return res.status(200).json({objectID:m._id});
 })
 
-router.put("/:idMatch/:id", express_jwt_auth, (req, res, next)=>{
+router.put("/:matchID/:id", express_jwt_auth, (req, res, next)=>{
     if (req.params.id !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 

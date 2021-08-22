@@ -6,7 +6,7 @@ import {UserService} from "./user.service";
 
 export interface Chat{
   _id: string,
-  idMatch: string,
+  matchID: string,
   members: string[],
   messages: {
     sender: string,
@@ -28,10 +28,13 @@ export class ChatService {
         'Authorization': this.userService.tokenAuth(),
         'cache-control': 'no-cache',
         'Content-Type': 'application/json',
-      })
+      }),
+      params:{
+        matchID: matchId
+      }
     };
 
-    return this.http.get<Chat>(`${environment.serverUrl}/chat/${matchId}`, options);
+    return this.http.get<Chat>(`${environment.serverUrl}/chat`, options);
   }
 
   getChatsByUser(user: string): Observable<any>{
@@ -62,6 +65,7 @@ export class ChatService {
       sender: sender,
       text: message
     }
+
     return this.http.put(`${environment.serverUrl}/chat/${chatID}/message`, body, options);
   }
 

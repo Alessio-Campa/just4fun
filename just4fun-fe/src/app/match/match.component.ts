@@ -5,6 +5,7 @@ import { UserService } from "../services/user.service";
 import { SocketioService } from "../services/socketio.service";
 import { Match, MatchService } from "../services/match.service";
 import {skipUntil} from "rxjs/operators";
+import {Chat, ChatService} from "../services/chat.service";
 
 @Component({
   selector: 'app-match',
@@ -18,9 +19,10 @@ export class MatchComponent implements OnInit {
   username0;
   username1;
   canViewMessages: boolean = false;
+  matchChat: Chat = null;
 
   constructor(private router: Router, private ms: MatchService, private userService: UserService,
-              private ios: SocketioService) { }
+              private ios: SocketioService, private chatService: ChatService) { }
 
   ngOnInit(): void {
     let matchID = this.router.url.split('/').pop();
@@ -62,6 +64,11 @@ export class MatchComponent implements OnInit {
       }
 
     });
+
+    // fetch chat
+    this.chatService.getChatByMatch(matchID).subscribe(data => {
+      this.matchChat = data[0];
+    })
   }
 
   makeMove(column): void {
