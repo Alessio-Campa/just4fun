@@ -57,3 +57,4 @@ export function signToken(tokenData: object)
 }
 
 export let express_jwt_auth = jwt({secret: process.env.JWT_SECRET, algorithms: ["HS256"]});
+export function passport_auth(strategy: string | passport.Strategy | string[]) { return passport.authenticate(strategy, {session: false}); }

@@ -1,10 +1,9 @@
 import colors = require('colors')
 colors.enabled = true;
 import express = require('express')
-import passport = require('passport')
 import * as user from '../models/User'
 import {User} from "../models/User";
-import {signToken} from "../bin/authentication";
+import {signToken, passport_auth} from "../bin/authentication";
 
 declare global{
     namespace Express{
@@ -23,12 +22,12 @@ router.get("/", (req, res, next)=>{
     next({statusCode: 200, api_version:"1.0", endpoints:["/chat", "/match", "/user"]})
 })
 
-router.get('/login', passport.authenticate('basic', {session: false}), (req, res, next)=>{
+router.get('/login', passport_auth('basic'), (req, res, next)=>{
     let tokenData = {
-        username: req.user.username,
-        roles: req.user.roles,
+        id: req.user.id,
         email: req.user.email,
-        id: req.user.id
+        username: req.user.username,
+        roles: req.user.roles
     };
 
     console.log("Login granted. Generating token" );
@@ -42,7 +41,6 @@ router.get('/login', passport.authenticate('basic', {session: false}), (req, res
     }).catch(err => {
         return next({statusCode: 500, error: true, errormessage: err.errormessage});
     });
-
 });
 
 export = router;

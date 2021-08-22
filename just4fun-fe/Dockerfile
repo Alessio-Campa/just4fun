@@ -5,9 +5,9 @@ RUN npm install
 COPY . .
 RUN npm run build --prod
 
-FROM python:3
-ENV PYTHONUNBUFFERED 1
+FROM robertohuertasm/microserver
 WORKDIR '/app'
 COPY --from=builder /app/dist/just4fun-fe /app
 EXPOSE 4200
-CMD python -m http.server 4200
+CMD ["/microserver", "/app", "-p", "4200"]
+
