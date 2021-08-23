@@ -42,7 +42,6 @@ export class MessagesComponent implements OnInit, OnChanges { //rappresenta una 
   }
 
   ngOnChanges(changes: SimpleChanges){
-    console.log(changes)
     if (changes.chat.currentValue.matchID !== null)
       this.chatTitle = 'Match chat'
     else

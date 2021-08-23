@@ -164,10 +164,9 @@ export class UserService {
   }
 
   sendFriendRequest(sender: string, receiver: string): Observable<any>{
-    let token = this.token;
     let options = {
       headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + token,
+        'Authorization': this.tokenAuth(),
         'cache-control': 'no-cache',
         'Content-Type': 'application/json',
       })
@@ -177,7 +176,51 @@ export class UserService {
     }
 
     return this.http.post(`${environment.serverUrl}/user/${sender}/friend`, body, options);
+  }
 
+  acceptFriendRequest(user: string, accepted: string): Observable<any>{
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': this.tokenAuth(),
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json',
+      })
+    };
+    let body = {
+      accept: accepted
+    }
+
+    return this.http.put(`${environment.serverUrl}/user/${user}/friend`, body, options);
+  }
+
+  refuseFriendRequest(user: string, refused: string): Observable<any>{
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': this.tokenAuth(),
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json',
+      })
+    };
+    let body = {
+      refuse: refused
+    };
+
+    return this.http.put(`${environment.serverUrl}/user/${user}/friend`, body, options);
+  }
+
+  unfriend(user: string, friend: string): Observable<any>{
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': this.tokenAuth(),
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json',
+      }),
+      params: {
+        friend: friend
+      }
+    };
+
+    return this.http.delete(`${environment.serverUrl}/user/${user}/friend`, options);
   }
 
   get isLoggedIn()

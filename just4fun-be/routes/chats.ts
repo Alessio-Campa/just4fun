@@ -1,15 +1,17 @@
 import express = require('express')
 import {isChat, Chat} from "../models/Chat";
 import * as chat from "../models/Chat";
-import { express_jwt_auth } from "../bin/authentication";
+import {express_jwt_auth, passport_auth} from "../bin/authentication";
 import jwt_decode from "jwt-decode"
 import {User} from "../models/User";
 import {getIoServer} from "../bin/socket";
 
 let router = express.Router();
 
-router.get("/", express_jwt_auth, (req, res, next)=>{
+router.get("/", passport_auth(['jwt']), (req, res, next)=>{
+    let user = req.user as User
     let filter = {};
+
     if (req.query.user)
         filter['members'] = req.query.user;
 
@@ -20,10 +22,15 @@ router.get("/", express_jwt_auth, (req, res, next)=>{
     // TODO: controllare che ci sia almeno 1, roba di campa.
 
     chat.getModel().find(filter).then(data => {
-        console.log(data)
+        data.forEach( (e: Chat) => {
+            if ( (e.members[0] == (req.user as User).email && !(req.user as User).friends.includes(e.members[1])) || (e.members[1] == (req.user as User).email && !(req.user as User).friends.includes(e.members[0])) ){
+                let idx = data.indexOf(e);
+                data.splice(idx, 1);
+            }
+        })
         return res.status(200).json(data)
     }).catch(err => {
-        return next({status_code: 500, error: true, errormessage: err})
+        return next({status_code: 500, error: true, errormessage: err.message})
     })
 })
 

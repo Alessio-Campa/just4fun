@@ -190,10 +190,13 @@ userSchema.methods.acceptFriendRequest = function (requester: string, res, next)
     let user = this;
     if (user.friendRequests.includes(requester)) {
         getModel().findOne({email: requester}).then(data => {
-            data.friends.push(user.email);
             let idx = user.friendRequests.indexOf(requester)
             user.friendRequests.splice(idx, 1);
             user.friends.push(requester);
+
+            if (data.friends.includes(user.email))
+                throw new Error("Request already accepted")
+            data.friends.push(user.email);
 
             data.save();
             user.save().then(() => next({statusCode: 200, error: false, message: "Update successful"}));

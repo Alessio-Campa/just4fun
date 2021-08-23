@@ -61,7 +61,6 @@ export class ProfileComponent implements OnInit {
     this.matchService.getUserMatches(this.userService.email, 'true').subscribe(data => {
       matches = data;
     }, ()=>{}, ()=>{
-      console.log("HELOOOOO")
       this.isLoading.statistics = 0
       matches.forEach(e => {
         if ((e.winner.player === 0 && e.player0 === this.userService.email) || (e.winner.player === 1 && e.player1 === this.userService.email))
@@ -73,7 +72,6 @@ export class ProfileComponent implements OnInit {
       this.statistics.push({name: 'Matches played', val: won+lost})
       this.statistics.push({name: 'Won', val: won})
       this.statistics.push({name: 'Lost', val: lost})
-      console.log(this.statistics)
     })
   }
 

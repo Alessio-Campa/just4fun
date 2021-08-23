@@ -4,17 +4,20 @@
     <div class="w-100 d-flex justify-content-center mt-3 mb-2">
       <small class="text-secondary"> Chats </small>
     </div>
-    <div *ngFor="let chat of chats; index as i" class="card mt-2 p-2 hoverable" style="cursor: pointer" (click)="onChatSelect(i)">
-      <b class="mb-1 text-center"> {{chat.members[0] == userMail ? chat.members[1] : chat.members[0]}} </b>
-      <div *ngIf="chat.messages.length > 0" class="d-flex justify-content-between">
-        <small class="message-preview">{{chat.messages[chat.messages.length-1].sender}}:  <span class="text-secondary"> {{chat.messages[chat.messages.length-1].text}} </span></small>
+    <div *ngIf="!isLoading.chats">
+      <div *ngFor="let chat of chats; index as i" class="card mt-2 p-2 hoverable" style="cursor: pointer" (click)="onChatSelect(i)">
+        <b class="mb-1 text-center"> {{chat.members[0] == userMail ? chat.members[1] : chat.members[0]}} </b>
+        <div *ngIf="chat.messages.length > 0" class="d-flex justify-content-between">
+          <small class="message-preview">{{chat.messages[chat.messages.length-1].sender}}:  <span class="text-secondary"> {{chat.messages[chat.messages.length-1].text}} </span></small>
 
-        <div class="h-100">
-          <small class="small text-secondary text-right h-100" style="font-size: 0.5em; bottom: 0"> {{chat.messages[chat.messages.length-1].timestamp | date: 'HH:mm'}} </small>
+          <div class="h-100">
+            <small class="small text-secondary text-right h-100" style="font-size: 0.5em; bottom: 0"> {{chat.messages[chat.messages.length-1].timestamp | date: 'HH:mm'}} </small>
+          </div>
+
         </div>
-
       </div>
     </div>
+
 
     <div class="w-100 d-flex justify-content-center mt-3 mb-2">
       <small class="text-secondary"> Friend requests</small>
@@ -32,7 +35,8 @@
   </div>
 
   <div class="container h-100 w-75 bg-dark rounded p-1 ">
-    <app-messages [chat]="selectedChat"></app-messages>
+    <app-messages *ngIf="selectedChat !== null" [chat]="selectedChat"></app-messages>
+    <div *ngIf="selectedChat === null" class="h1 text-center text-secondary mt-3"> You have no chats at the moment </div>
   </div>
 
 </div>

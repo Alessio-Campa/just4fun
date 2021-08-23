@@ -16,14 +16,6 @@ router.get('/', passport_auth(['anonymous', 'jwt']), (req, res, next) => {
         isPasswordTemporary:0, //Security reason
         avatar:0  //Size of response reason
     };
-    if(!req.user || !(req.user as User).hasAdminRole())
-    {
-        //Information available only to moderator
-        projection['following'] = 0;
-        projection['friends'] = 0;
-        projection['friendRequests'] = 0;
-        projection['roles'] = 0;
-    }
 
     user.getModel().find({}, projection).then((users) => {
         return res.status(200).json(users);
@@ -49,10 +41,6 @@ router.get('/:email', passport_auth(['anonymous', 'jwt']), (req, res, next) => {
     if(!req.user || (req.user.email != req.params.email && !(req.user as User).hasModeratorRole()))
     {
         //Information only for owner or moderator
-        projection['roles'] = 0;
-        projection['following'] = 0;
-        projection['friends'] = 0;
-        projection['friendRequests'] = 0;
         projection['roles'] = 0;
     }
 
@@ -204,7 +192,7 @@ router.delete('/:id/friend', express_jwt_auth, (req, res, next) => {
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
     user.getModel().findOne({email: req.user.email}).then((data) => {
-        data.removeFriend(req.body.friend, res, next);
+        data.removeFriend(req.query.friend.toString(), res, next);
     }).catch((err) => {
         return next({statusCode: 500, error: true, errormessage: "DB error: "+err.errormessage});
     });

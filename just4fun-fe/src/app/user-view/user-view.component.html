@@ -66,15 +66,27 @@
 <div class="container row">
   <div class="col-12">
 
-    <div class="col-12 bg-dark p-3 rounded text-light h-100 position-relative">
-      <!-- TODO: mettere la navigazione con freccette -->
-      <div class="row position-relative">
+    <div *ngIf="!isLoading.statistics && !isLoading.buttons" class="col-12 bg-dark p-3 rounded text-light h-100 position-relative">
+      <div *ngIf="!isFriend" class="row position-relative">
         <div class="col blur h-100 w-100">
           <h2 class="h2 text-center"> Statistics </h2>
           <h4>Never gonna give you up, never gonna let you down, never gonna run around and desert you</h4>
         </div>
         <div class="col position-absolute h-100">
           <h4 class="h4 text-center text-danger bg-dark shadow"> <b>Statistics for this user are not visible because they are not your friend</b> </h4>
+        </div>
+      </div>
+
+      <div *ngIf="isFriend">
+        <h2 class="h2 text-center"> Statistics </h2>
+
+        <div class="row row-cols-3 d-flex">
+          <div *ngFor="let stat of statistics" class="col mb-3">
+            <div class="card text-dark">
+              <h4 class="w-100 text-center card-header"> <b>{{stat.name}}</b> </h4>
+              <h5 class="w-100 text-center card-body"> {{stat.val}} </h5>
+            </div>
+          </div>
         </div>
       </div>
 
