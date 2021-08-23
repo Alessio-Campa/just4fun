@@ -1,10 +1,9 @@
 <div class="container-fluid d-flex" style="height: 85vh">
   <div class="container-fluid h-100 w-25 ml-n2 bg-dark overflow-auto rounded">
 
-    <!--
-      da riprogettare come container di messages
-    -->
-
+    <div class="w-100 d-flex justify-content-center mt-3 mb-2">
+      <small class="text-secondary"> Chats </small>
+    </div>
     <div *ngFor="let chat of chats; index as i" class="card mt-2 p-2 hoverable" style="cursor: pointer" (click)="onChatSelect(i)">
       <b class="mb-1 text-center"> {{chat.members[0] == userMail ? chat.members[1] : chat.members[0]}} </b>
       <div *ngIf="chat.messages.length > 0" class="d-flex justify-content-between">
@@ -17,7 +16,21 @@
       </div>
     </div>
 
+    <div class="w-100 d-flex justify-content-center mt-3 mb-2">
+      <small class="text-secondary"> Friend requests</small>
+    </div>
+    <div *ngFor="let request of friendRequests; index as i" class="card mt-2 p-2">
+      <div class="d-flex flex-wrap justify-content-between ">
+        <b class="mb-1"> {{ request }}</b>
+        <div>
+          <img src="assets/img/check2.svg" class="btn btn-success p-0 mr-1" style="height: 1.5em" (click)="acceptRequest(request)">
+          <img src="assets/img/x.svg" class="btn btn-danger p-0" style="height: 1.5em" (click)="refuseRequest(request)">
+        </div>
+      </div>
+    </div>
+
   </div>
+
   <div class="container h-100 w-75 bg-dark rounded p-1 ">
     <app-messages [chat]="selectedChat"></app-messages>
   </div>

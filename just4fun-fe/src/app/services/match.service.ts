@@ -41,14 +41,14 @@ export class MatchService {
     return this.http.get<Match[]>(environment.serverUrl + "/match", options)
   }
 
-  getUserMatches(mail: string, areEnded: string) {
+  getUserMatches(mail: string, areEnded: string = null, limit: number = 0) {
     let options = {
       headers: new HttpHeaders({
         'cache-control': 'no-cache',
         'Content-Type': 'application/json',
       }),
       params:{
-        limit: 5,
+        limit: limit,
         ended: areEnded,
         player: mail
       }

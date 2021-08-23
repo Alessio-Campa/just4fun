@@ -35,7 +35,7 @@ export class MessagesComponent implements OnInit, OnChanges { //rappresenta una 
   ngOnChanges(changes: SimpleChanges){
     console.log(changes)
     if (changes.chat.currentValue.matchID !== null)
-      this.chatTitle = 'MatchChat'
+      this.chatTitle = 'Match chat'
     else
       this.chatTitle = changes.chat.currentValue.members[0] == this.userMail ? changes.chat.currentValue.members[1] : changes.chat.currentValue.members[0]
 

@@ -11,9 +11,10 @@ import {SocketioService} from "../services/socketio.service";
 })
 export class ChatsComponent implements OnInit {
 
-  chats: Chat[];
   userMail: string;
+  chats: Chat[];
   selectedChat: Chat = null;
+  friendRequests;
 
   constructor(private chatService: ChatService, private userService: UserService, private router: Router,
               private ios: SocketioService) {
@@ -33,18 +34,37 @@ export class ChatsComponent implements OnInit {
         // TODO: fetcha i messaggi dal server, fa mario
       }
     });
+
+    // TODO: da eliminare e cambiare URL
+    // get user mail
     this.userMail = this.router.url.split('/').pop()
+
+    // get all user private chats (that are not relative to any match)
     this.chatService.getChatsByUser(this.userService.email).subscribe(data => {
-      console.log(data)
       this.chats = data;
       if (this.chats.length > 0)
         this.selectedChat = this.chats[0]
     })
+
+    // get all friend requests and display them as chats
+    this.userService.get_user_by_mail(this.userMail).subscribe(data => {
+      this.friendRequests = data.friendRequests;
+    })
+
   }
 
+  // selection of a new chat to show. Updates the app-messages binding
   onChatSelect(i): void {
     this.selectedChat = this.chats[i];
     console.log(this.selectedChat)
+  }
+
+  acceptRequest(email){
+
+  }
+
+  refuseRequest(email){
+
   }
 
 }
