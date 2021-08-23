@@ -65,6 +65,6 @@ export class MatchService {
     let headers = {
       'Authorization': this.userService.tokenAuth(),
       'Content-Type': 'application/json'}
-    return this.http.put(environment.serverUrl + '/match/' + matchID + '/' + playerID,{column: column}, {headers} );
+    return this.http.post(environment.serverUrl + '/match/' + matchID + '/moves',{column: column, user: playerID}, {headers});
   }
 }

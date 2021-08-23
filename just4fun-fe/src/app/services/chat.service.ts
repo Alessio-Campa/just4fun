@@ -37,6 +37,16 @@ export class ChatService {
     return this.http.get<Chat>(`${environment.serverUrl}/chat`, options);
   }
 
+  fetchChat(chatID): Observable<any>{
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': this.userService.tokenAuth(),
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json',
+      })};
+    return this.http.get<Chat>(`${environment.serverUrl}/chat/` + chatID, options);
+  }
+
   getChatsByUser(user: string): Observable<any>{
     let options = {
       headers: new HttpHeaders({

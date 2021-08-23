@@ -22,14 +22,23 @@ export class MessagesComponent implements OnInit, OnChanges { //rappresenta una 
       router.navigate(['/']);
   }
 
-  MessageFetch() {
-    // eseguirà l'operazione di fetching per una singola chat,
-    // sia essa personale con un amico, o pubblica di un match
-
+  messageFetch() {
+    this.chatService.fetchChat(this.chat._id).subscribe((data) =>{
+      console.log(data);
+    });
   }
 
   ngOnInit(): void {
     this.userMail = this.userService.email;
+
+    this.ios.connect().subscribe((message)=>{
+      if (message.subject === 'newMessageReceived') {
+        console.log('start fetching');
+        this.messageFetch();
+        console.log('fetch ended');
+      }
+    });
+
   }
 
   ngOnChanges(changes: SimpleChanges){

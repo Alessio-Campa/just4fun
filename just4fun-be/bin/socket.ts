@@ -18,17 +18,13 @@ function startSocketIoServer(server: Server): io.Server {
 
         socket.on('watching', function (matchID){
             socket.join(matchID + 'watchers');
+            socket.to(socket).emit('broadcast', {subject: 'newMessageReceived'})
             console.log((socket.id + " started watching at the match: " + matchID).yellow)
         });
 
         socket.on('playing', function (matchID){
-            /*TODO?: forse da eliminare
-                    dato che i giocatori non vedono i messaggi degli spettatori, ha senso
-                    mantenerli distinti per motivi di efficienza.
-                    Non avrebbe senso notificare i giocatori per un numero, probabilmente grande
-                    di messaggi che non potrebbero leggere.
-             */
             socket.join(matchID + 'players');
+            socket.to(socket).emit('broadcast', {subject: 'newMessageReceived'})
             console.log((socket.id + " started playing at the match: " + matchID).yellow)
         });
     });

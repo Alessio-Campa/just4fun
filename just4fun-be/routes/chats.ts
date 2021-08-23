@@ -4,6 +4,7 @@ import * as chat from "../models/Chat";
 import { express_jwt_auth } from "../bin/authentication";
 import jwt_decode from "jwt-decode"
 import {User} from "../models/User";
+import {getIoServer} from "../bin/socket";
 
 let router = express.Router();
 
@@ -16,8 +17,7 @@ router.get("/", express_jwt_auth, (req, res, next)=>{
         filter['matchID'] = null;
     else if (req.query.matchID)
         filter['matchID'] = req.query.matchID;
-
-
+    // TODO: controllare che ci sia almeno 1, roba di campa.
 
     chat.getModel().find(filter).then(data => {
         console.log(data)
@@ -26,6 +26,15 @@ router.get("/", express_jwt_auth, (req, res, next)=>{
         return next({status_code: 500, error: true, errormessage: err})
     })
 })
+
+router.get("/:chatID", express_jwt_auth, (req, res, next)=>{
+    chat.getModel().find({id: req.params.chatID}).then(data => {
+        console.log(data)
+        return res.status(200).json(data)
+    }).catch(err => {
+        return next({status_code: 500, error: true, errormessage: err})
+    })
+});
 
 router.post("/:id", express_jwt_auth, (req, res, next)=> {
     if (req.params.id !== req.user.email)
@@ -43,20 +52,40 @@ router.post("/:id", express_jwt_auth, (req, res, next)=> {
 })
 
 router.put("/:idChat/message", express_jwt_auth, (req, res, next)=> {
+    let ios = getIoServer();
+    let c: Chat;
+    let message = {
+        subject: 'newMessageReceived'
+        // TODO: potrei aggiungere nuove info, ma non roba sensibile
+    };
     if (req.body.sender !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
     chat.getModel().findById(req.params.idChat).then((data)=> {
-        let c: Chat;
         if (isChat(data)) c = data;
         c.messages.push({
             sender: req.body.sender,
             text: req.body.text,
             timestamp: Date.now()
         })
-        data.save()
+        data.save();
+
     }).then(() => {
-        // TODO: notificare quelli che guardano/l'altro user, fa mario
+        if (c.matchID) {
+            ios.to(c.matchID + 'watchers').emit('broadcast', message);
+            console.log("notifying watchers of " + c.matchID);
+            if (req.body.sender) {
+                console.log("notifying players of " + c.matchID);
+                ios.to(c.matchID + 'players').emit('broadcast', message);
+            }
+        }
+        else {
+            //let receiver = (c.members[1] === req.body.sender) ? c.members[0] : c.members[1];
+            ios.to(c.members[0]).emit('broadcast', message);
+            ios.to(c.members[1]).emit('broadcast', message);
+            console.log("notifying " + c.members[0]);
+            console.log("notifying " + c.members[1]);
+        }
         return res.status(200).json({error: false, message: "Object created"})
     }).catch((err) => {
         return next({status_code: 400, error: true, errormessage: err.message})

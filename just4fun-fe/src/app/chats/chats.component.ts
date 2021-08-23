@@ -22,18 +22,7 @@ export class ChatsComponent implements OnInit {
       router.navigate(['/'])
   }
 
-  MessageFetch() {
-    // dovrà lanciare l'operazione di fetching per ogni singola chat,
-    // ottimizzabile senza rivelare info sensibili come il mittente?
-
-  }
-
   ngOnInit(): void {
-    this.ios.connect().subscribe((message)=>{
-      if (message.subject === 'newMessageRecived') {
-        // TODO: fetcha i messaggi dal server, fa mario
-      }
-    });
 
     // TODO: da eliminare e cambiare URL
     // get user mail

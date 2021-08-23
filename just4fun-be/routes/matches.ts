@@ -110,7 +110,7 @@ router.post("/:matchID/moves", express_jwt_auth, (req, res, next)=>{
     if (req.body.user !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
-    match.getModel().findById(req.params.idMatch).then((m: Match) => {
+    match.getModel().findById(req.params.matchID).then((m: Match) => {
         if (req.body.user !== m.player0 && req.body.user !== m.player1) // check if user is player 0 or 1
             return next({status_code: 403, error: true, errormessage: "User is not player for this match"});
 
@@ -121,12 +121,12 @@ router.post("/:matchID/moves", express_jwt_auth, (req, res, next)=>{
             return next({status_code:500, error: true, errormessage:e.message});
         }
         m.save().then(() => {
-            return next({status_code:200, error: false, edit:"Added disk in column: " + req.body.column});
+            return res.status(200).json({error: false, edit:"Added disk in column: " + req.body.column})
         }).catch((err) => {
             return next({status_code:500, error: true, errormessage:"An error occurred while saving data: " + err});
         })
     }).catch((err) => {
-        return next({status_code:500, error: true, errormessage: err.errormessage});
+        return next({status_code:500, error: true, errormessage: err.message});
     });
 })
 
