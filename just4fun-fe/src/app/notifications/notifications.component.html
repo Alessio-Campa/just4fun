@@ -1,0 +1,40 @@
+<div class="row row-cols-2">
+  <div class="col text-light mb-4 h-100">
+    <div class="col-12 bg-dark rounded p-2">
+      <h2 class="text-center text-light" style="text-underline: white"> <u class="hoverable" (click)="navigateMessages()" style="cursor: pointer"> Messages </u> </h2>
+    </div>
+  </div>
+
+  <div class="col text-light mb-4 h-100">
+    <div class="col-12 bg-dark rounded p-2">
+      <h2 class="text-center"> Friend requests </h2>
+
+      <div *ngFor="let n of notifications">
+        <div *ngIf="n.type === 'request'"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="col text-light mb-4 h-100">
+    <div class="col-12 bg-dark rounded p-2">
+      <h2 class="text-center"> Match invitations </h2>
+    </div>
+  </div>
+
+  <div class="col text-light mb-4 h-100">
+    <div class="col-12 bg-dark rounded p-2">
+      <h2 class="text-center"> Others </h2>
+      <div *ngFor="let n of notifications">
+
+        <div *ngIf="n.type === 'follow'" class="card card-body text-dark d-block mb-2">
+          <b> <a href="/user/{{n.content}}" class="text-dark">{{n.content}}</a> </b> started following you
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<h1> TODO: da fare il tutto con tanti dropdown alla subnautica</h1>

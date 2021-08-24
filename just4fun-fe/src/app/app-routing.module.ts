@@ -12,6 +12,7 @@ import {ProfileComponent} from "./profile/profile.component";
 import {UserViewComponent} from "./user-view/user-view.component";
 import {MatchmakingComponent} from "./matchmaking/matchmaking.component";
 import {ChatsComponent} from "./chats/chats.component";
+import {NotificationsComponent} from "./notifications/notifications.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -28,9 +29,8 @@ const routes: Routes = [
       {path: ':mail', component: UserViewComponent}
     ]},
   {path: 'matchmaking', component: MatchmakingComponent},
-  {path: 'messages', children: [
-      {path: ':mail', component: ChatsComponent}
-    ]}
+  {path: 'messages',  component: ChatsComponent},
+  {path: 'notifications', component: NotificationsComponent}
 ];
 
 @NgModule({

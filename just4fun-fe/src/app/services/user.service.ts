@@ -22,7 +22,11 @@ export interface User {
   friends: string[],
   friendRequests: string[],
   roles: string[],
-  avatar: string
+  avatar: string,
+  notifications: {
+    type: string,
+    content: Object,
+  }
 }
 
 @Injectable({

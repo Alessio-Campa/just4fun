@@ -15,6 +15,10 @@ export interface User extends mongoose.Document{
     isPasswordTemporary: boolean,
     avatar: string,
     isDeleted: boolean,
+    notifications: {
+        type: string,
+        content: Object,
+    }[],
 
     setPassword: (pwd:string, temporary?:boolean)=>void,
     validatePassword: (pwd:string)=>boolean,
@@ -26,7 +30,8 @@ export interface User extends mongoose.Document{
     acceptFriendRequest: (requester:string, res, next)=>void,
     refuseFriendRequest: (refused: string, res, next)=>void,
     removeFriend: (user: string, res, next)=>void,
-    updatePoints: (loserEmail)=>void
+    updatePoints: (loserEmail)=>void,
+    notify: (notification) => void
 }
 
 export function isUser(arg): arg is User{
@@ -88,7 +93,19 @@ let userSchema = new mongoose.Schema<User>({
     isDeleted: {
         type: Boolean,
         required: false
-    }
+    },
+    notifications: [{
+        type: {
+            type: mongoose.SchemaTypes.String,
+            enum: ['follow', 'request', 'invite', 'message', 'system'],
+            required: true
+        },
+        content: {
+            type: mongoose.SchemaTypes.Mixed,
+            required: true
+        }
+    }]
+
 })
 
 userSchema.methods.setPassword = function(pwd:string, temporary:boolean = false) {
@@ -125,12 +142,13 @@ userSchema.methods.setModerator = function(value:boolean) {
 
 userSchema.methods.follow = function (followed: string, res, next) {
     let user = this
-    return getModel().findOne({email: followed}).lean().then(data => {
+    return getModel().findOne({email: followed}).then((data: User) => {
         let isF = isFollowable(user, data, "follow");
         if (!isF[0])
             throw new Error(isF[1]);
 
         user.following.push(followed);
+        data.notify({type: 'follow', content: user.email})
 
         user.save().then(() => next({statusCode: 200, error: false, message: "Update successful"}));
     }).catch(err => {
@@ -246,6 +264,13 @@ userSchema.methods.updatePoints = function (loserEmail){
     });
 }
 
+userSchema.methods.notify = function (notification): void{
+    this.notifications.push({
+        type: notification.type,
+        content: notification.content,
+    });
+    this.save();
+}
 
 export function getSchema() { return userSchema; }
 

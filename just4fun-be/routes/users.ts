@@ -206,4 +206,13 @@ router.delete('/:user1/friend/:user2', passport_auth('jwt'), (req, res, next) =>
     }
 })
 
+router.put('/:id/notify', (req, res, next) => {
+    user.getModel().findOne({email: req.params.id}).then(data => {
+        data.notify(req.body.notification);
+        return res.status(200).json('User notified');
+    }).catch(err => {
+        return next({statusCode: 500, error: true, errormessage: "DB error: "+err.message});
+    })
+})
+
 module.exports = router;

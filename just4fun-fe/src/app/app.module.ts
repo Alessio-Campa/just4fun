@@ -19,6 +19,7 @@ import { UserViewComponent } from './user-view/user-view.component';
 import { MatchmakingComponent } from './matchmaking/matchmaking.component';
 import { ChatsComponent } from './chats/chats.component';
 import { MessagesComponent } from './messages/messages.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { MessagesComponent } from './messages/messages.component';
     UserViewComponent,
     MatchmakingComponent,
     ChatsComponent,
-    MessagesComponent
+    MessagesComponent,
+    NotificationsComponent
   ],
   imports: [
     HttpClientModule,

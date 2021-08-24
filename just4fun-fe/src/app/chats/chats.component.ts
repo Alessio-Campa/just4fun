@@ -21,7 +21,7 @@ export class ChatsComponent implements OnInit {
 
   constructor(private chatService: ChatService, private userService: UserService, private router: Router,
               private ios: SocketioService) {
-    if (!this.userService.isLoggedIn || this.userService.email != this.router.url.split('/').pop())
+    if (!this.userService.isLoggedIn && this.router.url.split('/').pop() == 'messages')
       router.navigate(['/'])
   }
 

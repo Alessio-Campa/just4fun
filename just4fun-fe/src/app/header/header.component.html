@@ -15,6 +15,11 @@
       </ul>
 
       <ul *ngIf="userService.isLoggedIn" class="navbar-nav navbar-right">
+        <li class="nav-item">
+          <a class="nav-link" href="/notifications">
+            <img src="assets/img/bell.svg" height="20em" class="m-0 p-0">
+          </a>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" style="color: #fff;" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <b>{{ userService.username }}</b>
@@ -24,6 +29,7 @@
             <a class="dropdown-item  rounded onFocusDanger" href="/logout">Logout</a>
           </div>
         </li>
+
       </ul>
       <ul *ngIf="!userService.isLoggedIn" class="navbar-nav navbar-right">
         <li class="nav-item">

@@ -18,6 +18,7 @@ export class UserViewComponent implements OnInit {
   isFriend: boolean = false;
   hasRequested: boolean = false;
   private me: User;
+  private canReqest = true;
   statistics = [];
 
   isLoading = {user: -1, buttons: -1, statistics: -1}
@@ -80,9 +81,13 @@ export class UserViewComponent implements OnInit {
   }
 
   sendRequest(){
-    this.userService.sendFriendRequest(this.me.email, this.user.email).subscribe(()=>{
-      this.hasRequested = true;
-    })
+    if (this.canReqest){
+      this.canReqest = false;
+      this.userService.sendFriendRequest(this.me.email, this.user.email).subscribe(()=>{
+        this.hasRequested = true;
+      });
+    }
+
   }
 
   private calculateStatistics(email){
