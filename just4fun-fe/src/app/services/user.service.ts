@@ -273,7 +273,14 @@ export class UserService {
   }
 
   get_user_by_mail(mail: string): Observable<User>{
-    return this.http.get<User>(environment.serverUrl + '/user/' + mail);
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': this.tokenAuth(),
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json',
+      }),
+    };
+    return this.http.get<User>(environment.serverUrl + '/user/' + mail, options);
   }
 
   get leaderboard(): Observable<User[]>{

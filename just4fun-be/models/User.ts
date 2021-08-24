@@ -31,7 +31,7 @@ export interface User extends mongoose.Document{
     refuseFriendRequest: (refused: string, res, next)=>void,
     removeFriend: (user: string, res, next)=>void,
     updatePoints: (loserEmail)=>void,
-    notify: (notification) => void
+    notify: (notification, save?: boolean) => void
 }
 
 export function isUser(arg): arg is User{
@@ -148,8 +148,8 @@ userSchema.methods.follow = function (followed: string, res, next) {
             throw new Error(isF[1]);
 
         user.following.push(followed);
-        data.notify({type: 'follow', content: user.email})
 
+        data.notify({type: 'follow', content: user.email});
         user.save().then(() => next({statusCode: 200, error: false, message: "Update successful"}));
     }).catch(err => {
         next( {statusCode: 400, error: true, errormessage: err.message} );
@@ -185,6 +185,7 @@ userSchema.methods.sendFriendRequest = function (receiver: string, res, next) {
             throw new Error("Friend request already sent");
 
         data.friendRequests.push(user.email);
+        data.notify({type: 'request', content: user.email}, true);
         data.save().then(() => next({statusCode: 200, error: false, message: "Update successful"}));
     }).catch(err => {
         next({statusCode: 400, error: true, errormessage: err.message});
@@ -264,12 +265,13 @@ userSchema.methods.updatePoints = function (loserEmail){
     });
 }
 
-userSchema.methods.notify = function (notification): void{
+userSchema.methods.notify = function (notification, save = true): void{
     this.notifications.push({
         type: notification.type,
         content: notification.content,
     });
-    this.save();
+    if (save)
+        this.save();
 }
 
 export function getSchema() { return userSchema; }

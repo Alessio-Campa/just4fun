@@ -10,7 +10,9 @@
       <h2 class="text-center"> Friend requests </h2>
 
       <div *ngFor="let n of notifications">
-        <div *ngIf="n.type === 'request'"></div>
+        <div *ngIf="n.type === 'request'" class="card card-body text-dark d-block mb-2">
+          <b> <a href="/user/{{n.content}}" class="text-dark">{{n.content}}</a> </b> wants to be your friend
+        </div>
       </div>
 
     </div>
@@ -37,4 +39,3 @@
 
 </div>
 
-<h1> TODO: da fare il tutto con tanti dropdown alla subnautica</h1>

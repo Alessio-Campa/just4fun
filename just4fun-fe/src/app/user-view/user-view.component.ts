@@ -39,8 +39,9 @@ export class UserViewComponent implements OnInit {
       this.isLoading.user++;
       this.userService.get_user_by_mail(this.userService.email).subscribe(data => {
         this.me = data;
+        console.log(data)
 
-        if (this.user.friends.includes(this.me.email)) {
+        if (this.me.friends.includes(userMail)) {
           this.isFriend = true;
         } else if (this.user.friendRequests.includes(this.me.email)) {
           this.hasRequested = true;

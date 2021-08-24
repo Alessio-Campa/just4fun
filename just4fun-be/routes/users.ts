@@ -37,7 +37,7 @@ router.get('/leaderboard', (req, res, next) => {
     res.redirect(303, '/user?limit=10&order_by=-points');
 })
 
-router.get('/:email', passport_auth(['anonymous', 'jwt']), (req, res, next) => {
+router.get('/:email', passport_auth(['jwt','anonymous']), (req, res, next) => {
     let projection = {
         digest:0, //Security reason
         salt:0,   //Security reason
@@ -49,7 +49,7 @@ router.get('/:email', passport_auth(['anonymous', 'jwt']), (req, res, next) => {
         projection['roles'] = 0;
         projection['following'] = 0;
         projection['friends'] = 0;
-        projection['friendRequests'] = 0;
+        // projection['friendRequests'] = 0;
     }
 
     user.getModel().findOne({email: req.params.email}, projection).then((user) => {

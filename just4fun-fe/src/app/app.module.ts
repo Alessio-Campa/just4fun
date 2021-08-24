@@ -37,7 +37,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
     MatchmakingComponent,
     ChatsComponent,
     MessagesComponent,
-    UserChangePasswordComponent
+    UserChangePasswordComponent,
     NotificationsComponent
   ],
   imports: [
