@@ -22,7 +22,7 @@ export interface Matchmaking extends mongoose.Document{
 
 export function cleanMatchmaking()
 {
-	getModel().deleteMany({}); //Delete all pending matchmaking
+	getModel().deleteMany({}).then(() => {}); //Delete all pending matchmaking
 }
 
 export function isMatchMaking(arg): arg is Matchmaking{

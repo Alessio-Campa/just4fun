@@ -12,8 +12,10 @@ import {User} from "../models/User";
 let router = express.Router();
 let ios = getIoServer();
 
-router.get("/", (req, res, next) =>{
-    let limit = parseInt(<string>(req.query.limit || "0")) || 0;
+router.get("/", (req, res, next) => {
+    let skip = getIntFromQueryParam(req.query.skip, 0);
+    let limit = getIntFromQueryParam(req.query.limit, null);
+
     let filter = {}
     if (req.query.player)
         filter["$or"] = [{player0: req.query.player}, {player1: req.query.player}]
@@ -22,14 +24,14 @@ router.get("/", (req, res, next) =>{
     if (req.query.ended === "false")
         filter["winner.player"] = null
 
-    match.getModel().find(filter).limit(limit).then( (data) => {
+    match.getModel().find(filter).sort(req.query.order_by).limit(limit).skip(skip).then( (data) => {
         return res.status(200).json(data);
     }).catch((err)=> {
         return next({status_code:500, error:true, errormessage:err.errormessage});
     })
 })
 
-router.post("/random", express_jwt_auth, (req, res, next) => {
+router.post("/random", passport_auth('jwt'), (req, res, next) => {
     if (req.body.user !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
@@ -61,7 +63,7 @@ router.post("/random", express_jwt_auth, (req, res, next) => {
     });
 })
 
-router.delete("/random", express_jwt_auth, (req, res, next) => {
+router.delete("/random", passport_auth('jwt'), (req, res, next) => {
     if (req.body.user !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
@@ -86,8 +88,7 @@ router.get("/:id", passport_auth(['anonymous', 'jwt']), (req, res, next) =>{
     })
 })
 
-router.post("/", express_jwt_auth, (req, res, next) => {
-    //TODO controllare se opponent è un amico
+router.post("/", passport_auth('jwt'), (req, res, next) => {
     if (req.user.email !== req.body.user)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
@@ -106,7 +107,7 @@ router.post("/", express_jwt_auth, (req, res, next) => {
     });
 })
 
-router.post("/:matchID/moves", express_jwt_auth, (req, res, next)=>{
+router.post("/:matchID/moves", passport_auth('jwt'), (req, res, next)=>{
     if (req.body.user !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 

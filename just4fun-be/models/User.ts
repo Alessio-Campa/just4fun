@@ -14,6 +14,7 @@ export interface User extends mongoose.Document{
     digest: string,
     isPasswordTemporary: boolean,
     avatar: string,
+    isDeleted: boolean,
 
     setPassword: (pwd:string, temporary?:boolean)=>void,
     validatePassword: (pwd:string)=>boolean,
@@ -85,8 +86,11 @@ let userSchema = new mongoose.Schema<User>({
     avatar: {
         type: String,
         required: false
+    },
+    isDeleted: {
+        type: Boolean,
+        required: false
     }
-
 })
 
 userSchema.methods.setPassword = function(pwd:string, temporary:boolean = false) {

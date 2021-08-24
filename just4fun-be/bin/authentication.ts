@@ -11,6 +11,17 @@ let JwtStrategy = require('passport-jwt').Strategy;
 let AnonymousStrategy = require('passport-anonymous').Strategy;
 let ExtractJwt = require('passport-jwt').ExtractJwt;
 
+declare global{
+    namespace Express{
+        interface User {
+            id: string,
+            email: string,
+            username: string,
+            roles: string[],
+        }
+    }
+}
+
 const JWT_EXPIRATION = '1d';
 
 export function initializeAuthentication() {
@@ -25,6 +36,9 @@ export function initializeAuthentication() {
     };
     passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
         user.getModel().findOne({email: jwt_payload.email}, (err, user) => {
+            if (!user || user.isDeleted)
+                return done({statusCode:401, error:true, errormessage:"Invalid user"});
+
             if (err)
                 return done({statusCode:500, error:true, errormessage:err});
 
@@ -38,7 +52,7 @@ export function initializeAuthentication() {
                 if (err)
                     return done({statusCode:500, error:true, errormessage:err});
 
-                if (!user)
+                if (!user || user.isDeleted)
                     return done({statusCode:401, error:true, errormessage:"Invalid user"});
 
                 if (user.validatePassword(password))

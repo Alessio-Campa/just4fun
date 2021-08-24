@@ -2,10 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="50b6c8c6-a28e-4a48-8e0d-af753471fd40" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/utils/utils.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Match.ts" beforeDir="false" afterPath="$PROJECT_DIR$/models/Match.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/authentication.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bin/authentication.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/Matchmaking.ts" beforeDir="false" afterPath="$PROJECT_DIR$/models/Matchmaking.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/User.ts" beforeDir="false" afterPath="$PROJECT_DIR$/models/User.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/chats.ts" beforeDir="false" afterPath="$PROJECT_DIR$/routes/chats.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/routes/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/matches.ts" beforeDir="false" afterPath="$PROJECT_DIR$/routes/matches.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/users.ts" beforeDir="false" afterPath="$PROJECT_DIR$/routes/users.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,7 +142,8 @@
       <workItem from="1629467451255" duration="4829000" />
       <workItem from="1629557987314" duration="5285000" />
       <workItem from="1629617436678" duration="9363000" />
-      <workItem from="1629650377422" duration="375000" />
+      <workItem from="1629650377422" duration="2632000" />
+      <workItem from="1629789552887" duration="5955000" />
     </task>
     <servers />
   </component>
@@ -158,5 +164,17 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/bin/authentication.ts</url>
+          <line>39</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -5,17 +5,6 @@ import * as user from '../models/User'
 import {User} from "../models/User";
 import {signToken, passport_auth} from "../bin/authentication";
 
-declare global{
-    namespace Express{
-        interface User {
-            email: string,
-            username: string,
-            roles: string[],
-            id: string,
-        }
-    }
-}
-
 let router = express.Router();
 
 router.get("/", (req, res, next)=>{

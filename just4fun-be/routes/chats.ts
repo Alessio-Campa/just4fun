@@ -34,7 +34,7 @@ router.get("/", passport_auth(['jwt']), (req, res, next)=>{
     })
 })
 
-router.get("/:chatID", express_jwt_auth, (req, res, next)=>{
+router.get("/:chatID", passport_auth('jwt'), (req, res, next)=>{
     chat.getModel().find({id: req.params.chatID}).then(data => {
         console.log(data)
         return res.status(200).json(data)
@@ -43,7 +43,7 @@ router.get("/:chatID", express_jwt_auth, (req, res, next)=>{
     })
 });
 
-router.post("/:id", express_jwt_auth, (req, res, next)=> {
+router.post("/:id", passport_auth('jwt'), (req, res, next)=> {
     if (req.params.id !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
@@ -58,7 +58,7 @@ router.post("/:id", express_jwt_auth, (req, res, next)=> {
     })
 })
 
-router.put("/:idChat/message", express_jwt_auth, (req, res, next)=> {
+router.put("/:idChat/message", passport_auth('jwt'), (req, res, next)=> {
     let ios = getIoServer();
     let c: Chat;
     let message = {
