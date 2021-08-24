@@ -40,6 +40,7 @@ export class MessagesComponent implements OnInit, OnChanges { //rappresenta una 
         console.log('fetch ended');
       }
     });
+    this.chatTitle = this.chat.members[0] == this.userMail ? this.chat.members[1] : this.chat.members[0]
   }
 
   ngOnChanges(changes: SimpleChanges){
