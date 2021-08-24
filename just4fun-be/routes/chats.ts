@@ -34,7 +34,7 @@ router.get("/", passport_auth(['jwt']), (req, res, next)=>{
 })
 
 router.get("/:chatID", passport_auth('jwt'), (req, res, next)=>{
-    chat.getModel().find({id: req.params.chatID}).then(data => {
+    chat.getModel().findOne({_id: req.params.chatID}).then(data => {
         return res.status(200).json(data)
     }).catch(err => {
         return next({status_code: 500, error: true, errormessage: err})

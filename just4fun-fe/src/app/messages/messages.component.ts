@@ -25,20 +25,21 @@ export class MessagesComponent implements OnInit, OnChanges { //rappresenta una 
   messageFetch() {
     this.chatService.fetchChat(this.chat._id).subscribe((data) =>{
       console.log(data);
+      this.chat.messages = data.messages;
+      console.log(data.messages);
     });
   }
 
   ngOnInit(): void {
     this.userMail = this.userService.email;
-
     this.ios.connect().subscribe((message)=>{
+      console.log(message);
       if (message.subject === 'newMessageReceived') {
         console.log('start fetching');
         this.messageFetch();
         console.log('fetch ended');
       }
     });
-
   }
 
   ngOnChanges(changes: SimpleChanges){

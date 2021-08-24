@@ -4,6 +4,7 @@ import { match } from "assert";
 import { getIoServer } from '../bin/socket'
 import {stringify} from "querystring";
 import {Match, newMatch} from "./Match";
+import {Chat, newChat} from "./Chat";
 let AsyncLock = require('async-lock');
 let lock = new AsyncLock();
 
@@ -65,15 +66,20 @@ matchMakingSchema.methods.searchMatch = function (): void {
 		clearInterval(interval);
 		let match:Match = newMatch(thisPlayer.playerID, opponentPlayer.playerID);
 		match.save().then(() => {
-			let message = {
-				subject: "matchMakingFound",
-				matchID: match._id,
-				player0: match.player0,
-				player1: match.player1
-			};
-			ios.to(thisPlayer.playerID).emit("broadcast", message);
-			ios.to(opponentPlayer.playerID).emit("broadcast", message);
-			console.log((thisPlayer.playerID + " " + opponentPlayer.playerID).bgWhite.black);
+			let c: Chat = newChat(match._id, []);
+			c.save().then(()=>{
+				let message = {
+					subject: "matchMakingFound",
+					matchID: match._id,
+					player0: match.player0,
+					player1: match.player1
+				};
+				ios.to(thisPlayer.playerID).emit("broadcast", message);
+				ios.to(opponentPlayer.playerID).emit("broadcast", message);
+				console.log((thisPlayer.playerID + " " + opponentPlayer.playerID).bgWhite.black);
+			}).catch((err) => {
+				console.log(err);
+			});
 		});
 	}
 

@@ -18,13 +18,13 @@ function startSocketIoServer(server: Server): io.Server {
 
         socket.on('watching', function (matchID){
             socket.join(matchID + 'watchers');
-            socket.to(socket).emit('broadcast', {subject: 'newMessageReceived'})
+            ioServer.to(socket).emit('broadcast', {subject: 'newMessageReceived'})
             console.log((socket.id + " started watching at the match: " + matchID).yellow)
         });
 
         socket.on('playing', function (matchID){
             socket.join(matchID + 'players');
-            socket.to(socket).emit('broadcast', {subject: 'newMessageReceived'})
+            ioServer.to(socket).emit('broadcast', {subject: 'newMessageReceived'})
             console.log((socket.id + " started playing at the match: " + matchID).yellow)
         });
     });

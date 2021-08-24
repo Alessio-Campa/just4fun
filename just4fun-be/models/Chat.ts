@@ -1,4 +1,4 @@
-import mongoose = require("mongoose")
+import mongoose = require("mongoose");
 
 export interface Chat extends mongoose.Document{
     matchID: string,
@@ -45,8 +45,13 @@ let chatSchema = new mongoose.Schema<Chat>({
 export function getSchema() {return chatSchema}
 
 let chatModel;
-export function getModel(): mongoose.Model< mongoose.Document > {
+export function getModel(): mongoose.Model< Chat > {
     if (!chatModel)
         chatModel = mongoose.model('Chat', getSchema())
     return chatModel
+}
+
+export function newChat (matchID: string, members: string[]): Chat{
+    let test = getModel();
+    return new test({matchID: matchID, members: members, messages: []});
 }

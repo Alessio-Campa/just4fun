@@ -9,6 +9,7 @@ import {getIoServer} from "../bin/socket";
 import jwt_decode from "jwt-decode";
 import {User} from "../models/User";
 import {getIntFromQueryParam} from "../utils/utils";
+import {Chat, newChat} from "../models/Chat";
 
 let router = express.Router();
 let ios = getIoServer();
@@ -41,7 +42,7 @@ router.post("/random", passport_auth('jwt'), (req, res, next) => {
         matchmaking.getModel().findOne({playerID: req.user.email}).then((alreadyPresent) => {
             if(alreadyPresent)
             {
-                return next({status_code: 400, error: false, message: "Matchmaking already started"});
+                return res.status(400).json({status_code: 400, error: false, message: "Matchmaking already started"});
             }
             else
             {
@@ -51,7 +52,7 @@ router.post("/random", passport_auth('jwt'), (req, res, next) => {
                     max: userPoints
                 }).then((m: Matchmaking) => {
                     m.searchMatch();
-                    return next({status_code: 200, error: false, message: "Matchmaking started"});
+                    return res.status(200).json({status_code: 200, error: false, message: "Matchmaking started"});
                 }).catch((err) => {
                     return next({status_code: 500, error: true, errormessage: err.errormessage});
                 });
@@ -101,7 +102,12 @@ router.post("/", passport_auth('jwt'), (req, res, next) => {
 
         let m: Match = match.newMatch(req.body.user, req.body.opponent, req.body.user);
         m.save().then(() => {
-            return next({status_code: 200, error: false, errormessage: "", objectID: m._id})
+            let c: Chat = newChat(m._id, []);
+            c.save().then(() => {
+                return next({status_code: 200, error: false, errormessage: "", objectID: m._id})
+            }).catch((err) => {
+                return next({status_code: 500, error: true, errormessage: err.errormessage})
+            })
         }).catch((err) => {
             return next({status_code: 500, error: true, errormessage: err.errormessage})
         });
