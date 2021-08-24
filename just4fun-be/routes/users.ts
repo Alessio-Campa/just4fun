@@ -230,13 +230,17 @@ router.delete('/:user1/friend/:user2', passport_auth('jwt'), (req, res, next) =>
     }
 })
 
-router.put('/:id/notify', (req, res, next) => {
-    user.getModel().findOne({email: req.params.id}).then(data => {
-        data.notify(req.body.notification);
+router.delete('/:id/notification/:idNot', passport_auth('jwt'), (req, res, next) => {
+    if (req.user.email !== req.params.id)
+        return next({statusCode: 403, error: true, errormessage: "Forbidden"});
+
+    user.getModel().findOneAndUpdate({email: req.params.id}, {$pull: {notifications:{_id: req.params.idNot}}} ).then(data => {
         return res.status(200).json('User notified');
     }).catch(err => {
         return next({statusCode: 500, error: true, errormessage: "DB error: "+err.message});
     })
 })
+
+
 
 module.exports = router;

@@ -211,10 +211,10 @@ export class UserService {
       })
     };
     let body = {
-      accept: accepted
+      user: accepted
     }
 
-    return this.http.put(`${environment.serverUrl}/user/${user}/friend`, body, options);
+    return this.http.post(`${environment.serverUrl}/user/${user}/friend`, body, options);
   }
 
   refuseFriendRequest(user: string, refused: string): Observable<any>{
@@ -245,6 +245,17 @@ export class UserService {
     };
 
     return this.http.delete(`${environment.serverUrl}/user/${user}/friend`, options);
+  }
+
+  deleteNotification(id: string): Observable<any>{
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': this.tokenAuth(),
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json',
+      })
+    };
+    return this.http.delete(`${environment.serverUrl}/user/${this.email}/notification/${id}`, options);
   }
 
   get isLoggedIn()

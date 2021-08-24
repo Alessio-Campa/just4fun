@@ -17,7 +17,6 @@ export class ChatsComponent implements OnInit {
   friendRequests;
   isLoading = {chats: -1};
   private friends;
-  private canAccept = true;
 
   constructor(private chatService: ChatService, private userService: UserService, private router: Router,
               private ios: SocketioService) {
@@ -52,24 +51,5 @@ export class ChatsComponent implements OnInit {
     this.selectedChat = this.chats[i];
   }
 
-  acceptRequest(accepted){
-    if (this.canAccept){
-      this.canAccept = false;
-      this.userService.acceptFriendRequest(this.userMail, accepted).subscribe(() => {
-        let idx = this.friendRequests.indexOf(accepted);
-        this.friendRequests.splice(idx, 1);
-      },()=>{}, ()=>{
-        this.canAccept = true;
-      });
-
-    }
-  }
-
-  refuseRequest(refused){
-    this.userService.refuseFriendRequest(this.userMail, refused).subscribe(() => {
-      let idx = this.friendRequests.indexOf(refused);
-      this.friendRequests.splice(idx, 1);
-    });
-  }
 
 }

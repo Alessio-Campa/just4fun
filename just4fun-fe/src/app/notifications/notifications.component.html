@@ -10,9 +10,21 @@
       <h2 class="text-center"> Friend requests </h2>
 
       <div *ngFor="let n of notifications">
-        <div *ngIf="n.type === 'request'" class="card card-body text-dark d-block mb-2">
-          <b> <a href="/user/{{n.content}}" class="text-dark">{{n.content}}</a> </b> wants to be your friend
+
+        <div *ngIf="n.type === 'request'"  class="card">
+
+          <div class="d-flex justify-content-between card-body text-dark">
+            <div class="d-block">
+              <b> <a href="/user/{{n.content}}" class="text-dark">{{n.content}}</a> </b> wants to be your friend
+            </div>
+            <div>
+              <img src="assets/img/check2.svg" class="btn btn-success p-0 mr-1" style="height: 1.5em" (click)="handleRequest(true, n.content, n._id)">
+              <img src="assets/img/x.svg" class="btn btn-danger p-0" style="height: 1.5em" (click)="handleRequest(false, n.content, n._id)">
+            </div>
+          </div>
+
         </div>
+
       </div>
 
     </div>
