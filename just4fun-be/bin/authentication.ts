@@ -1,4 +1,4 @@
-import {User} from "../models/User";
+import {User as UserModel} from "../models/User";
 import * as user from '../models/User'
 
 import jwt = require('express-jwt')
@@ -13,12 +13,7 @@ let ExtractJwt = require('passport-jwt').ExtractJwt;
 
 declare global{
     namespace Express{
-        interface User {
-            id: string,
-            email: string,
-            username: string,
-            roles: string[],
-        }
+        interface User extends UserModel { }
     }
 }
 
@@ -48,7 +43,7 @@ export function initializeAuthentication() {
     passport.use(new passportHTTP.BasicStrategy(
         function (email, password, done){
             console.log("New login attempt from ".yellow + email);
-            user.getModel().findOne( {email:email}, (err, user: User) => {
+            user.getModel().findOne( {email:email}, (err, user: UserModel) => {
                 if (err)
                     return done({statusCode:500, error:true, errormessage:err});
 
@@ -70,5 +65,5 @@ export function signToken(tokenData: object)
     return jsonWebToken.sign(tokenData, process.env.JWT_SECRET, { expiresIn: JWT_EXPIRATION } );
 }
 
-export let express_jwt_auth = jwt({secret: process.env.JWT_SECRET, algorithms: ["HS256"]});
+// export let express_jwt_auth = jwt({secret: process.env.JWT_SECRET, algorithms: ["HS256"]});
 export function passport_auth(strategy: string | passport.Strategy | string[]) { return passport.authenticate(strategy, {session: false}); }

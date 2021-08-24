@@ -18,8 +18,6 @@ export interface User extends mongoose.Document{
 
     setPassword: (pwd:string, temporary?:boolean)=>void,
     validatePassword: (pwd:string)=>boolean,
-    hasAdminRole: ()=> boolean,
-    setAdmin: (value:boolean)=>void,
     hasModeratorRole: ()=> boolean,
     setModerator: (value:boolean)=>void,
     follow: (followed:string, res, next)=>void,
@@ -108,21 +106,6 @@ userSchema.methods.validatePassword = function(pwd: string): boolean {
     let digest = hmac.digest('hex');
 
     return (this.digest === digest)
-}
-
-userSchema.methods.hasAdminRole = function(): boolean {
-    return this.roles.includes('ADMIN');
-}
-
-userSchema.methods.setAdmin = function(value:boolean) {
-    if (value) {
-        this.roles.push('ADMIN');
-    }
-    else {
-        let index = this.roles.indexOf('ADMIN');
-        if(index !== -1)
-            this.roles.splice(index, 1);
-    }
 }
 
 userSchema.methods.hasModeratorRole = function(): boolean {

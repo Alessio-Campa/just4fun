@@ -13,7 +13,7 @@ router.get('/', passport_auth(['anonymous', 'jwt']), (req, res, next) => {
         isPasswordTemporary:0, //Security reason
         avatar:0  //Size of response reason
     };
-    if(!req.user || !(req.user as User).hasAdminRole())
+    if(!req.user || !req.user.hasModeratorRole())
     {
         //Information available only to moderator
         projection['following'] = 0;
@@ -42,7 +42,7 @@ router.get('/:email', passport_auth(['anonymous', 'jwt']), (req, res, next) => {
         salt:0,   //Security reason
         isPasswordTemporary:0, //Security reason (if it's your account and the pass is temp you cannot access this page so the information is not relevant)
     };
-    if(!req.user || (req.user.email != req.params.email && !(req.user as User).hasModeratorRole()))
+    if(!req.user || (req.user.email != req.params.email && !req.user.hasModeratorRole()))
     {
         //Information only for owner or moderator
         projection['roles'] = 0;
@@ -65,7 +65,7 @@ router.post('/', passport_auth(['anonymous', 'jwt']), (req, res, next) => {
         return next({statusCode:400, error:true, errormessage:"Password field required"});
 
     let u: User;
-    if(req.body.moderator && req.user && (req.user as User).hasModeratorRole()) //Create moderator
+    if(req.body.moderator && req.user && req.user.hasModeratorRole()) //Create moderator
     {
         u = user.newUser(req.body.email, "", "");
         u.setPassword(req.body.password, true);
@@ -92,7 +92,7 @@ router.post('/', passport_auth(['anonymous', 'jwt']), (req, res, next) => {
 });
 
 router.delete('/:email', passport_auth('jwt'), (req, res, next)=>{
-    if((req.user as User).hasModeratorRole()) {
+    if(req.user.hasModeratorRole()) {
         user.getModel().findOne({email: req.params.email}).then((u) => {
             if(!u.hasModeratorRole())
             {

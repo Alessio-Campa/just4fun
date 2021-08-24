@@ -1,5 +1,5 @@
 import express = require('express');
-import {express_jwt_auth, passport_auth} from "../bin/authentication";
+import {passport_auth} from "../bin/authentication";
 import * as match from "../models/Match";
 import * as matchmaking from "../models/Matchmaking";
 import * as user from "../models/User";
