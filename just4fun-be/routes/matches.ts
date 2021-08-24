@@ -76,7 +76,7 @@ router.delete("/random", passport_auth('jwt'), (req, res, next) => {
     });
 })
 
-router.get("/:id", passport_auth(['anonymous', 'jwt']), (req, res, next) =>{
+router.get("/:id", passport_auth(['jwt', 'anonymous']), (req, res, next) =>{
     match.getModel().findById(req.params.id).then( (m: Match) => {
         if (req.user) {
             if (req.user.email === m.player0 || req.user.email === m.player1)

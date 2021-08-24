@@ -6,13 +6,14 @@ import { getIntFromQueryParam } from "../utils/utils";
 
 let router = express.Router();
 
-router.get('/', passport_auth(['anonymous', 'jwt']), (req, res, next) => {
+router.get('/', passport_auth(['jwt', 'anonymous']), (req, res, next) => {
     let projection = {
         digest:0, //Security reason
         salt:0,   //Security reason
         roles:0,  //Security reason
         isPasswordTemporary:0, //Security reason
-        avatar:0  //Size of response reason
+        avatar:0,  //Size of response reason
+        isDeleted:0  //Deleted user isn't showed
     };
     if(!req.user || !req.user.hasModeratorRole())
     {
@@ -26,7 +27,7 @@ router.get('/', passport_auth(['anonymous', 'jwt']), (req, res, next) => {
     let skip = getIntFromQueryParam(req.query.skip, 0);
     let limit = getIntFromQueryParam(req.query.limit, null);
 
-    user.getModel().find({}, projection).sort(req.query.order_by).skip(skip).limit(limit).then((users) => {
+    user.getModel().find({isDeleted: { $ne: true }}, projection).sort(req.query.order_by).skip(skip).limit(limit).then((users) => {
         return res.status(200).json(users);
     }).catch((err) => {
         return next({statusCode:500, error:true, errormessage:"DB error: "+err.errormessage});
@@ -37,10 +38,11 @@ router.get('/leaderboard', (req, res, next) => {
     res.redirect(303, '/user?limit=10&order_by=-points');
 })
 
-router.get('/:email', passport_auth(['jwt','anonymous']), (req, res, next) => {
+router.get('/:email', passport_auth(['jwt', 'anonymous']), (req, res, next) => {
     let projection = {
         digest:0, //Security reason
         salt:0,   //Security reason
+        isDeleted:0,  //Deleted user isn't showed
         isPasswordTemporary:0, //Security reason (if it's your account and the pass is temp you cannot access this page so the information is not relevant)
     };
     if(!req.user || (req.user.email != req.params.email && !req.user.hasModeratorRole()))
@@ -52,14 +54,31 @@ router.get('/:email', passport_auth(['jwt','anonymous']), (req, res, next) => {
         // projection['friendRequests'] = 0;
     }
 
-    user.getModel().findOne({email: req.params.email}, projection).then((user) => {
-        return res.status(200).json(user);
-    }).catch((err) => {
-        return next( {statusCode:500, error: true, errormessage:"DB error"+err.errormessage} );
-    });
+    if(req.user.email == req.params.email || req.user.hasModeratorRole()) {
+        user.getModel().findOne({email: req.params.email, isDeleted: { $ne: true }}, projection).then((u: any) => {
+            user.getModel().find({friendRequests: req.params.email, isDeleted: { $ne: true }}, {email: 1}).then((friends) => {
+                u = u.toJSON();
+                u.friendRequestsSent = []
+                for(let f in friends)
+                    u.friendRequestsSent.push(friends[f].email)
+                return res.status(200).json(u);
+            }).catch((err) => {
+                return next({statusCode: 500, error: true, errormessage: "DB error" + err.errormessage});
+            });
+        }).catch((err) => {
+            return next({statusCode: 500, error: true, errormessage: "DB error" + err.errormessage});
+        });
+    }
+    else {
+        user.getModel().findOne({email: req.params.email}, projection).then((user) => {
+            return res.status(200).json(user);
+        }).catch((err) => {
+            return next({statusCode: 500, error: true, errormessage: "DB error" + err.errormessage});
+        });
+    }
 });
 
-router.post('/', passport_auth(['anonymous', 'jwt']), (req, res, next) => {
+router.post('/', passport_auth(['jwt', 'anonymous']), (req, res, next) => {
     if (!req.body.email || req.body.email === "")
         return next({statusCode:400, error:true, errormessage:"Mail field required"});
     if (!req.body.password || req.body.password === "")
@@ -162,12 +181,12 @@ router.post('/:id/follow', passport_auth('jwt'), (req, res, next) => {
     });
 });
 
-router.delete('/:id/follow', passport_auth('jwt'), (req, res, next)=>{
+router.delete('/:id/follow/:user', passport_auth('jwt'), (req, res, next)=>{
     if (req.params.id !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
     user.getModel().findOne({email: req.user.email}).then((data) => {
-        data.unfollow(req.body.user, res, next);
+        data.unfollow(req.params.user, res, next);
     }).catch((err) => {
         return next({statusCode: 500, error: true, errormessage: "DB error: "+err.errormessage});
     });
@@ -179,7 +198,7 @@ router.post('/:id/friend', passport_auth('jwt'), (req, res, next) => {
 
     user.getModel().findOne({email: req.user.email}).then((data) => {
         if(data.friendRequests.includes(req.body.user))
-            data.acceptFriendRequest(req.body.accept, res, next);
+            data.acceptFriendRequest(req.body.user, res, next);
         else
             data.sendFriendRequest(req.body.user, res, next);
     }).catch((err) => {
