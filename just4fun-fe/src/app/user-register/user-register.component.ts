@@ -68,7 +68,7 @@ export class UserRegisterComponent implements OnInit {
                 this.errorMessage = '';
                 this.router.navigate(['login']);
               }, (err) => {
-                this.errorMessage = JSON.stringify(err.error.errormessage);
+                this.errorMessage = err.error.errormessage;
                 console.log('Complete Registration error: ' + this.errorMessage);
                 this.password = '';
                 this.password2 = '';
@@ -80,7 +80,7 @@ export class UserRegisterComponent implements OnInit {
                 this.errorMessage = '';
                 this.router.navigate(['login']);
               }, (err) => {
-                this.errorMessage = JSON.stringify(err.error.errormessage);
+                this.errorMessage = err.error.errormessage;
                 console.log('Registration error: ' + this.errorMessage);
                 this.password = '';
                 this.password2 = '';

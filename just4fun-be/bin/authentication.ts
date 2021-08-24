@@ -13,7 +13,9 @@ let ExtractJwt = require('passport-jwt').ExtractJwt;
 
 declare global{
     namespace Express{
-        interface User extends UserModel { }
+        interface User extends UserModel {
+            authenticationStrategy: string
+        }
     }
 }
 
@@ -30,26 +32,28 @@ export function initializeAuthentication() {
         'secretOrKey': process.env.JWT_SECRET
     };
     passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
-        user.getModel().findOne({email: jwt_payload.email}, (err, user) => {
+        user.getModel().findOne({email: jwt_payload.email}, (err, user: Express.User) => {
             if (!user || user.isDeleted)
                 return done({statusCode:401, error:true, errormessage:"Invalid user"});
 
             if (err)
                 return done({statusCode:500, error:true, errormessage:err});
 
+            user.authenticationStrategy = 'jwt';
             return done(null, user);
         });
     }));
     passport.use(new passportHTTP.BasicStrategy(
         function (email, password, done){
             console.log("New login attempt from ".yellow + email);
-            user.getModel().findOne( {email:email}, (err, user: UserModel) => {
+            user.getModel().findOne( {email:email}, (err, user: Express.User) => {
                 if (err)
                     return done({statusCode:500, error:true, errormessage:err});
 
                 if (!user || user.isDeleted)
                     return done({statusCode:401, error:true, errormessage:"Invalid user"});
 
+                user.authenticationStrategy = 'basic';
                 if (user.validatePassword(password))
                     return done(null, user);
                 else

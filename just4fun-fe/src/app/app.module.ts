@@ -19,6 +19,7 @@ import { UserViewComponent } from './user-view/user-view.component';
 import { MatchmakingComponent } from './matchmaking/matchmaking.component';
 import { ChatsComponent } from './chats/chats.component';
 import { MessagesComponent } from './messages/messages.component';
+import { UserChangePasswordComponent } from './user-change-password/user-change-password.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 
 @NgModule({
@@ -36,6 +37,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
     MatchmakingComponent,
     ChatsComponent,
     MessagesComponent,
+    UserChangePasswordComponent
     NotificationsComponent
   ],
   imports: [

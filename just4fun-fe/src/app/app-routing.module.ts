@@ -12,6 +12,7 @@ import {ProfileComponent} from "./profile/profile.component";
 import {UserViewComponent} from "./user-view/user-view.component";
 import {MatchmakingComponent} from "./matchmaking/matchmaking.component";
 import {ChatsComponent} from "./chats/chats.component";
+import {UserChangePasswordComponent} from "./user-change-password/user-change-password.component";
 import {NotificationsComponent} from "./notifications/notifications.component";
 
 const routes: Routes = [
@@ -20,6 +21,7 @@ const routes: Routes = [
   {path: 'login', component: UserLoginComponent},
   {path: 'logout', component: UserLogoutComponent},
   {path: 'register', component: UserRegisterComponent},
+  {path: 'changePassword', component: UserChangePasswordComponent},
 
   {path: 'match', children: [
       {path: ':id', component: MatchComponent}

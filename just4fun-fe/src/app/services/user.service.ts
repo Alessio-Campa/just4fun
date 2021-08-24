@@ -134,6 +134,26 @@ export class UserService {
     );
   }
 
+  changePassword(oldPassword: string, newPassword: string): Observable<User>{
+    let data = {
+      password: newPassword,
+    }
+
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': UserService.basicAuth(this.email, oldPassword),
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json',
+      })
+    };
+
+    return this.http.put<User>(environment.serverUrl + '/user/'+this.email, data, options).pipe(
+      tap((data) => {
+        console.log(JSON.stringify(data));
+      })
+    );
+  }
+
   follow(sender: string, receiver: string): Observable<any>{
     let token = this.token
     let options = {

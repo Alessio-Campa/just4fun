@@ -2,6 +2,7 @@ import express = require('express')
 import {isUser, User} from "../models/User";
 import * as user from "../models/User";
 import { passport_auth } from "../bin/authentication";
+import { getIntFromQueryParam } from "../utils/utils";
 
 let router = express.Router();
 
@@ -120,6 +121,10 @@ router.delete('/:email', passport_auth('jwt'), (req, res, next)=>{
 router.put("/:id", passport_auth(['basic', 'jwt']), (req, res, next) => {
     if (req.params.id !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
+
+    if(req.user.authenticationStrategy !== 'basic' && req.body.password)
+        //Prevent password change in case of jwt stolen
+        return next({statusCode: 403, error: true, errormessage: "You can update password only with basic auth"});
 
     let acceptedFields = ['username', 'avatar', 'password'];
     let haveSetAllFields = true;

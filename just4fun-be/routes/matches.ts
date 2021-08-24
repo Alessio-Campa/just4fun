@@ -8,6 +8,7 @@ import {isMatchMaking, Matchmaking} from "../models/Matchmaking";
 import {getIoServer} from "../bin/socket";
 import jwt_decode from "jwt-decode";
 import {User} from "../models/User";
+import {getIntFromQueryParam} from "../utils/utils";
 
 let router = express.Router();
 let ios = getIoServer();
