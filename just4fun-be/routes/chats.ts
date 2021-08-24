@@ -45,15 +45,21 @@ router.post("/:id", passport_auth('jwt'), (req, res, next)=> {
     if (req.params.id !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
-    chat.getModel().create({
-        matchID: req.body.matchID,
-        members: [req.body.friend, req.user.email],
-        messages: []
-    }).then((data)=> {
-        return res.status(200).json({error: false, objectId: data._id})
-    }).catch((err)=> {
-        return next({status_code:400, error:true, errormessage:err})
-    })
+    chat.getModel().count({matchID: null, members:[req.body.friend, req.user.email]},(err, count) => {
+        if (!req.body.matchID && count > 0)
+            return next({statusCode: 400, error: true, errormessage: "chat already exists"});
+
+        chat.getModel().create({
+            matchID: req.body.matchID,
+            members: [req.body.friend, req.user.email],
+            messages: []
+        }).then((data)=> {
+            return res.status(200).json({error: false, objectId: data._id})
+        }).catch((err)=> {
+            return next({status_code:400, error:true, errormessage:err})
+        })
+    });
+
 })
 
 router.put("/:idChat/message", passport_auth('jwt'), (req, res, next)=> {
