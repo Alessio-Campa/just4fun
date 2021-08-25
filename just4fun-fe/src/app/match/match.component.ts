@@ -37,6 +37,11 @@ export class MatchComponent implements OnInit {
       this.userService.get_user_by_mail(this.match.player0).subscribe(data => this.username0 = data.username);
       this.userService.get_user_by_mail(this.match.player1).subscribe(data => this.username1 = data.username);
 
+      // fetch chat
+      this.chatService.getChatByMatch(matchID).subscribe(data => {
+        this.matchChat = data[0];
+      })
+
       this.ios.connect(matchID, isPlayer).subscribe((message)=>{
         let subject = message.subject;
         if (subject === 'newMove') {
@@ -52,6 +57,17 @@ export class MatchComponent implements OnInit {
           this.board.endMatch();
           this.board.highlightVictory(message.win.positions)
         }
+        if (message.subject === 'newMessageReceived') {
+          console.log('start fetching');
+
+          this.chatService.fetchChat(this.matchChat._id).subscribe((data) =>{
+            console.log(data);
+            this.matchChat.messages = data.messages;
+            console.log(data.messages);
+          });
+
+          console.log('fetch ended');
+        }
       });
 
       if (isPlayer && this.match.winner.player === null){
@@ -64,11 +80,6 @@ export class MatchComponent implements OnInit {
       }
 
     });
-
-    // fetch chat
-    this.chatService.getChatByMatch(matchID).subscribe(data => {
-      this.matchChat = data[0];
-    })
   }
 
   makeMove(column): void {

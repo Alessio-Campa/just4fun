@@ -1,5 +1,6 @@
 import io = require('socket.io')
 import {Server} from "http";
+import {Chat, getModel, isChat} from "../models/Chat";
 
 let ioServer;
 
@@ -24,6 +25,7 @@ function startSocketIoServer(server: Server): io.Server {
 
         socket.on('playing', function (matchID){
             socket.join(matchID + 'players');
+            console.log((matchID + 'players'));
             ioServer.to(socket).emit('broadcast', {subject: 'newMessageReceived'})
             console.log((socket.id + " started playing at the match: " + matchID).yellow)
         });
