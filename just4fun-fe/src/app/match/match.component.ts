@@ -82,6 +82,23 @@ export class MatchComponent implements OnInit {
     });
   }
 
+  replay():void {
+    let i = 1;
+    let moves = this.match.moves;
+    this.match.turn = 0;
+    this.board = new Board('#board', Array(6).fill(Array(7).fill(null)), ()=>{});
+    moves.forEach((move) => {
+      i++;
+      setTimeout(() => {
+        this.board.insertDisk(move, this.match.turn);
+        this.match.turn = (this.match.turn + 1) % 2;
+      }, 500 * i);
+    })
+    setTimeout(() => {
+      this.board.highlightVictory(this.match.winner.positions)
+    }, 500 * (i + 1));
+  }
+
   makeMove(column): void {
     this.ms.placeDisk(this.match._id, this.userService.email, column).subscribe(
       (data)=>{

@@ -5,6 +5,7 @@ const colors: string[] = ["#ff4c4c ", "#ffff4c"];
 export class Board {
   constructor(_$board: any, board: number[][], callback = ()=>{}) {
     this.$board = $(_$board);
+    this.$board.empty();
     for(let i = 0; i < COLUMNS; ++i) {
       let column = [];
       board.forEach(c => column.unshift( c[i] ));

@@ -185,7 +185,7 @@ userSchema.methods.sendFriendRequest = function (receiver: string, res, next) {
             throw new Error("Friend request already sent");
 
         data.friendRequests.push(user.email);
-        data.notify({type: 'request', content: user.email}, true);
+        data.notify({type: 'request', content: user.email}, false);
         data.save().then(() => next({statusCode: 200, error: false, message: "Update successful"}));
     }).catch(err => {
         next({statusCode: 400, error: true, errormessage: err.message});

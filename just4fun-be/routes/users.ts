@@ -3,6 +3,7 @@ import {isUser, User} from "../models/User";
 import * as user from "../models/User";
 import { passport_auth } from "../bin/authentication";
 import { getIntFromQueryParam } from "../utils/utils";
+import {Chat, newChat} from "../models/Chat";
 
 let router = express.Router();
 
@@ -161,7 +162,7 @@ router.put("/:id", passport_auth(['basic', 'jwt']), (req, res, next) => {
         if (haveSetAllFields)
             u.isPasswordTemporary = false;
         u.save().then(() => {
-            return next({statusCode: 200, error: false, errormessage: ""});
+            return res.status(200).json({statusCode: 200, error: false, errormessage: ""});
         }).catch((err) => {
             return next({statusCode: 500, error: true, errormessage: "DB error: "+err.errormessage});
         });
@@ -197,8 +198,11 @@ router.post('/:id/friend', passport_auth('jwt'), (req, res, next) => {
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
     user.getModel().findOne({email: req.user.email}).then((data) => {
-        if(data.friendRequests.includes(req.body.user))
+        if(data.friendRequests.includes(req.body.user)){
             data.acceptFriendRequest(req.body.user, res, next);
+            let c: Chat = newChat(null, [req.user.email, req.body.user]);
+            c.save();
+        }
         else
             data.sendFriendRequest(req.body.user, res, next);
     }).catch((err) => {
