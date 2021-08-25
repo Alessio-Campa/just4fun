@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Chat, ChatService} from "../services/chat.service";
 import {UserService} from "../services/user.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {SocketioService} from "../services/socketio.service";
 
 @Component({
@@ -19,22 +19,19 @@ export class ChatsComponent implements OnInit {
   private friends;
 
   constructor(private chatService: ChatService, private userService: UserService, private router: Router,
-              private ios: SocketioService) {
+              private ios: SocketioService, private route: ActivatedRoute) {
     if (!this.userService.isLoggedIn && this.router.url.split('/').pop() == 'messages')
       router.navigate(['/'])
   }
 
   ngOnInit(): void {
-
-    // TODO: da eliminare e cambiare URL
     // get user mail
     this.userMail = this.userService.email;
 
     // get all user private chats (that are not relative to any match)
     this.chatService.getChatsByUser(this.userService.email).subscribe(data => {
       this.chats = data;
-      if(this.chats.length > 0)
-        this.selectedChat = this.chats[0];
+      this.initSelectedChat();
       this.isLoading.chats++;
     })
 
@@ -51,5 +48,21 @@ export class ChatsComponent implements OnInit {
     this.selectedChat = this.chats[i];
   }
 
+  initSelectedChat(): void {
+    if(this.chats.length > 0)
+      this.selectedChat = this.chats[0];
+
+    this.route.queryParams.subscribe(data => {
+      let c;
+      let id = data.chatID
+      if (id) {
+        c = this.chats.find(e => e._id === id);
+        if (c !== undefined)
+          this.selectedChat = c
+      }
+      else
+        this.selectedChat = this.chats[0];
+    })
+  }
 
 }
