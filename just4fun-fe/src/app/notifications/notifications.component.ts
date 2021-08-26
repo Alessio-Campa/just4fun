@@ -10,6 +10,7 @@ import {UserService} from "../services/user.service";
 export class NotificationsComponent implements OnInit {
 
   notifications;
+  friendRequests;
   private canAccept = true
   private user;
 
@@ -19,18 +20,25 @@ export class NotificationsComponent implements OnInit {
     this.userService.get_user_by_mail(this.userService.email).subscribe(data => {
       this.user = data;
       this.notifications = data.notifications;
+      this.friendRequests = data.friendRequests;
     })
   }
 
-  navigateMessages(){
-    this.router.navigate(['/messages'])
+  navigateMessages(chatID){
+    this.router.navigate([`/messages?chatID=${chatID}`])
   }
 
-  handleRequest(isAccepted, requester, notificationId){
+  handleRequest(isAccepted, requester){
+    /*
     this.userService.deleteNotification(notificationId).subscribe(()=>{},()=>{},()=>{
       let idx = this.notifications.indexOf( this.notifications.filter( e => e._id === notificationId) );
       this.notifications.splice(idx, 1);
     })
+     */
+
+    let idx = this.friendRequests.indexOf(requester);
+    this.friendRequests.splice(idx, 1);
+
     if (isAccepted)
       this.acceptRequest(requester);
     else

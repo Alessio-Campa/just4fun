@@ -229,7 +229,7 @@ export class UserService {
       refuse: refused
     };
 
-    return this.http.put(`${environment.serverUrl}/user/${user}/friend`, body, options);
+    return this.http.delete(`${environment.serverUrl}/user/${refused}/friend/${user}`, options);
   }
 
   unfriend(user: string, friend: string): Observable<any>{
