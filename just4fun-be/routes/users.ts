@@ -3,7 +3,6 @@ import {isUser, User} from "../models/User";
 import * as user from "../models/User";
 import { passport_auth } from "../bin/authentication";
 import { getIntFromQueryParam } from "../utils/utils";
-import {Chat, newChat} from "../models/Chat";
 
 let router = express.Router();
 
@@ -198,11 +197,8 @@ router.post('/:id/friend', passport_auth('jwt'), (req, res, next) => {
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
     user.getModel().findOne({email: req.user.email}).then((data) => {
-        if(data.friendRequests.includes(req.body.user)){
+        if(data.friendRequests.includes(req.body.user))
             data.acceptFriendRequest(req.body.user, res, next);
-            let c: Chat = newChat(null, [req.user.email, req.body.user]);
-            c.save();
-        }
         else
             data.sendFriendRequest(req.body.user, res, next);
     }).catch((err) => {

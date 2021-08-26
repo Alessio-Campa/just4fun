@@ -20,6 +20,7 @@ export class MatchComponent implements OnInit {
   username1;
   canViewMessages: boolean = false;
   matchChat: Chat = null;
+  isReplaying = false;
 
   constructor(private router: Router, private ms: MatchService, private userService: UserService,
               private ios: SocketioService, private chatService: ChatService) { }
@@ -95,6 +96,8 @@ export class MatchComponent implements OnInit {
   replay():void {
     let i = 1;
     let moves = this.match.moves;
+
+    this.isReplaying = true;
     this.match.turn = 0;
     this.board = new Board('#board', Array(6).fill(Array(7).fill(null)), ()=>{});
     moves.forEach((move) => {
@@ -105,7 +108,8 @@ export class MatchComponent implements OnInit {
       }, 500 * i);
     })
     setTimeout(() => {
-      this.board.highlightVictory(this.match.winner.positions)
+      this.board.highlightVictory(this.match.winner.positions);
+      this.isReplaying = false;
     }, 500 * (i + 1));
   }
 

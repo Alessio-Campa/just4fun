@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
 import {UserService} from "./user.service";
+import {emitDistinctChangesOnlyDefaultValue} from "@angular/compiler/src/core";
 
 export interface Chat{
   _id: string,
@@ -88,6 +89,21 @@ export class ChatService {
     }
 
     return this.http.put(`${environment.serverUrl}/chat/${chatID}/message`, body, options);
+  }
+
+  newChat(user, friend): Observable<any>{
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': this.userService.tokenAuth(),
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json',
+      })
+    };
+    let body = {
+      friend: friend
+    }
+
+    return this.http.post(`${environment.serverUrl}/chat/${user}`, body, options);
   }
 
 }

@@ -75,7 +75,7 @@ router.post("/:id", passport_auth('jwt'), (req, res, next)=> {
             members: [req.body.friend, req.user.email],
             messages: []
         }).then((data)=> {
-            return res.status(200).json({error: false, objectId: data._id})
+            return res.status(200).json({error: false, object: data})
         }).catch((err)=> {
             return next({status_code:400, error:true, errormessage:err})
         })

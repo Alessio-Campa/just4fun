@@ -30,7 +30,7 @@
 
       </div>
       <div *ngIf="match.winner.player !== null" class="w-100 d-flex justify-content-center">
-        <button class="btn btn-primary mt-4" (click)="replay()">Replay</button>
+        <button class="btn btn-primary mt-4" (click)="replay()" [disabled]="isReplaying">Replay</button>
       </div>
     </div>
     <div *ngIf="canViewMessages" class="col-md-4 mb-4 h-100">

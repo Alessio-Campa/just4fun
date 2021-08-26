@@ -14,9 +14,8 @@ export class ChatsComponent implements OnInit {
   userMail: string;
   chats: Chat[];
   selectedChat: Chat = null;
-  friendRequests;
   isLoading = {chats: -1};
-  private friends;
+  friends;
 
   constructor(private chatService: ChatService, private userService: UserService, private router: Router,
               private ios: SocketioService, private route: ActivatedRoute) {
@@ -33,12 +32,13 @@ export class ChatsComponent implements OnInit {
       this.chats = data;
       this.initSelectedChat();
       this.isLoading.chats++;
-    })
-
-    // get all friend requests and display them as chats
-    this.userService.get_user_by_mail(this.userMail).subscribe(data => {
-      this.friendRequests = data.friendRequests;
-      this.friends = data.friends;
+    },()=>{}, ()=>{
+      this.userService.get_user_by_mail(this.userMail).subscribe(data => {
+        this.friends = new Set(data.friends);
+        this.chats.forEach(c => {
+          this.friends.delete(c.members[0] == this.userMail ? c.members[1] : c.members[0])
+        })
+      })
     })
 
   }
@@ -62,6 +62,13 @@ export class ChatsComponent implements OnInit {
       }
       else
         this.selectedChat = this.chats[0];
+    })
+  }
+
+  createChat(friend): void{
+    this.chatService.newChat(this.userMail, friend).subscribe( data=>{
+      this.friends.delete(friend)
+      this.chats.push(data.object)
     })
   }
 
