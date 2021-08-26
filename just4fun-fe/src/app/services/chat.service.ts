@@ -15,6 +15,12 @@ export interface Chat{
   }[]
 }
 
+export interface Message{
+  sender: string,
+  text: string,
+  timestamp: number
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -37,14 +43,19 @@ export class ChatService {
     return this.http.get<Chat>(`${environment.serverUrl}/chat`, options);
   }
 
-  fetchChat(chatID): Observable<any>{
+  fetchChat(chatID, timestamp): Observable<any>{
     let options = {
       headers: new HttpHeaders({
         'Authorization': this.userService.tokenAuth(),
         'cache-control': 'no-cache',
         'Content-Type': 'application/json',
-      })};
-    return this.http.get<Chat>(`${environment.serverUrl}/chat/` + chatID, options);
+      })/*,
+      params: {
+        timestamp: timestamp
+      }*/
+    };
+    //return this.http.get<Chat>(`${environment.serverUrl}/chat/` + chatID, options); //old version
+    return this.http.get<Message>(`${environment.serverUrl}/chat/simpleFetching/` + chatID + '/?timestamp=' + timestamp, options);
   }
 
   getChatsByUser(user: string): Observable<any>{

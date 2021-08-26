@@ -3,6 +3,9 @@ import {Chat, ChatService} from "../services/chat.service";
 import {UserService} from "../services/user.service";
 import {Router} from "@angular/router";
 import {SocketioService} from "../services/socketio.service";
+import {last} from "rxjs/operators";
+import {on} from "socket.io-client/build/on";
+import {event} from "jquery";
 
 @Component({
   selector: 'app-messages',
@@ -23,10 +26,14 @@ export class MessagesComponent implements OnInit, OnChanges { //rappresenta una 
   }
 
   messageFetch() {
-    this.chatService.fetchChat(this.chat._id).subscribe((data) =>{
-      console.log(data);
-      this.chat.messages = data.messages;
-      console.log(data.messages);
+    let lastTimestamp = null;
+    if (this.chat.messages !== []){
+      lastTimestamp = this.chat.messages[this.chat.messages.length - 1].timestamp;
+    }
+    this.chatService.fetchChat(this.chat._id, lastTimestamp).subscribe((data) =>{
+      data.forEach((element) => {
+        this.chat.messages.push(element);
+      })
     });
   }
 
@@ -57,6 +64,9 @@ export class MessagesComponent implements OnInit, OnChanges { //rappresenta una 
   }
 
   sendMessage(message){
+    if (message.value === ''){
+      return;
+    }
     this.chatService.sendMessage(this.userMail, message.value, this.chat._id).subscribe()
     message.value = '';
   }

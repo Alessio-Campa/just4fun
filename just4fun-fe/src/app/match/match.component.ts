@@ -60,16 +60,26 @@ export class MatchComponent implements OnInit {
         if (message.subject === 'newMessageReceived') {
           console.log('start fetching');
 
+          /* old version: for each fetch, the entire chat is fetched
           this.chatService.fetchChat(this.matchChat._id).subscribe((data) =>{
             console.log(data);
             this.matchChat.messages = data.messages;
             console.log(data.messages);
           });
 
+           */
+          let lastTimestamp = null;
+          if (this.matchChat.messages !== []){
+            lastTimestamp = this.matchChat.messages[this.matchChat.messages.length - 1].timestamp;
+          }
+          this.chatService.fetchChat(this.matchChat._id, lastTimestamp).subscribe((data) => {
+            data.forEach((element) => {
+              this.matchChat.messages.push(element);
+            })
+          });
           console.log('fetch ended');
         }
       });
-
       if (isPlayer && this.match.winner.player === null){
         this.board = new PlayableBoard('#board', this.match.board,this.match.turn, playerTurn, (c)=>{
           this.makeMove(c);

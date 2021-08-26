@@ -5,6 +5,7 @@ import {passport_auth} from "../bin/authentication";
 import jwt_decode from "jwt-decode"
 import {User} from "../models/User";
 import {getIoServer} from "../bin/socket";
+import {Schema} from "mongoose";
 
 let router = express.Router();
 
@@ -40,6 +41,26 @@ router.get("/:chatID", passport_auth('jwt'), (req, res, next)=>{
         return next({status_code: 500, error: true, errormessage: err})
     })
 });
+
+router.get("/simpleFetching/:chatID", passport_auth('jwt'), (req, res, next) => {
+    if (!req.query.timestamp){
+        return next({status_code: 400, error: true, errormessage:'timestamp missing'});
+    }
+    let lastTimestamp: number = +req.query.timestamp;
+    chat.getModel().findOne({_id: req.params.chatID}).then((data: Chat)=>{
+        let messagesToReturn = []
+        for (let i = 0; i < data.messages.length; ++i) {
+            let message = data.messages[i];
+            if (message.timestamp > lastTimestamp) {
+                messagesToReturn.push(message);
+            }
+        }
+        return res.status(200).json(messagesToReturn);
+    }).catch(err => {
+        return next({status_code: 500, error: true, errormessage: err});
+    });
+});
+
 
 router.post("/:id", passport_auth('jwt'), (req, res, next)=> {
     if (req.params.id !== req.user.email)
