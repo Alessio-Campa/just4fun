@@ -62,10 +62,26 @@ export class MatchService {
   }
 
   placeDisk(matchID, playerID, column):Observable<any> {
-    console.log('doing a move');
     let headers = {
       'Authorization': this.userService.tokenAuth(),
-      'Content-Type': 'application/json'}
-    return this.http.post(environment.serverUrl + '/match/' + matchID + '/moves',{column: column, user: playerID}, {headers});
+      'Content-Type': 'application/json'
+    };
+
+    return this.http.post(`${environment.serverUrl}/match/${matchID}/moves`,{column: column, user: playerID}, {headers});
+  }
+
+  crateMatchFromInvitation(user, friend): Observable<any> {
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': this.userService.tokenAuth(),
+        'Content-Type': 'application/json'
+      })
+    };
+    let body = {
+      user: user,
+      opponent: friend
+    };
+
+    return this.http.post(`${environment.serverUrl}/match`, body, options)
   }
 }

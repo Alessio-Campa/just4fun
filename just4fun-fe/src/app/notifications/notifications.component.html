@@ -2,7 +2,7 @@
   <div class="col-6 text-light h-100">
     <div class="col-12 bg-dark rounded p-2 text-light h-100">
       <h2 class="text-center"> Feed </h2>
-      <div *ngFor="let n of notifications">
+      <div *ngFor="let n of notifications.reverse()">
 
         <div *ngIf="n.type === 'follow'" class="card card-body text-dark d-block mb-2">
           <b> <a href="/user/{{n.content}}" class="text-dark">{{n.content}}</a> </b> started following you
@@ -41,8 +41,18 @@
 
       <div class="col-12 bg-dark rounded p-2 text-light mb-4 h-100">
         <h2 class="text-center"> Match invitations </h2>
-      </div>
 
+        <div *ngFor="let invite of matchInvites; index as i" class="card mt-2 p-2">
+          <div class="d-flex flex-wrap justify-content-between text-dark">
+            <b class="mb-1"> {{ invite }}</b>
+            <div>
+              <img src="assets/img/check2.svg" class="btn btn-success p-0 mr-1" style="height: 1.5em" (click)="handleInvite(true, invite)">
+              <img src="assets/img/x.svg" class="btn btn-danger p-0" style="height: 1.5em" (click)="handleInvite(false, invite)">
+            </div>
+          </div>
+        </div>
+
+      </div>
 
     </div>
   </div>

@@ -235,12 +235,38 @@ router.delete('/:id/notification/:idNot', passport_auth('jwt'), (req, res, next)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
     user.getModel().findOneAndUpdate({email: req.params.id}, {$pull: {notifications:{_id: req.params.idNot}}} ).then(data => {
-        return res.status(200).json('User notified');
+        return res.status(200).json('Notification deleted');
     }).catch(err => {
         return next({statusCode: 500, error: true, errormessage: "DB error: "+err.message});
     })
 })
 
+router.post('/:id/invite/:friend', passport_auth('jwt'), (req, res, next) => {
+    if (req.user.email !== req.params.id)
+        return next({statusCode: 403, error: true, errormessage: "Forbidden"});
+    if (!req.user.friends.includes(req.params.friend))
+        return next({statusCode: 400, error: true, errormessage: "User doesn't exist or isn't your friend"});
+
+    user.getModel().findOne({email: req.params.friend}).then(data => {
+        data.matchInvites.push(req.user.email);
+        data.notify({type: 'invite', content: req.user.email}, false);
+        data.save();
+        return res.status(200).json('Invite sent');
+    }).catch(err => {
+        return next({statusCode: 500, error: true, errormessage: "DB error: "+err.message});
+    })
+})
+
+router.delete('/:id/invite/:sender', passport_auth('jwt'), (req, res, next) => {
+    if (req.user.email !== req.params.id)
+        return next({statusCode: 403, error: true, errormessage: "Forbidden"});
+
+    user.getModel().findOneAndUpdate({email: req.params.id}, {$pull: {matchInvites: req.params.sender}} ).then(data => {
+        return res.status(200).json('Invitation deleted');
+    }).catch(err => {
+        return next({statusCode: 500, error: true, errormessage: "DB error: "+err.message});
+    })
+})
 
 
 module.exports = router;

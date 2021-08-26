@@ -100,7 +100,7 @@ router.post("/", passport_auth('jwt'), (req, res, next) => {
         if (!opponent.friends.includes(req.body.user))
             return next({status_code: 400, error: true, errormessage: "Opponent is not your friend"});
 
-        let m: Match = match.newMatch(req.body.user, req.body.opponent, req.body.user);
+        let m: Match = match.newMatch(req.body.user, req.body.opponent);
         m.save().then(() => {
             let c: Chat = newChat(m._id, []);
             c.save().then(() => {

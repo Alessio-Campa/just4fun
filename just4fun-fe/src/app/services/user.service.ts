@@ -21,6 +21,7 @@ export interface User {
   following: string[],
   friends: string[],
   friendRequests: string[],
+  matchInvites: string[],
   roles: string[],
   avatar: string,
   notifications: {
@@ -256,6 +257,17 @@ export class UserService {
       })
     };
     return this.http.delete(`${environment.serverUrl}/user/${this.email}/notification/${id}`, options);
+  }
+
+  deleteInvitation(user, sender): Observable<any>{
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': this.tokenAuth(),
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json',
+      })
+    };
+    return this.http.delete(`${environment.serverUrl}/user/${user}/invite/${sender}`, options);
   }
 
   get isLoggedIn()

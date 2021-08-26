@@ -19,7 +19,6 @@ export interface Match extends mongoose.Document{
     moves: number[],
     matchStart: Date,
     lastMove: Date,
-    invitedFrom: string, //email or null
 
     makeMove: (player: string, column: number) => void,
     insertDisk: (column: number) => number,
@@ -202,19 +201,15 @@ export function getModel(): mongoose.Model< mongoose.Document > {
     return matchModel
 }
 
-export function newMatch (player0: string, player1: string, invitedFrom?:string): Match{
+export function newMatch (player0: string, player1: string): Match{
     if(Math.random() < 0.5) //On 50% of case switch player
     {
         let temp = player0;
         player0 = player1;
         player1 = temp;
     }
-    let m: Match = new matchModel({"player0": player0, "player1": player1});
-    if(invitedFrom) {
-        //TODO emit socket notification
-        m.invitedFrom = invitedFrom;
-    }
-    return m;
+
+    return new matchModel({"player0": player0, "player1": player1});
 }
 
 // utility classes

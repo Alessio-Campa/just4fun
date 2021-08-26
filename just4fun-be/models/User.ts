@@ -8,7 +8,8 @@ export interface User extends mongoose.Document{
     points: number,
     following: string[],
     friends: string[],
-    friendRequests: string[]
+    friendRequests: string[],
+    matchInvites: string[],
     roles: string[],
     salt: string,
     digest: string,
@@ -65,6 +66,11 @@ let userSchema = new mongoose.Schema<User>({
         default: []
     },
     friendRequests: {
+        type: [mongoose.SchemaTypes.String],
+        required: true,
+        default: []
+    },
+    matchInvites: {
         type: [mongoose.SchemaTypes.String],
         required: true,
         default: []
