@@ -52,7 +52,7 @@ export class NotificationsComponent implements OnInit {
   acceptRequest(accepted){
     if (this.canAccept){
       this.canAccept = false;
-      this.userService.acceptFriendRequest(this.user.email, accepted).subscribe(() => {
+      this.userService.acceptFriendRequest(accepted).subscribe(() => {
       },()=>{}, ()=>{
         this.canAccept = true;
       });
@@ -61,7 +61,7 @@ export class NotificationsComponent implements OnInit {
 
   refuseRequest(refused){
     this.canAccept = false;
-    this.userService.refuseFriendRequest(this.user.email, refused).subscribe(() => {
+    this.userService.refuseFriendRequest(refused).subscribe(() => {
     }, ()=>{}, ()=>{
       this.canAccept = true;
     });

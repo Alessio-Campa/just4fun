@@ -30,6 +30,7 @@ export interface User extends mongoose.Document{
     sendFriendRequest: (receiver:string, res, next)=>void,
     acceptFriendRequest: (requester:string, res, next)=>void,
     refuseFriendRequest: (refused: string, res, next)=>void,
+    removeFriendRequest: (user: string, res, next)=>void,
     removeFriend: (user: string, res, next)=>void,
     updatePoints: (loserEmail)=>void,
     notify: (notification, save?: boolean) => void
@@ -234,6 +235,14 @@ userSchema.methods.refuseFriendRequest = function (refused: string, res, next){
     } else {
         next({statusCode: 400, error: true, errormessage: "User doesn't exist or didn't send a friend request"});
     }
+}
+
+userSchema.methods.removeFriendRequest = function (user: string, res, next){
+    getModel().findOne({email: user}).then((data) => {
+        data.refuseFriendRequest(this.email, res, next);
+    }).catch((err) => {
+        next({statusCode: 500, error: true, errormessage: "DB error: "+err.errormessage});
+    });
 }
 
 userSchema.methods.removeFriend = function (friend: string, res, next){

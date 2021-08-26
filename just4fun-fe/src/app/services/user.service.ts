@@ -62,7 +62,7 @@ export class UserService {
   }
   public tokenAuth()
   {
-    return 'Bearer ' + this.token;
+    return this.token ? 'Bearer ' + this.token : '';
   }
 
   login(mail: string, password: string, remember: boolean): Observable<User>{
@@ -155,40 +155,35 @@ export class UserService {
     );
   }
 
-  follow(sender: string, receiver: string): Observable<any>{
-    let token = this.token
+  follow(receiver: string): Observable<any>{
     let options = {
       headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + token,
+        'Authorization': this.tokenAuth(),
         'cache-control': 'no-cache',
         'Content-Type': 'application/json',
       })
     };
 
-    return this.http.post(`${environment.serverUrl}/user/${sender}/follow`, {user: receiver}, options).pipe(
+    return this.http.post(`${environment.serverUrl}/user/${this.email}/follow`, {user: receiver}, options).pipe(
       tap(data => {
         console.log(JSON.stringify(data))
       })
     );
   }
 
-  unfollow(sender: string, receiver: string): Observable<any>{
-    let token = this.token;
+  unfollow(receiver: string): Observable<any>{
     let options = {
       headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + token,
+        'Authorization': this.tokenAuth(),
         'cache-control': 'no-cache',
         'Content-Type': 'application/json',
-      }),
-      body: {
-        user: receiver
-      }
+      })
     };
 
-    return this.http.delete(`${environment.serverUrl}/user/${sender}/follow`, options)
+    return this.http.delete(`${environment.serverUrl}/user/${this.email}/follow/${receiver}`, options)
   }
 
-  sendFriendRequest(sender: string, receiver: string): Observable<any>{
+  sendFriendRequest(receiver: string): Observable<any>{
     let options = {
       headers: new HttpHeaders({
         'Authorization': this.tokenAuth(),
@@ -200,10 +195,10 @@ export class UserService {
       user: receiver
     }
 
-    return this.http.post(`${environment.serverUrl}/user/${sender}/friend`, body, options);
+    return this.http.post(`${environment.serverUrl}/user/${this.email}/friend`, body, options);
   }
 
-  acceptFriendRequest(user: string, accepted: string): Observable<any>{
+  acceptFriendRequest(accepted: string): Observable<any>{
     let options = {
       headers: new HttpHeaders({
         'Authorization': this.tokenAuth(),
@@ -215,10 +210,10 @@ export class UserService {
       user: accepted
     }
 
-    return this.http.post(`${environment.serverUrl}/user/${user}/friend`, body, options);
+    return this.http.post(`${environment.serverUrl}/user/${this.email}/friend`, body, options);
   }
 
-  refuseFriendRequest(user: string, refused: string): Observable<any>{
+  refuseFriendRequest(refused: string): Observable<any>{
     let options = {
       headers: new HttpHeaders({
         'Authorization': this.tokenAuth(),
@@ -226,26 +221,24 @@ export class UserService {
         'Content-Type': 'application/json',
       })
     };
-    let body = {
-      refuse: refused
-    };
 
-    return this.http.delete(`${environment.serverUrl}/user/${refused}/friend/${user}`, options);
+    return this.http.delete(`${environment.serverUrl}/user/${refused}/friend/${this.email}`, options);
   }
 
-  unfriend(user: string, friend: string): Observable<any>{
+  removeFriendRequest(friend: string): Observable<any>{
+    return this.unfriend(friend);
+  }
+
+  unfriend(friend: string): Observable<any>{
     let options = {
       headers: new HttpHeaders({
         'Authorization': this.tokenAuth(),
         'cache-control': 'no-cache',
         'Content-Type': 'application/json',
-      }),
-      params: {
-        friend: friend
-      }
+      })
     };
 
-    return this.http.delete(`${environment.serverUrl}/user/${user}/friend`, options);
+    return this.http.delete(`${environment.serverUrl}/user/${this.email}/friend/${friend}`, options);
   }
 
   deleteNotification(id: string): Observable<any>{

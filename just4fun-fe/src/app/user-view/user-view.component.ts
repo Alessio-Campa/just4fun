@@ -17,8 +17,8 @@ export class UserViewComponent implements OnInit {
   isFollowed: boolean = false;
   isFriend: boolean = false;
   hasRequested: boolean = false;
-  private me: User;
-  private canReqest = true;
+  me: User;
+  private canRequest = true;
   statistics = [];
 
   isLoading = {user: -1, buttons: -1, statistics: -1}
@@ -35,24 +35,35 @@ export class UserViewComponent implements OnInit {
     this.userService.get_user_by_mail(userMail).subscribe(data => {
       console.log(data)
       this.user = data;
-    }, ()=>{}, ()=>{
+    }, console.log, ()=>{
       this.isLoading.user++;
-      this.userService.get_user_by_mail(this.userService.email).subscribe(data => {
-        this.me = data;
-        console.log(data)
+      if(this.userService.isLoggedIn) {
+        this.userService.get_user_by_mail(this.userService.email).subscribe(data => {
+            this.me = data;
+            console.log(data)
 
-        if (this.me.friends.includes(userMail)) {
-          this.isFriend = true;
-        } else if (this.user.friendRequests.includes(this.me.email)) {
-          this.hasRequested = true;
-        }
+            if (this.me.friends.includes(userMail)) {
+              this.isFriend = true;
+            } else if (this.user.friendRequests.includes(this.me.email)) {
+              this.hasRequested = true;
+            }
 
-        if (this.me.following.includes(userMail)){
-          this.isFollowed = true;
-        }
-      }, ()=>{}, ()=>{
+            if (this.me.following.includes(userMail)) {
+              this.isFollowed = true;
+            }
+          },
+          console.log,
+          () => {
+            this.isLoading.buttons++;
+          });
+      }
+      else {
+        this.me = null;
+        this.isFriend = false;
+        this.hasRequested = false;
+        this.isFollowed = false;
         this.isLoading.buttons++;
-      });
+      }
     });
 
     this.calculateStatistics(userMail)
@@ -60,31 +71,33 @@ export class UserViewComponent implements OnInit {
   }
 
   follow(){
-    this.userService.follow(this.me.email, this.user.email).subscribe( () => {
+    this.userService.follow(this.user.email).subscribe( () => {
       this.isFollowed = true;
     })
   }
 
   unfollow(){
-    this.userService.unfollow(this.me.email, this.user.email).subscribe( () => {
+    this.userService.unfollow(this.user.email).subscribe( () => {
       this.isFollowed = false;
     })
   }
 
   unfriend(){
-    this.userService.unfriend(this.me.email, this.user.email).subscribe(() => {
+    this.userService.unfriend(this.user.email).subscribe(() => {
       this.isFriend = false;
     })
   }
 
   unrequest(){
-
+    this.userService.removeFriendRequest(this.user.email).subscribe(() => {
+      this.hasRequested = false;
+    })
   }
 
   sendRequest(){
-    if (this.canReqest){
-      this.canReqest = false;
-      this.userService.sendFriendRequest(this.me.email, this.user.email).subscribe(()=>{
+    if (this.canRequest){
+      this.canRequest = false;
+      this.userService.sendFriendRequest(this.user.email).subscribe(()=>{
         this.hasRequested = true;
       });
     }

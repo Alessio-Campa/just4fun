@@ -54,7 +54,7 @@ router.get('/:email', passport_auth(['jwt', 'anonymous']), (req, res, next) => {
         // projection['friendRequests'] = 0;
     }
 
-    if(req.user.email == req.params.email || req.user.hasModeratorRole()) {
+    if(req.user && (req.user.email == req.params.email || req.user.hasModeratorRole())) {
         user.getModel().findOne({email: req.params.email, isDeleted: { $ne: true }}, projection).then((u: any) => {
             user.getModel().find({friendRequests: req.params.email, isDeleted: { $ne: true }}, {email: 1}).then((friends) => {
                 u = u.toJSON();
@@ -209,9 +209,11 @@ router.post('/:id/friend', passport_auth('jwt'), (req, res, next) => {
 router.delete('/:user1/friend/:user2', passport_auth('jwt'), (req, res, next) => {
     if (req.params.user1 === req.user.email)
     {
-        //TODO or rimuovi richiesta di amicizia
         user.getModel().findOne({email: req.params.user1}).then((data) => {
-            data.removeFriend(req.params.user2, res, next);
+            if(data.friends.includes(req.params.user2))
+                data.removeFriend(req.params.user2, res, next);
+            else
+                data.removeFriendRequest(req.params.user2, res, next);
         }).catch((err) => {
             return next({statusCode: 500, error: true, errormessage: "DB error: "+err.errormessage});
         });

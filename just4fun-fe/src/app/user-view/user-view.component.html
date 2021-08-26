@@ -1,6 +1,6 @@
 <div class="container row mb-4">
 
-  <div *ngIf="!isLoading.user" class="col col-5" id="userInfoDiv">
+  <div *ngIf="!isLoading.user" class="col-5" id="userInfoDiv">
     <div class="col-12 bg-dark p-3 rounded text-light d-flex h-100">
       <img *ngIf="user" src="{{user.avatar}}" class="rounded-circle w-50 mr-3" alt="user profile image">
       <div class="h-auto w-100 d-flex flex-wrap align-items-center">
@@ -14,22 +14,22 @@
     </div>
   </div>
 
-  <div *ngIf="isLoading.user" class="col col-5" id="userInfoDiv-loading">
+  <div *ngIf="isLoading.user" class="col-5" id="userInfoDiv-loading">
     <div class="col-12 bg-dark p-3 rounded h-100 d-flex justify-content-center">
       <img *ngIf="!user" src="assets/img/loading.gif" class="m-auto" style="height: 5em; width: 5em">
     </div>
   </div>
 
 
-  <div *ngIf="!isLoading.buttons" class="col col-7" id="quickActionsDiv">
+  <div *ngIf="!isLoading.buttons" class="col-7" id="quickActionsDiv">
     <div class="col-12 bg-dark p-3 rounded text-light h-100">
 
       <h3 class="h3 text-center"> Quick actions </h3>
 
-      <div class="row row-cols-3 h-100">
+      <div class="row row-cols-3 h-100" [class.blur]="!this.me">
 
         <div class="col h-100 text-center">
-          <button type="button" id="followButton" class="btn square m-3 p-2" [ngStyle]="{'background-color': (isFollowed ? 'red' : 'lime')}" (click)="isFollowed ? unfollow() : follow()">
+          <button type="button" id="followButton" class="btn square m-3 p-2" [disabled]="!this.me" [ngStyle]="{'background-color': (isFollowed ? 'red' : 'lime')}" (click)="isFollowed ? unfollow() : follow()">
             <img *ngIf="isFollowed" src="assets/img/person-fill.svg" class="bi bi-person-plus" style="height: 4em">
             <img *ngIf="!isFollowed" src="assets/img/person.svg" class="bi bi-person-plus" style="height: 4em">
           </button>
@@ -37,16 +37,16 @@
         </div>
 
         <div class="col h-100 text-center">
-          <button type="button" class="btn square m-3 p-2" [ngStyle]="{'background-color': (isFriend ? 'red' : hasRequested ? 'yellow' : 'lime')}" (click)="isFriend ? unfriend() : hasRequested ? unrequest() : sendRequest()" [disabled]="hasRequested" >
+          <button type="button" class="btn square m-3 p-2" [disabled]="!this.me" [ngStyle]="{'background-color': (isFriend ? 'red' : hasRequested ? 'yellow' : 'lime')}" (click)="isFriend ? unfriend() : (hasRequested ? unrequest() : sendRequest())">
             <img *ngIf="!isFriend && !hasRequested" src="assets/img/people.svg" class="bi bi-person-plus" style="height: 4em">
             <img *ngIf="hasRequested" src="assets/img/clock.svg" class="bi bi-person-plus" style="height: 4em">
             <img *ngIf="isFriend" src="assets/img/people-fill.svg" class="bi bi-person-plus" style="height: 4em">
           </button>
-          <p class="m-n2"> {{isFriend ? 'Unfriend' : hasRequested ? 'Pending request' : 'Send friend request'}} </p>
+          <p class="m-n2"> {{isFriend ? 'Unfriend' : hasRequested ? 'Remove pending request' : 'Send friend request'}} </p>
         </div>
 
         <div class="col h-100 text-center">
-          <button type="button" class="btn btn-primary square m-3 p-2 disabled" disabled>
+          <button type="button" class="btn btn-primary square m-3 p-2 disabled" [disabled]="!this.me">
             <img src="assets/img/crossed-flags.png" class="bi bi-person-plus" style="height: 4em">
           </button>
           <p class="m-n2">New match</p>
