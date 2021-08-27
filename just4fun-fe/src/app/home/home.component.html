@@ -66,7 +66,19 @@
           </ul>
         </a>
 
+
       </div>
+
+      <div class="col-md-12 bg-dark rounded p-3 mt-4 container-fluid">
+        <div class="d-flex">
+          <div class="w-100 d-flex justify-content-center" style="justify-content: flex-start">
+            <input #name type="text" class="form-control rounded-pill pr-6" placeholder="Search user by username" (keydown.enter)="searchUser(name.value)">
+            <img src="assets/img/arrow-right-short.svg" class="btn btn-primary rounded-circle p-1 h-100 ml-md-1 ml-lg-2" (click)="searchUser(name.value)">
+          </div>
+        </div>
+        <p class="text-danger m-1" [hidden]="!userNotFoundError">User not found</p>
+      </div>
+
     </div>
   </div>
 </div>
