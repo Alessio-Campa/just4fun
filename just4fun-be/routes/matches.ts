@@ -104,7 +104,7 @@ router.post("/", passport_auth('jwt'), (req, res, next) => {
         m.save().then(() => {
             let c: Chat = newChat(m._id, [req.body.user, req.body.opponent]);
             c.save().then(() => {
-                return next({status_code: 200, error: false, errormessage: "", objectID: m._id})
+                return res.status(200).json({objectID: m._id})
             }).catch((err) => {
                 return next({status_code: 500, error: true, errormessage: err.errormessage})
             })

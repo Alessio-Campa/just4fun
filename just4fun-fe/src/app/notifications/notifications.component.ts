@@ -13,6 +13,8 @@ export class NotificationsComponent implements OnInit {
   notifications;
   friendRequests;
   matchInvites;
+  acceptedSuccess = false;
+  lastMatchAccepted;
   private canAccept = true
   private user;
 
@@ -78,10 +80,16 @@ export class NotificationsComponent implements OnInit {
   }
 
   acceptInvite(sender){
+    console.log("Accepting")
     if (this.canAccept){
       this.canAccept = false;
       this.matchService.crateMatchFromInvitation(this.user.email, sender).subscribe(res => {
+        this.lastMatchAccepted = res.objectID;
       },()=>{}, ()=>{
+        this.acceptedSuccess = true;
+        setTimeout(()=>{
+          this.acceptedSuccess = false;
+        }, 7000);
         this.canAccept = true;
       });
     }
