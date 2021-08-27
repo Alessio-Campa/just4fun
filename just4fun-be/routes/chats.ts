@@ -44,20 +44,18 @@ router.get("/:chatID", passport_auth('jwt'), (req, res, next)=>{
     })
 });
 
-router.get("/simpleFetching/:chatID", passport_auth('jwt'), (req, res, next) => {
+router.get("/:chatID/simpleFetching", passport_auth('jwt'), (req, res, next) => {
     if (!req.query.timestamp){
         return next({status_code: 400, error: true, errormessage:'timestamp missing'});
     }
-    let lastTimestamp: number = +req.query.timestamp;
+    let lastTimestamp: number =+ req.query.timestamp;
     chat.getModel().findOne({_id: req.params.chatID}).then((data: Chat)=>{
-        let messagesToReturn = []
-        for (let i = 0; i < data.messages.length; ++i) {
-            let message = data.messages[i];
-            if (message.timestamp > lastTimestamp) {
-                messagesToReturn.push(message);
-            }
+        let i = data.messages.length - 1;
+        while (i > 0 && data.messages[i].timestamp > lastTimestamp) {
+            --i;
         }
-        return res.status(200).json(messagesToReturn);
+        data.messages = data.messages.slice(i);
+        return res.status(200).json(data);
     }).catch(err => {
         return next({status_code: 500, error: true, errormessage: err});
     });

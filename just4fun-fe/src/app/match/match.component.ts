@@ -43,6 +43,9 @@ export class MatchComponent implements OnInit {
       // fetch chat
       this.chatService.getChatByMatch(matchID).subscribe(data => {
         this.matchChat = data[0];
+        this.matchChat.messages = [];
+
+        this.fetchChat()
       })
 
       this.ios.connect(matchID, isPlayer).subscribe((message)=>{
@@ -71,15 +74,7 @@ export class MatchComponent implements OnInit {
           });
 
            */
-          let lastTimestamp = null;
-          if (this.matchChat.messages !== []){
-            lastTimestamp = this.matchChat.messages[this.matchChat.messages.length - 1].timestamp;
-          }
-          this.chatService.fetchChat(this.matchChat._id, lastTimestamp).subscribe((data) => {
-            data.forEach((element) => {
-              this.matchChat.messages.push(element);
-            })
-          });
+          this.fetchChat()
           console.log('fetch ended');
         }
       });
@@ -92,6 +87,19 @@ export class MatchComponent implements OnInit {
         this.board.highlightVictory(this.match.winner.positions)
       }
 
+    });
+  }
+
+  fetchChat(){
+    console.log(this.matchChat)
+    let lastTimestamp = 0;
+    if (this.matchChat.messages.length > 0){
+      lastTimestamp = this.matchChat.messages.pop().timestamp;
+    }
+    this.chatService.fetchChat(this.matchChat._id, lastTimestamp).subscribe((data) => {
+      data.forEach((element) => {
+        this.matchChat.messages.push(element);
+      })
     });
   }
 

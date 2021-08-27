@@ -57,11 +57,11 @@ export class ChatService {
       }*/
     };
     //return this.http.get<Chat>(`${environment.serverUrl}/chat/` + chatID, options); //old version
-    return this.http.get<Message[]>(`${environment.serverUrl}/chat/simpleFetching/` + chatID + '/?timestamp=' + timestamp, options)
-      .pipe(map( (data: any) => {
-        console.log(data);
-        return data;
-      }));
+    return this.http.get<Chat>(`${environment.serverUrl}/chat/${chatID}/simpleFetching?timestamp=${timestamp}`, options).pipe(
+      map( (data: any) => data.messages.filter( m => {
+        return (data.members.includes(this.userService.email) && data.members.includes(m.sender)) || !data.members.includes(this.userService.email)
+      }))
+    );
   }
 
   getChatsByUser(user: string): Observable<any>{

@@ -26,7 +26,7 @@ export class MessagesComponent implements OnInit, OnChanges { //rappresenta una 
   }
 
   messageFetch() {
-    let lastTimestamp = null;
+    let lastTimestamp = 0;
     if (this.chat.messages !== []){
       lastTimestamp = this.chat.messages[this.chat.messages.length - 1].timestamp;
     }
