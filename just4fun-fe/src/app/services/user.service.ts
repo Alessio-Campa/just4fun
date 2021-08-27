@@ -252,6 +252,17 @@ export class UserService {
     return this.http.delete(`${environment.serverUrl}/user/${this.email}/notification/${id}`, options);
   }
 
+  sendInvitation(user, receiver): Observable<any>{
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': this.tokenAuth(),
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json',
+      })
+    };
+    return this.http.post(`${environment.serverUrl}/user/${user}/invite/${receiver}`, {}, options)
+  }
+
   deleteInvitation(user, sender): Observable<any>{
     let options = {
       headers: new HttpHeaders({

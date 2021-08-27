@@ -46,7 +46,7 @@
         </div>
 
         <div class="col h-100 text-center">
-          <button type="button" class="btn btn-primary square m-3 p-2 disabled" [disabled]="!this.me">
+          <button type="button" class="btn btn-primary square m-3 p-2" [disabled]="!this.me" (click)="sendMatchInvite()">
             <img src="assets/img/crossed-flags.png" class="bi bi-person-plus" style="height: 4em">
           </button>
           <p class="m-n2">New match</p>
