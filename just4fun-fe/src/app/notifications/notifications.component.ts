@@ -24,6 +24,8 @@ export class NotificationsComponent implements OnInit {
     this.userService.get_user_by_mail(this.userService.email).subscribe(data => {
       this.user = data;
       this.notifications = data.notifications;
+      this.notifications.reverse();
+      this.notifications.splice(10);
       this.friendRequests = data.friendRequests;
       this.matchInvites = data.matchInvites;
     })

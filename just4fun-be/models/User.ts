@@ -104,7 +104,7 @@ let userSchema = new mongoose.Schema<User>({
     notifications: [{
         type: {
             type: mongoose.SchemaTypes.String,
-            enum: ['follow', 'request', 'invite', 'message', 'system'],
+            enum: ['follow', 'request', 'invite', 'acceptedInvite', 'message', 'system'],
             required: true
         },
         content: {
@@ -285,6 +285,7 @@ userSchema.methods.notify = function (notification, save = true): void{
         type: notification.type,
         content: notification.content,
     });
+    console.log("notificanza");
     if (save)
         this.save();
 }

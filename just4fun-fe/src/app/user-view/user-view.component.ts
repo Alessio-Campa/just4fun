@@ -91,6 +91,7 @@ export class UserViewComponent implements OnInit {
   unrequest(){
     this.userService.removeFriendRequest(this.user.email).subscribe(() => {
       this.hasRequested = false;
+      this.canRequest = true;
     })
   }
 

@@ -199,8 +199,9 @@ router.post('/:id/friend', passport_auth('jwt'), (req, res, next) => {
     user.getModel().findOne({email: req.user.email}).then((data) => {
         if(data.friendRequests.includes(req.body.user))
             data.acceptFriendRequest(req.body.user, res, next);
-        else
+        else {
             data.sendFriendRequest(req.body.user, res, next);
+        }
     }).catch((err) => {
         return next({statusCode: 500, error: true, errormessage: "DB error: "+err.errormessage});
     });
