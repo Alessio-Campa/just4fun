@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 import {UserService} from "../services/user.service";
 import {MatchService} from "../services/match.service";
+import {SocketioService} from "../services/socketio.service";
 
 @Component({
   selector: 'app-notifications',
@@ -18,7 +19,8 @@ export class NotificationsComponent implements OnInit {
   private canAccept = true
   private user;
 
-  constructor(private router: Router, private userService: UserService, private matchService: MatchService) { }
+  constructor(private router: Router, private userService: UserService, private matchService: MatchService,
+              private ios: SocketioService) { }
 
   ngOnInit(): void {
     this.userService.get_user_by_mail(this.userService.email).subscribe(data => {
@@ -26,6 +28,10 @@ export class NotificationsComponent implements OnInit {
       this.notifications = data.notifications;
       this.friendRequests = data.friendRequests;
       this.matchInvites = data.matchInvites;
+    });
+    this.ios.connect().subscribe(data =>{
+      console.log("executing notif lambda")
+      console.log(data);
     })
   }
 

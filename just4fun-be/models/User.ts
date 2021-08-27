@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose'
 import * as crypto from 'crypto'
 import {Match} from "./Match";
+import {getIoServer} from "../bin/socket";
 
 export interface User extends mongoose.Document{
     username: string,
@@ -281,10 +282,16 @@ userSchema.methods.updatePoints = function (loserEmail){
 }
 
 userSchema.methods.notify = function (notification, save = true): void{
+    let ios = getIoServer();
+    let message = {
+        subject: "newNotification"
+    };
     this.notifications.push({
         type: notification.type,
         content: notification.content,
     });
+    ios.to(this.email).emit('broadcast', message);
+    console.log("socket notification sended".red)
     if (save)
         this.save();
 }
