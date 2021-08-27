@@ -4,6 +4,8 @@ import { environment } from "../../environments/environment";
 import { UserService } from "../services/user.service";
 import { Match, MatchService } from "../services/match.service";
 import { Board } from "../../assets/js/board";
+import {data} from "jquery";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -15,14 +17,15 @@ export class HomeComponent implements OnInit {
   isLogged;
   leaderboard;
   randomMatches: Match[];
+  userNotFoundError = false;
   ngForDone = false;
 
-  constructor(private us: UserService, private ms: MatchService) { }
+  constructor(private userService: UserService, private ms: MatchService, private router: Router) { }
   socket = io(environment.serverUrl, { transports: ['websocket'] });
 
   ngOnInit(): void {
-    this.isLogged = this.us.isLoggedIn;
-    this.us.leaderboard.subscribe(data => {
+    this.isLogged = this.userService.isLoggedIn;
+    this.userService.leaderboard.subscribe(data => {
       this.leaderboard = data;
     })
 
@@ -34,8 +37,8 @@ export class HomeComponent implements OnInit {
       ()=>{
         let i = 0;
         this.randomMatches.forEach(e => {
-          this.us.get_user_by_mail(e.player0).subscribe(data => e.player0 = data.username);
-          this.us.get_user_by_mail(e.player1).subscribe(data => e.player1 = data.username);
+          this.userService.get_user_by_mail(e.player0).subscribe(data => e.player0 = data.username);
+          this.userService.get_user_by_mail(e.player1).subscribe(data => e.player1 = data.username);
          })
       });
 
@@ -55,6 +58,15 @@ export class HomeComponent implements OnInit {
         i++;
       })
     }
+  }
+
+  searchUser(email){
+    this.userService.getUserByUsername(email).subscribe(data => {
+      if (data.length === 0)
+        this.userNotFoundError = true;
+      else
+        this.router.navigate([`/user/${data[0].email}`])
+    });
   }
 
 

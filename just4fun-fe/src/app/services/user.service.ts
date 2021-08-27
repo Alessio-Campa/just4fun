@@ -310,6 +310,17 @@ export class UserService {
     return this.http.get<User>(environment.serverUrl + '/user/' + mail, options);
   }
 
+  getUserByUsername(username: string): Observable<any>{
+    let options = {
+      headers: new HttpHeaders({
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json',
+      })
+    };
+
+    return this.http.get(`${environment.serverUrl}/user?username=${username}`);
+  }
+
   get leaderboard(): Observable<User[]>{
     return this.http.get<User[]>(environment.serverUrl + '/user/leaderboard');
   }

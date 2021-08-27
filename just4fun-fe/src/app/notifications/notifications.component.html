@@ -6,7 +6,7 @@
   <div class="col-6 text-light h-100">
     <div class="col-12 bg-dark rounded p-2 text-light h-100">
       <h2 class="text-center"> Feed </h2>
-      <div *ngFor="let n of notifications.reverse()">
+      <div *ngFor="let n of notifications">
 
         <div *ngIf="n.type === 'follow'" class="card card-body text-dark d-block mb-2">
           <b> <a href="/user/{{n.content}}" class="text-dark">{{n.content}}</a> </b> started following you
@@ -19,6 +19,9 @@
         </div>
         <div *ngIf="n.type === 'message'" class="card card-body text-dark d-block mb-2">
           <b> <a href="/user/{{n.content}}" class="text-dark">{{n.content}}</a> </b> sent you a message
+        </div>
+        <div *ngIf="n.type === 'acceptedInvite'" class="card card-body text-dark d-block mb-2">
+          <b> <a href="/user/{{n.content.opponent}}" class="text-dark">{{n.content.opponent}}</a> </b> accepted your <b> <a href="/match/{{n.content.matchID}}" class="alert-link">match</a> </b> invite
         </div>
 
       </div>

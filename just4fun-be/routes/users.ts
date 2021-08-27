@@ -7,6 +7,9 @@ import { getIntFromQueryParam } from "../utils/utils";
 let router = express.Router();
 
 router.get('/', passport_auth(['jwt', 'anonymous']), (req, res, next) => {
+    let filter = {
+    isDeleted: { $ne: true }
+    }
     let projection = {
         digest:0, //Security reason
         salt:0,   //Security reason
@@ -26,8 +29,10 @@ router.get('/', passport_auth(['jwt', 'anonymous']), (req, res, next) => {
 
     let skip = getIntFromQueryParam(req.query.skip, 0);
     let limit = getIntFromQueryParam(req.query.limit, null);
+    if (req.query.username)
+        filter['username'] = req.query.username;
 
-    user.getModel().find({isDeleted: { $ne: true }}, projection).sort(req.query.order_by).skip(skip).limit(limit).then((users) => {
+    user.getModel().find(filter, projection).sort(req.query.order_by).skip(skip).limit(limit).then((users) => {
         return res.status(200).json(users);
     }).catch((err) => {
         return next({statusCode:500, error:true, errormessage:"DB error: "+err.errormessage});
@@ -199,8 +204,9 @@ router.post('/:id/friend', passport_auth('jwt'), (req, res, next) => {
     user.getModel().findOne({email: req.user.email}).then((data) => {
         if(data.friendRequests.includes(req.body.user))
             data.acceptFriendRequest(req.body.user, res, next);
-        else
+        else {
             data.sendFriendRequest(req.body.user, res, next);
+        }
     }).catch((err) => {
         return next({statusCode: 500, error: true, errormessage: "DB error: "+err.errormessage});
     });
@@ -249,6 +255,7 @@ router.post('/:id/invite/:friend', passport_auth('jwt'), (req, res, next) => {
     if (!req.user.friends.includes(req.params.friend))
         return next({statusCode: 400, error: true, errormessage: "User doesn't exist or isn't your friend"});
 
+    // TODO: inviare solo se non è già stato fatto
     user.getModel().findOne({email: req.params.friend}).then(data => {
         data.matchInvites.push(req.user.email);
         data.notify({type: 'invite', content: req.user.email}, false);

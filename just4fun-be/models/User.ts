@@ -105,7 +105,7 @@ let userSchema = new mongoose.Schema<User>({
     notifications: [{
         type: {
             type: mongoose.SchemaTypes.String,
-            enum: ['follow', 'request', 'invite', 'message', 'system'],
+            enum: ['follow', 'request', 'invite', 'acceptedInvite', 'message', 'system'],
             required: true
         },
         content: {
