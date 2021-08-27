@@ -6,6 +6,8 @@ import jwt_decode from "jwt-decode"
 import {User} from "../models/User";
 import {getIoServer} from "../bin/socket";
 import {Schema} from "mongoose";
+import * as match from "../models/Match";
+import {Match} from "../models/Match";
 
 let router = express.Router();
 
@@ -106,10 +108,13 @@ router.put("/:idChat/message", passport_auth('jwt'), (req, res, next)=> {
         if (c.matchID) {
             ios.to(c.matchID + 'watchers').emit('broadcast', message);
             console.log("notifying watchers of " + c.matchID);
-            if (req.body.sender) {
-                console.log("notifying players of " + c.matchID);
-                ios.to(c.matchID + 'players').emit('broadcast', message);
-            }
+
+            match.getModel().findOne({_id: c.matchID}).then((data:Match) => {
+                if (req.body.sender === data.player0 || req.body.sender === data.player1) {
+                    console.log("notifying players of " + c.matchID);
+                    ios.to(c.matchID + 'players').emit('broadcast', message);
+                }
+            });
         }
         else {
             //let receiver = (c.members[1] === req.body.sender) ? c.members[0] : c.members[1];

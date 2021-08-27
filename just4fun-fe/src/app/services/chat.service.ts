@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
 import {UserService} from "./user.service";
 import {emitDistinctChangesOnlyDefaultValue} from "@angular/compiler/src/core";
+import {map, tap} from "rxjs/operators";
 
 export interface Chat{
   _id: string,
@@ -56,7 +57,11 @@ export class ChatService {
       }*/
     };
     //return this.http.get<Chat>(`${environment.serverUrl}/chat/` + chatID, options); //old version
-    return this.http.get<Message>(`${environment.serverUrl}/chat/simpleFetching/` + chatID + '/?timestamp=' + timestamp, options);
+    return this.http.get<Message[]>(`${environment.serverUrl}/chat/simpleFetching/` + chatID + '/?timestamp=' + timestamp, options)
+      .pipe(map( (data: any) => {
+        console.log(data);
+        return data;
+      }));
   }
 
   getChatsByUser(user: string): Observable<any>{
