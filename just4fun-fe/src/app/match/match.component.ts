@@ -21,6 +21,8 @@ export class MatchComponent implements OnInit {
   canViewMessages: boolean = false;
   matchChat: Chat = null;
   isReplaying = false;
+  isAutoReplaying = false;
+  private replayStep = 0;
 
   constructor(private router: Router, private ms: MatchService, private userService: UserService,
               private ios: SocketioService, private chatService: ChatService) { }
@@ -93,26 +95,6 @@ export class MatchComponent implements OnInit {
     });
   }
 
-  replay():void {
-    let i = 1;
-    let moves = this.match.moves;
-
-    this.isReplaying = true;
-    this.match.turn = 0;
-    this.board = new Board('#board', Array(6).fill(Array(7).fill(null)), ()=>{});
-    moves.forEach((move) => {
-      i++;
-      setTimeout(() => {
-        this.board.insertDisk(move, this.match.turn);
-        this.match.turn = (this.match.turn + 1) % 2;
-      }, 500 * i);
-    })
-    setTimeout(() => {
-      this.board.highlightVictory(this.match.winner.positions);
-      this.isReplaying = false;
-    }, 500 * (i + 1));
-  }
-
   makeMove(column): void {
     this.ms.placeDisk(this.match._id, this.userService.email, column).subscribe(
       (data)=>{
@@ -123,6 +105,49 @@ export class MatchComponent implements OnInit {
         err => {
         console.log(err);
       });
+  }
+
+  replay():void {
+    this.replayStep = 0;
+    this.isReplaying = true;
+    this.match.turn = 0;
+    this.board = new Board('#board', Array(6).fill(Array(7).fill(null)), ()=>{});
+  }
+
+  replayFwd(){
+    this.board.insertDisk(this.match.moves[this.replayStep], this.match.turn);
+    this.match.turn = (this.match.turn + 1) % 2;
+    this.replayStep++;
+
+    if (this.replayStep === this.match.moves.length){
+      this.isReplaying = false;
+      setTimeout(() => {
+        this.board.highlightVictory(this.match.winner.positions);
+      }, 300 );
+    }
+  }
+
+  replayBwd(){
+
+  }
+
+  replayAuto(){
+    this.isAutoReplaying = true;
+    let startStep = this.replayStep;
+    let moves = this.match.moves.slice(0);
+    moves.splice(startStep).forEach((move) => {
+      setTimeout(() => {
+        this.board.insertDisk(move, this.match.turn);
+        this.match.turn = (this.match.turn + 1) % 2;
+      }, 500 * (this.replayStep++ - startStep));
+    })
+
+    setTimeout(() => {
+      this.board.highlightVictory(this.match.winner.positions);
+      this.isReplaying = false;
+      this.isAutoReplaying = false;
+    }, 500 * (this.replayStep - startStep)-200 );
+
   }
 
 }
