@@ -23,6 +23,14 @@ export class NotificationsComponent implements OnInit {
               private ios: SocketioService) { }
 
   ngOnInit(): void {
+    this.gettingNotifications();
+    this.ios.connect().subscribe(data =>{
+      if (data.subject === 'newNotification')
+        this.gettingNotifications();
+    })
+  }
+
+  private gettingNotifications() {
     this.userService.get_user_by_mail(this.userService.email).subscribe(data => {
       this.user = data;
       this.notifications = data.notifications;
@@ -31,10 +39,6 @@ export class NotificationsComponent implements OnInit {
       this.friendRequests = data.friendRequests;
       this.matchInvites = data.matchInvites;
     });
-    this.ios.connect().subscribe(data =>{
-      console.log("executing notif lambda")
-      console.log(data);
-    })
   }
 
   navigateMessages(chatID){
