@@ -58,6 +58,9 @@ export class MatchComponent implements OnInit {
           }
         }
         if (subject === 'matchEnded') {
+          this.ms.getMatchById(this.match._id).subscribe((m: Match) => {
+            this.match.moves = m.moves;
+          });
           this.match.winner.player = message.win.player;
           this.match.winner.positions = message.win.positions;
           this.board.endMatch();
