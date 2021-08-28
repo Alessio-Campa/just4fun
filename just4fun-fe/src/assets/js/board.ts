@@ -71,7 +71,12 @@ export class PlayableBoard extends Board{
     }
   }
 
+  public onDBUpdate(){
+    this.isDBUpdating = false;
+  }
+
   _playerTurn;
+  isDBUpdating = false;
 
 }
 
@@ -145,7 +150,8 @@ export class PlayableColumn extends Column{
     });
 
     this.$element.on('click', function () {
-      if(that.occupied < ROWS && parent.turn == parent.playerTurn && !that.end) {
+      if(that.occupied < ROWS && parent.turn == parent.playerTurn && !that.end && !parent.isDBUpdating) {
+        parent.isDBUpdating = true;
         LambdaSocket(index);
         that.insertDisk(colors[parent.turn]);
         if (that.isMouseInside) {
@@ -159,19 +165,6 @@ export class PlayableColumn extends Column{
   public highlightCell(row):void {
     this.$cells[row].find('.cellDisk').css('boxShadow',  "0px 0px 10px 4px cyan inset");
   }
-
-  /* in teoria eliminabile, lo tengo per sicurezza
-  public insertDisk(color){
-    for (let j = 0; j < ROWS - this.occupied; j++) {
-      setTimeout(() => {
-        if (j > 0)
-          this.$cells[j - 1].find('.cellDisk').css('backgroundColor', '');
-
-        this.$cells[j].find('.cellDisk').css('backgroundColor', color);
-      }, j * 50)
-    }
-    this.occupied++;
-  }*/
 
   $element
   $cells

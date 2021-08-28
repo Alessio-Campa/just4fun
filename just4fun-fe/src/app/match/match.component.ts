@@ -67,18 +67,7 @@ export class MatchComponent implements OnInit {
           this.board.highlightVictory(message.win.positions)
         }
         if (message.subject === 'newMessageReceived') {
-          console.log('start fetching');
-
-          /* old version: for each fetch, the entire chat is fetched
-          this.chatService.fetchChat(this.matchChat._id).subscribe((data) =>{
-            console.log(data);
-            this.matchChat.messages = data.messages;
-            console.log(data.messages);
-          });
-
-           */
           this.fetchChat()
-          console.log('fetch ended');
         }
       });
       if (isPlayer && this.match.winner.player === null){
@@ -110,11 +99,7 @@ export class MatchComponent implements OnInit {
     this.ms.placeDisk(this.match._id, this.userService.email, column).subscribe(
       (data)=>{
         this.board.changeTurn()
-        console.log(data);
-        console.log("disk inserted");
-      },
-        err => {
-        console.log(err);
+        this.board.onDBUpdate();
       });
   }
 
