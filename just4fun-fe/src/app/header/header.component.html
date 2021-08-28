@@ -1,14 +1,14 @@
 <header>
   <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary shadow">
-    <a class="navbar-brand d-flex justify-content-center" href="/">
+    <a class="align-items-center d-flex justify-content-center me-2 ms-2" href="/">
       <img src="/assets/img/logo.png" alt="logo just4fun" style="max-height: 24px; margin-bottom: auto">
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav mr-auto">
+      <ul class="navbar-nav me-auto">
         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
           <a class="nav-link" routerLink="/">Home page</a>
         </li>
@@ -21,10 +21,10 @@
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" style="color: #fff;" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" style="color: #fff;" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <b>{{ userService.username }}</b>
           </a>
-          <div class="dropdown-menu dropdown-menu-right p-2" aria-labelledby="navbarDropdown">
+          <div class="dropdown-menu dropdown-menu-end p-2" aria-labelledby="navbarDropdown">
             <a class="dropdown-item mb-1 rounded" href="/profile"> Profile </a>
             <a class="dropdown-item mb-1 rounded" href="/changePassword"> Change Password </a>
             <a class="dropdown-item rounded onFocusDanger" href="/logout">Logout</a>
@@ -34,10 +34,10 @@
       </ul>
       <ul *ngIf="!userService.isLoggedIn" class="navbar-nav navbar-right">
         <li class="nav-item">
-          <a class="btn btn-sm btn-light nav-link" href="/login" style="color:#000000; margin-right: 10px;">Login</a>
+          <a class="btn btn-sm btn-secondary nav-link" href="/login" style="margin-right: 10px;">Login</a>
         </li>
         <li class="nav-item">
-          <a class="btn btn-sm btn-dark nav-link" href="/register" style="color:#ffffff; margin-right: 10px;">Sign Up</a>
+          <a class="btn btn-sm btn-info nav-link" href="/register" style="margin-right: 10px;">Sign Up</a>
         </li>
       </ul>
     </div>
