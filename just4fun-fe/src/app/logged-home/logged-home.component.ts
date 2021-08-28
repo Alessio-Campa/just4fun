@@ -13,7 +13,7 @@ import {SocketioService} from "../services/socketio.service";
 })
 export class LoggedHomeComponent implements OnInit {
 
-  //socket = io(environment.serverUrl, { transports: ['websocket'] });
+  socket; // = io(environment.serverUrl, { transports: ['websocket'] });
   user = this.userService;
   matchFound: boolean = false;
   matchSearching: boolean = false;
@@ -24,6 +24,7 @@ export class LoggedHomeComponent implements OnInit {
               public ios: SocketioService) { }
 
   ngOnInit(): void {
+    /*
     this.ios.ngOnInit();
     this.ios.connect().subscribe((message)=>{
       if (message.subject == 'matchMakingFound') {
@@ -36,6 +37,25 @@ export class LoggedHomeComponent implements OnInit {
         }, 1000);
       }
     });
+
+     */
+
+    this.socket = this.ios.getSocketIO();
+
+    this.socket.on('welcome', () => {
+      this.socket.emit('join', this.userService.email);
+    });
+
+    this.socket.on('matchMakingFound', (message) => {
+      this.matchSearching = false;
+      this.matchFound = true;
+      this.userService.get_user_by_mail(message.player0).subscribe(data => this.player0 = data.username);
+      this.userService.get_user_by_mail(message.player1).subscribe(data => this.player1 = data.username);
+      setTimeout(()=>{
+        this.router.navigate(['match/' + message.matchID]);
+      }, 1000);
+    })
+
     console.log("127.0.0.0 sweet logged 127.0.0.0")
   }
 

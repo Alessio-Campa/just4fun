@@ -17,6 +17,7 @@ export class MessagesComponent implements OnInit, OnChanges { //rappresenta una 
   @Input() chat: Chat = null;
   userMail;
   chatTitle;
+  socket;
 
   constructor(private chatService: ChatService, private userService: UserService, private router: Router,
               private ios: SocketioService) {
@@ -38,21 +39,23 @@ export class MessagesComponent implements OnInit, OnChanges { //rappresenta una 
   }
 
   ngOnInit(): void {
+    this.socket = this.ios.getSocketIO();
     this.userMail = this.userService.email;
     console.log(this.chat.matchID);
     if (this.chat.matchID !== null) {
       this.chatTitle = 'Match chat'
     }
     else {
-      this.ios.connect().subscribe((message)=>{
-        if (message.subject === 'newMessageReceived') {
-          console.log('start fetching');
-          this.messageFetch();
-          console.log('fetch ended');
-        }
-      });
       this.chatTitle = this.chat.members[0] == this.userMail ? this.chat.members[1] : this.chat.members[0]
+      this.socket.on('newMessageReceived', (message)=>{
+        console.log('start fetching');
+        this.messageFetch();
+        console.log('fetch ended');
+      });
     }
+    this.socket.on('welcome', () => {
+      this.socket.emit('join', this.userService.email);
+    });
   }
 
   ngOnChanges(changes: SimpleChanges){

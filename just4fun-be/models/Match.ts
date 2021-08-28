@@ -104,8 +104,8 @@ matchSchema.methods.makeMove = function (player: string, column: number): void {
         column: column,
         player: player //in teoria non serve
     }
-    ios.to(this.id + 'watchers').emit("broadcast", message);
-    ios.to(this.id + 'players').emit("broadcast", message);
+    ios.to(this.id + 'watchers').emit("newMove", message);
+    ios.to(this.id + 'players').emit("newMove", message);
     if(winner.winner !== null){
         this.winner.player = winner.winner;
         this.winner.positions = winner.cells;
@@ -115,8 +115,8 @@ matchSchema.methods.makeMove = function (player: string, column: number): void {
             matchID: this.id,
             win: this.winner,
         }
-        ios.to(this.id + 'watchers').emit("broadcast", message);
-        ios.to(this.id + 'players').emit("broadcast", message);
+        ios.to(this.id + 'watchers').emit("matchEnded", message);
+        ios.to(this.id + 'players').emit("matchEnded", message);
         let myTest;
         let loser;
         if (this.winner.player === 0) {

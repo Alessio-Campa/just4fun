@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
   ngForDone = false;
 
   constructor(private userService: UserService, private ms: MatchService, private router: Router) { }
-  socket = io(environment.serverUrl, { transports: ['websocket'] });
+  //socket = io(environment.serverUrl, { transports: ['websocket'] });
 
   ngOnInit(): void {
     this.isLogged = this.userService.isLoggedIn;
@@ -43,9 +43,12 @@ export class HomeComponent implements OnInit {
       });
 
     console.log("127.0.0.0 sweet 127.0.0.0");
+    /*
     this.socket.on('broadcast', ()=>{
       console.log("Roger");
     })
+
+     */
 
   }
 

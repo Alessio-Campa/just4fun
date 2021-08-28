@@ -290,7 +290,7 @@ userSchema.methods.notify = function (notification, save = true): void{
         type: notification.type,
         content: notification.content,
     });
-    ios.to(this.email).emit('broadcast', message);
+    ios.to(this.email).emit('newNotification', message);
     console.log("socket notification sended".red)
     if (save)
         this.save();

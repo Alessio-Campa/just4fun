@@ -104,20 +104,20 @@ router.put("/:idChat/message", passport_auth('jwt'), (req, res, next)=> {
 
     }).then(() => {
         if (c.matchID) {
-            ios.to(c.matchID + 'watchers').emit('broadcast', message);
+            ios.to(c.matchID + 'watchers').emit('newMessageReceived', message);
             console.log("notifying watchers of " + c.matchID);
 
             match.getModel().findOne({_id: c.matchID}).then((data:Match) => {
                 if (req.body.sender === data.player0 || req.body.sender === data.player1) {
                     console.log("notifying players of " + c.matchID);
-                    ios.to(c.matchID + 'players').emit('broadcast', message);
+                    ios.to(c.matchID + 'players').emit('newMessageReceived', message);
                 }
             });
         }
         else {
             //let receiver = (c.members[1] === req.body.sender) ? c.members[0] : c.members[1];
-            ios.to(c.members[0]).emit('broadcast', message);
-            ios.to(c.members[1]).emit('broadcast', message);
+            ios.to(c.members[0]).emit('newMessageReceived', message);
+            ios.to(c.members[1]).emit('newMessageReceived', message);
             console.log("notifying " + c.members[0]);
             console.log("notifying " + c.members[1]);
         }

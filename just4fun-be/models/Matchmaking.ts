@@ -74,8 +74,8 @@ matchMakingSchema.methods.searchMatch = function (): void {
 					player0: match.player0,
 					player1: match.player1
 				};
-				ios.to(thisPlayer.playerID).emit("broadcast", message);
-				ios.to(opponentPlayer.playerID).emit("broadcast", message);
+				ios.to(thisPlayer.playerID).emit("matchMakingFound", message);
+				ios.to(opponentPlayer.playerID).emit("matchMakingFound", message);
 				console.log((thisPlayer.playerID + " " + opponentPlayer.playerID).bgWhite.black);
 			}).catch((err) => {
 				console.log(err);
