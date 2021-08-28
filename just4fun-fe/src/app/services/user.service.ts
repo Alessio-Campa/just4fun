@@ -155,6 +155,21 @@ export class UserService {
     );
   }
 
+  changeAvatar(newAvatar: string): Observable<any>{
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': this.tokenAuth(),
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json',
+      })
+    };
+    let body = {
+      avatar: newAvatar
+    }
+
+    return this.http.put<User>(`${environment.serverUrl}/user/${this.email}`, body, options)
+  }
+
   follow(receiver: string): Observable<any>{
     let options = {
       headers: new HttpHeaders({

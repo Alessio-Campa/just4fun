@@ -14,6 +14,7 @@ import {MatchmakingComponent} from "./matchmaking/matchmaking.component";
 import {ChatsComponent} from "./chats/chats.component";
 import {UserChangePasswordComponent} from "./user-change-password/user-change-password.component";
 import {NotificationsComponent} from "./notifications/notifications.component";
+import {UserSettingsComponent} from "./user-settings/user-settings.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -32,7 +33,8 @@ const routes: Routes = [
     ]},
   {path: 'matchmaking', component: MatchmakingComponent},
   {path: 'messages',  component: ChatsComponent},
-  {path: 'notifications', component: NotificationsComponent}
+  {path: 'notifications', component: NotificationsComponent},
+  {path: 'settings', component: UserSettingsComponent}
 ];
 
 @NgModule({

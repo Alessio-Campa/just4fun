@@ -1,0 +1,17 @@
+<div class="bg-dark rounded p-2 mb-4">
+  <h1 class="text-light">Change password</h1>
+  <app-user-change-password></app-user-change-password>
+</div>
+
+<div class="bg-dark rounded p-2 mb-4">
+  <h1 class="text-light">Change avatar</h1>
+  <div class="d-flex justify-content-center">
+    <div class="w-50 d-flex justify-content-center">
+      <app-user-change-avatar  (imageCroppedEmitter)="imageEvent($event)"></app-user-change-avatar>
+    </div>
+  </div>
+  <p class="text-success" [hidden]="successMessage === ''">{{successMessage}}</p>
+  <p class="text-danger" [hidden]="errorMessage === ''">{{errorMessage}}</p>
+  <button class="btn btn-primary" (click)="changeAvatar()"> Change avatar </button>
+
+</div>

@@ -1,0 +1,11 @@
+<input id="avatar" class="text-white" type="file" (change)="fileChangeEvent($event)">
+<image-cropper
+  class="mb-3"
+  [imageChangedEvent]="imageChangedEvent"
+  [maintainAspectRatio]="true"
+  [aspectRatio]="1 / 1"
+  [resizeToWidth]="500"
+  [resizeToHeight]="500"
+  format="png"
+  (imageCropped)="imageCropped($event)"
+></image-cropper>

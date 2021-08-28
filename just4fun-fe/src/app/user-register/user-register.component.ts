@@ -31,12 +31,9 @@ export class UserRegisterComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  imageChangedEvent: Event;
-  fileChangeEvent(event: Event) {
-    this.imageChangedEvent = event;
-  }
-  imageCropped(event: ImageCroppedEvent) {
-    this.croppedAvatar = event.base64;
+
+  imageCropped(imageData: string) {
+    this.croppedAvatar = imageData;
   }
 
   register() {

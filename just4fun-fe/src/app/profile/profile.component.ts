@@ -53,6 +53,9 @@ export class ProfileComponent implements OnInit {
   navigateChats(){
     this.router.navigate(['messages'])
   }
+  navigateSettings(){
+    this.router.navigate(['settings'])
+  }
 
   private calculateStatistics(){
     let matches: Match[];

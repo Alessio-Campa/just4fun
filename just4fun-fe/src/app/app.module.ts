@@ -21,6 +21,8 @@ import { ChatsComponent } from './chats/chats.component';
 import { MessagesComponent } from './messages/messages.component';
 import { UserChangePasswordComponent } from './user-change-password/user-change-password.component';
 import { NotificationsComponent } from './notifications/notifications.component';
+import { UserChangeAvatarComponent } from './user-change-avatar/user-change-avatar.component';
+import { UserSettingsComponent } from './user-settings/user-settings.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { NotificationsComponent } from './notifications/notifications.component'
     ChatsComponent,
     MessagesComponent,
     UserChangePasswordComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    UserChangeAvatarComponent,
+    UserSettingsComponent
   ],
   imports: [
     HttpClientModule,
