@@ -6,6 +6,7 @@ import * as user from "./User";
 const ROWS: number = 6;
 const COLUMNS: number = 7;
 const CELL_TO_WIN: number = 4;
+const CELLS: number = ROWS * COLUMNS;
 
 export interface Match extends mongoose.Document{
     player0: string,
@@ -130,6 +131,18 @@ matchSchema.methods.makeMove = function (player: string, column: number): void {
         user.getModel().findOne({email: myTest}).then((theWinner) => {
             theWinner.updatePoints(loser);
         });
+    } else if (this.moves.length >= CELLS) {
+        let draw = new Result();
+        draw.setWinner(-1); // draw
+        this.winner.player = draw.winner;
+        this.winner.positions = [];
+        let message = {
+            subject: "matchDraw",
+            matchID: this.id,
+            win: this.winner,
+        }
+        ios.to(this.id + 'watchers').emit("matchDraw", message);
+        ios.to(this.id + 'players').emit("matchDraw", message);
     }
     this.turn = (this.turn + 1) % 2 //switch turn
 }

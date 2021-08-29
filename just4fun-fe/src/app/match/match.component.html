@@ -21,6 +21,9 @@
     <div class="mr-2" style="height: 1em; width: 1em; background-color: yellow; border: solid black 1px; border-radius: 100%"></div>
     <b> {{username1}} is the winner</b>
   </h1>
+  <h1 *ngIf="match && match.winner.player !== null && match.winner.player === -1" class="h1 mb-0 d-flex justify-content-center">
+    <b> Draw! </b>
+  </h1>
 </div>
 
 <div class="container align-content-center">
