@@ -66,11 +66,11 @@ router.post("/random", passport_auth('jwt'), (req, res, next) => {
 })
 
 router.delete("/random", passport_auth('jwt'), (req, res, next) => {
-    if (req.body.user !== req.user.email)
+    if (req.query.user !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
     matchmaking.getModel().deleteMany({playerID: req.user.email}).then(() => {
-        return next({status_code: 200, error: false, message: "Matchmaking stopped"});
+        return res.status(200).json({message: "Matchmaking stopped"});
     }).catch((err) => {
         return next({status_code: 500, error: true, errormessage: err.errormessage});
     });
@@ -138,18 +138,5 @@ router.post("/:matchID/moves", passport_auth('jwt'), (req, res, next)=>{
         return next({status_code:500, error: true, errormessage: err.message});
     });
 })
-
-// // TODO: debug, da eliminare
-// router.get("/searching", (req, res, next)=>{
-//     matchmaking.getModel().find().then(data => {
-//         return res.status(200).json(data);
-//     })
-// })
-//
-// router.delete("/searching", (req, res, next)=>{
-//     matchmaking.getModel().deleteMany().then( () => {
-//         return res.status(200).json("done");
-//     })
-// })
 
 module.exports = router;

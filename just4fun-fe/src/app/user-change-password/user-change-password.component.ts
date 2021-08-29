@@ -23,12 +23,10 @@ export class UserChangePasswordComponent implements OnInit {
     if(this.password !== this.password2)
     {
       this.errorMessage = 'The two password are not equal';
-      console.log('Login error: ' + this.errorMessage);
     }
     else {
       if (this.password === '') {
         this.errorMessage = 'Please insert a new password';
-        console.log('Login error: ' + this.errorMessage);
       }
       else {
         this.userService.changePassword(this.oldPassword, this.password).subscribe((d) => {
@@ -40,7 +38,6 @@ export class UserChangePasswordComponent implements OnInit {
             this.errorMessage = "Old password is wrong"
           else
             this.errorMessage = err.error.errormessage;
-          console.log('Password change error: ' + this.errorMessage);
           this.oldPassword = '';
           this.password = '';
           this.password2 = '';

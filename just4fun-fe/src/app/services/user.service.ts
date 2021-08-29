@@ -155,6 +155,21 @@ export class UserService {
     );
   }
 
+  changeAvatar(newAvatar: string): Observable<any>{
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': this.tokenAuth(),
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json',
+      })
+    };
+    let body = {
+      avatar: newAvatar
+    }
+
+    return this.http.put<User>(`${environment.serverUrl}/user/${this.email}`, body, options)
+  }
+
   follow(receiver: string): Observable<any>{
     let options = {
       headers: new HttpHeaders({
@@ -252,7 +267,7 @@ export class UserService {
     return this.http.delete(`${environment.serverUrl}/user/${this.email}/notification/${id}`, options);
   }
 
-  sendInvitation(user, receiver): Observable<any>{
+  sendInvitation(receiver): Observable<any>{
     let options = {
       headers: new HttpHeaders({
         'Authorization': this.tokenAuth(),
@@ -260,10 +275,10 @@ export class UserService {
         'Content-Type': 'application/json',
       })
     };
-    return this.http.post(`${environment.serverUrl}/user/${user}/invite/${receiver}`, {}, options)
+    return this.http.post(`${environment.serverUrl}/user/${this.email}/invite/${receiver}`, {}, options)
   }
 
-  deleteInvitation(user, sender): Observable<any>{
+  deleteInvitation(sender): Observable<any>{
     let options = {
       headers: new HttpHeaders({
         'Authorization': this.tokenAuth(),
@@ -271,7 +286,7 @@ export class UserService {
         'Content-Type': 'application/json',
       })
     };
-    return this.http.delete(`${environment.serverUrl}/user/${user}/invite/${sender}`, options);
+    return this.http.delete(`${environment.serverUrl}/user/${this.email}/invite/${sender}`, options);
   }
 
   get isLoggedIn()
@@ -289,10 +304,6 @@ export class UserService {
 
   get id() {
     return (jwtDecode(this.token) as TokenData).id;
-  }
-
-  get is_admin(): boolean {
-    return (jwtDecode(this.token) as TokenData).roles.includes('ADMIN');
   }
 
   get is_moderator(): boolean {

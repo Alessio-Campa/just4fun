@@ -33,9 +33,8 @@ export class UserViewComponent implements OnInit {
     let userMail = this.router.url.split('/').pop();
 
     this.userService.get_user_by_mail(userMail).subscribe(data => {
-      console.log(data)
       this.user = data;
-    }, console.log, ()=>{
+    }, ()=>{}, ()=>{
       this.isLoading.user++;
       if(this.userService.isLoggedIn) {
         this.userService.get_user_by_mail(this.userService.email).subscribe(data => {
@@ -51,9 +50,7 @@ export class UserViewComponent implements OnInit {
             if (this.me.following.includes(userMail)) {
               this.isFollowed = true;
             }
-          },
-          console.log,
-          () => {
+          }, ()=>{}, () => {
             this.isLoading.buttons++;
           });
       }
@@ -106,7 +103,7 @@ export class UserViewComponent implements OnInit {
   }
 
   sendMatchInvite(){
-    this.userService.sendInvitation(this.me.email, this.user.email).subscribe();
+    this.userService.sendInvitation(this.user.email).subscribe();
   }
 
   private calculateStatistics(email){

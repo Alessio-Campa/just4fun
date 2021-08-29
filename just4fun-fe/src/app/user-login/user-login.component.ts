@@ -21,8 +21,6 @@ export class UserLoginComponent implements OnInit {
 
   login() {
     this.userService.login(this.email, this.password, this.remember).subscribe( (d) => {
-      console.log('Login granted: ' + JSON.stringify(d));
-      console.log('User service token: ' + this.userService.token);
       this.errorMessage = false;
       this.router.navigate(['']);
     }, (err) => {

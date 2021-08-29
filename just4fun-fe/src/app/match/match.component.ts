@@ -28,10 +28,21 @@ export class MatchComponent implements OnInit {
               private ios: SocketioService, private chatService: ChatService) { }
 
   ngOnInit(): void {
+    // get matchID from url
     let matchID = this.router.url.split('/').pop();
 
-    if (this.userService.isLoggedIn) this.canViewMessages = true;
+    if (this.userService.isLoggedIn)
+      this.canViewMessages = true;
 
+    // fetch chat
+    this.chatService.getChatByMatch(matchID).subscribe(data => {
+      this.matchChat = data[0];
+      this.matchChat.messages = [];
+
+      this.fetchChat()
+    })
+
+    // get match from DB and determine user's relationship with it (player/watcher)
     this.ms.getMatchById(matchID).subscribe( data => {
       this.match = data;
       let isPlayer = this.userService.isLoggedIn && (this.userService.email === this.match.player0 || this.userService.email === this.match.player1)
@@ -40,49 +51,39 @@ export class MatchComponent implements OnInit {
       this.userService.get_user_by_mail(this.match.player0).subscribe(data => this.username0 = data.username);
       this.userService.get_user_by_mail(this.match.player1).subscribe(data => this.username1 = data.username);
 
-      // fetch chat
-      this.chatService.getChatByMatch(matchID).subscribe(data => {
-        this.matchChat = data[0];
-        this.matchChat.messages = [];
-
-        this.fetchChat()
-      })
-
+      // connect to socketIo
       this.ios.connect(matchID, isPlayer).subscribe((message)=>{
         let subject = message.subject;
+        // to execute when one player makes a new move
         if (subject === 'newMove') {
-          console.log("new move from player: " + message.player);
           this.match.turn = (this.match.turn + 1) % 2;
           if (!isPlayer || message.player !== this.userService.email) {
             this.board.insertDisk(message.column, (message.player === this.match.player0 ? 0 : 1));
           }
         }
+        // to execute when the match ends
         if (subject === 'matchEnded') {
+          this.ms.getMatchById(this.match._id).subscribe((m: Match) => {
+            this.match.moves = m.moves;
+          });
           this.match.winner.player = message.win.player;
           this.match.winner.positions = message.win.positions;
           this.board.endMatch();
           this.board.highlightVictory(message.win.positions)
         }
+        // to execute when a new message is sent
         if (message.subject === 'newMessageReceived') {
-          console.log('start fetching');
-
-          /* old version: for each fetch, the entire chat is fetched
-          this.chatService.fetchChat(this.matchChat._id).subscribe((data) =>{
-            console.log(data);
-            this.matchChat.messages = data.messages;
-            console.log(data.messages);
-          });
-
-           */
           this.fetchChat()
-          console.log('fetch ended');
         }
       });
+
+      // create the board (playable or not) based on the user relationship with the match
       if (isPlayer && this.match.winner.player === null){
         this.board = new PlayableBoard('#board', this.match.board,this.match.turn, playerTurn, (c)=>{
           this.makeMove(c);
         });
-      } else {
+      }
+      else {
         this.board = new Board('#board', this.match.board);
         this.board.highlightVictory(this.match.winner.positions)
       }
@@ -90,31 +91,29 @@ export class MatchComponent implements OnInit {
     });
   }
 
+  // gets all the messages sent after the last one displayed, if none it gets the messages since the beginning of time (for computers)
   fetchChat(){
-    console.log(this.matchChat)
     let lastTimestamp = 0;
     if (this.matchChat.messages.length > 0){
       lastTimestamp = this.matchChat.messages.pop().timestamp;
     }
-    this.chatService.fetchChat(this.matchChat._id, lastTimestamp).subscribe((data) => {
-      data.forEach((element) => {
+    this.chatService.fetchChat(this.matchChat._id, lastTimestamp).subscribe(data => {
+      data.forEach(element => {
         this.matchChat.messages.push(element);
       })
     });
   }
 
+  // adds a disk on db. If successful, changes the turn
   makeMove(column): void {
     this.ms.placeDisk(this.match._id, this.userService.email, column).subscribe(
-      (data)=>{
+      ()=>{
         this.board.changeTurn()
-        console.log(data);
-        console.log("disk inserted");
-      },
-        err => {
-        console.log(err);
+        this.board.onDBUpdate();
       });
   }
 
+  // sets up the board to show the match replay
   replay():void {
     this.replayStep = 0;
     this.isReplaying = true;
@@ -122,6 +121,7 @@ export class MatchComponent implements OnInit {
     this.board = new Board('#board', Array(6).fill(Array(7).fill(null)), ()=>{});
   }
 
+  // shows one more move on the replay
   replayFwd(){
     this.board.insertDisk(this.match.moves[this.replayStep], this.match.turn);
     this.match.turn = (this.match.turn + 1) % 2;
@@ -139,6 +139,7 @@ export class MatchComponent implements OnInit {
 
   }
 
+  // auto plays the replay until it finishes
   replayAuto(){
     this.isAutoReplaying = true;
     let startStep = this.replayStep;

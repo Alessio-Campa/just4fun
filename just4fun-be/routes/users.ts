@@ -241,7 +241,7 @@ router.delete('/:user1/friend/:user2', passport_auth('jwt'), (req, res, next) =>
 router.delete('/:id/notification/:idNot', passport_auth('jwt'), (req, res, next) => {
     if (req.user.email !== req.params.id)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
-
+    //TODO: potrei dover notificare il client
     user.getModel().findOneAndUpdate({email: req.params.id}, {$pull: {notifications:{_id: req.params.idNot}}} ).then(data => {
         return res.status(200).json('Notification deleted');
     }).catch(err => {

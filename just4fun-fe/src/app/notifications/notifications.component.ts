@@ -23,6 +23,14 @@ export class NotificationsComponent implements OnInit {
               private ios: SocketioService) { }
 
   ngOnInit(): void {
+    this.gettingNotifications();
+    this.ios.connect().subscribe(data =>{
+      if (data.subject === 'newNotification')
+        this.gettingNotifications();
+    })
+  }
+
+  private gettingNotifications() {
     this.userService.get_user_by_mail(this.userService.email).subscribe(data => {
       this.user = data;
       this.notifications = data.notifications;
@@ -31,24 +39,14 @@ export class NotificationsComponent implements OnInit {
       this.friendRequests = data.friendRequests;
       this.matchInvites = data.matchInvites;
     });
-    this.ios.connect().subscribe(data =>{
-      console.log("executing notif lambda")
-      console.log(data);
-    })
   }
 
   navigateMessages(chatID){
     this.router.navigate([`/messages?chatID=${chatID}`])
   }
 
+  // accepts/refuses a friend request and deletes it from the array
   handleRequest(isAccepted, requester){
-    /*
-    this.userService.deleteNotification(notificationId).subscribe(()=>{},()=>{},()=>{
-      let idx = this.notifications.indexOf( this.notifications.filter( e => e._id === notificationId) );
-      this.notifications.splice(idx, 1);
-    })
-     */
-
     let idx = this.friendRequests.indexOf(requester);
     this.friendRequests.splice(idx, 1);
 
@@ -58,7 +56,6 @@ export class NotificationsComponent implements OnInit {
       this.refuseRequest(requester);
 
   }
-
   acceptRequest(accepted){
     if (this.canAccept){
       this.canAccept = false;
@@ -68,7 +65,6 @@ export class NotificationsComponent implements OnInit {
       });
     }
   }
-
   refuseRequest(refused){
     this.canAccept = false;
     this.userService.refuseFriendRequest(refused).subscribe(() => {
@@ -77,6 +73,7 @@ export class NotificationsComponent implements OnInit {
     });
   }
 
+  // accepts/refuses a match invite and deletes it from the array
   handleInvite(isAccepted, sender){
     let idx = this.matchInvites.indexOf(sender);
     this.matchInvites.splice(idx, 1);
@@ -86,26 +83,26 @@ export class NotificationsComponent implements OnInit {
     else
       this.refuseInvite(sender);
   }
-
   acceptInvite(sender){
     console.log("Accepting")
     if (this.canAccept){
       this.canAccept = false;
       this.matchService.crateMatchFromInvitation(this.user.email, sender).subscribe(res => {
-        this.lastMatchAccepted = res.objectID;
-      },()=>{}, ()=>{
-        this.acceptedSuccess = true;
-        setTimeout(()=>{
-          this.acceptedSuccess = false;
-        }, 7000);
-        this.canAccept = true;
-      });
+          this.lastMatchAccepted = res.objectID;
+        },
+        ()=>{},
+        ()=>{
+          this.acceptedSuccess = true;
+          setTimeout(()=>{
+            this.acceptedSuccess = false;
+          }, 7000);
+          this.canAccept = true;
+        });
     }
-    this.userService.deleteInvitation(this.user.email, sender).subscribe();
+    this.userService.deleteInvitation(sender).subscribe();
   }
-
   refuseInvite(sender){
-    this.userService.deleteInvitation(this.user.email, sender).subscribe();
+    this.userService.deleteInvitation(sender).subscribe();
   }
 
 }

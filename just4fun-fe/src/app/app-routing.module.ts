@@ -7,13 +7,12 @@ import {UserLoginComponent} from "./user-login/user-login.component";
 import {UserLogoutComponent} from "./user-logout/user-logout.component";
 import {UserRegisterComponent} from "./user-register/user-register.component";
 import {MatchComponent} from "./match/match.component";
-import {LoggedHomeComponent} from "./logged-home/logged-home.component";
 import {ProfileComponent} from "./profile/profile.component";
 import {UserViewComponent} from "./user-view/user-view.component";
-import {MatchmakingComponent} from "./matchmaking/matchmaking.component";
 import {ChatsComponent} from "./chats/chats.component";
 import {UserChangePasswordComponent} from "./user-change-password/user-change-password.component";
 import {NotificationsComponent} from "./notifications/notifications.component";
+import {UserSettingsComponent} from "./user-settings/user-settings.component";
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -30,9 +29,9 @@ const routes: Routes = [
   {path: 'user', children: [
       {path: ':mail', component: UserViewComponent}
     ]},
-  {path: 'matchmaking', component: MatchmakingComponent},
-  {path: 'messages',  component: ChatsComponent},
-  {path: 'notifications', component: NotificationsComponent}
+  {path: 'messages',  component: ChatsComponent },
+  {path: 'notifications', component: NotificationsComponent},
+  {path: 'settings', component: UserSettingsComponent}
 ];
 
 @NgModule({

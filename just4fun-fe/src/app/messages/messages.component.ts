@@ -18,28 +18,16 @@ export class MessagesComponent implements OnInit, OnChanges { //rappresenta una 
   userMail;
   chatTitle;
 
+  // if user is not logged in return to home
   constructor(private chatService: ChatService, private userService: UserService, private router: Router,
               private ios: SocketioService) {
-    let urlArray = router.url.split('/')
-    if (!this.userService.isLoggedIn && urlArray[urlArray.length - 2] == 'messages')
+    if (!this.userService.isLoggedIn && router.url.split('/').pop() == 'messages')
       router.navigate(['/']);
-  }
-
-  messageFetch() {
-    let lastTimestamp = 0;
-    if (this.chat.messages !== []){
-      lastTimestamp = this.chat.messages[this.chat.messages.length - 1].timestamp;
-    }
-    this.chatService.fetchChat(this.chat._id, lastTimestamp).subscribe((data) =>{
-      data.forEach((element) => {
-        this.chat.messages.push(element);
-      })
-    });
   }
 
   ngOnInit(): void {
     this.userMail = this.userService.email;
-    console.log(this.chat.matchID);
+    // set chat title to display
     if (this.chat.matchID !== null) {
       this.chatTitle = 'Match chat'
     }
@@ -55,12 +43,26 @@ export class MessagesComponent implements OnInit, OnChanges { //rappresenta una 
     }
   }
 
+  // activated when another chat is selected from chatsComponent
   ngOnChanges(changes: SimpleChanges){
     if (changes.chat.currentValue.matchID !== null)
       this.chatTitle = 'Match chat'
     else
       this.chatTitle = changes.chat.currentValue.members[0] == this.userMail ? changes.chat.currentValue.members[1] : changes.chat.currentValue.members[0]
 
+  }
+
+  // gets all the messages sent after the last one displayed, if none it gets the messages since the beginning of time (for computers)
+  messageFetch() {
+    let lastTimestamp = 0;
+    if (this.chat.messages.length > 0){
+      lastTimestamp = this.chat.messages.pop().timestamp;
+    }
+    this.chatService.fetchChat(this.chat._id, lastTimestamp).subscribe(data => {
+      data.forEach(element => {
+        this.chat.messages.push(element);
+      })
+    });
   }
 
   sendMessage(message){

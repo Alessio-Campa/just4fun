@@ -17,6 +17,7 @@ export class ChatsComponent implements OnInit {
   isLoading = {chats: -1};
   friends;
 
+  // return to home if url is '/messages' and user is not logged in
   constructor(private chatService: ChatService, private userService: UserService, private router: Router,
               private ios: SocketioService, private route: ActivatedRoute) {
     if (!this.userService.isLoggedIn && this.router.url.split('/').pop() == 'messages')
@@ -48,6 +49,7 @@ export class ChatsComponent implements OnInit {
     this.selectedChat = this.chats[i];
   }
 
+  // show one open chat on page load, based on url
   initSelectedChat(): void {
     if(this.chats.length > 0)
       this.selectedChat = this.chats[0];
