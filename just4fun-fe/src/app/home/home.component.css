@@ -11,14 +11,6 @@ a{
   opacity: 0.75;
 }
 
-.cellDisk {
-  width: 100%;
-  padding-top: 85.71%;
-  background-color: #333333;
-  border-radius: 100%;
-  border: 2px solid #3333ee;
-}
-
 .cell {
   display: block;
   width: 100%;
