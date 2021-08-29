@@ -106,7 +106,7 @@ export class UserViewComponent implements OnInit {
   }
 
   sendMatchInvite(){
-    this.userService.sendInvitation(this.me.email, this.user.email).subscribe();
+    this.userService.sendInvitation(this.user.email).subscribe();
   }
 
   private calculateStatistics(email){

@@ -96,20 +96,22 @@ export class NotificationsComponent implements OnInit {
     if (this.canAccept){
       this.canAccept = false;
       this.matchService.crateMatchFromInvitation(this.user.email, sender).subscribe(res => {
-        this.lastMatchAccepted = res.objectID;
-      },()=>{}, ()=>{
-        this.acceptedSuccess = true;
-        setTimeout(()=>{
-          this.acceptedSuccess = false;
-        }, 7000);
-        this.canAccept = true;
-      });
+          this.lastMatchAccepted = res.objectID;
+        },
+        ()=>{},
+        ()=>{
+          this.acceptedSuccess = true;
+          setTimeout(()=>{
+            this.acceptedSuccess = false;
+          }, 7000);
+          this.canAccept = true;
+        });
     }
-    this.userService.deleteInvitation(this.user.email, sender).subscribe();
+    this.userService.deleteInvitation(sender).subscribe();
   }
 
   refuseInvite(sender){
-    this.userService.deleteInvitation(this.user.email, sender).subscribe();
+    this.userService.deleteInvitation(sender).subscribe();
   }
 
 }
