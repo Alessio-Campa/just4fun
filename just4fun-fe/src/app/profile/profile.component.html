@@ -29,7 +29,7 @@
 
       <div class="row">
         <div class="col-12 col-sm pb-2 text-center">
-          <button type="button" class="btn btn-info w-100" (click)="navigateSettings()>
+          <button type="button" class="btn btn-info w-100" (click)="navigateSettings()">
             <i class="fas fa-user-cog" style="font-size: xxx-large"></i><br>
             <span class="w-75 ms-auto me-auto">Settings</span>
           </button>
@@ -42,7 +42,7 @@
           </button>
         </div>
 
-        <div class="col-12 col-sm pb-2 text-center" (click)="navigateNotifications()>
+        <div class="col-12 col-sm pb-2 text-center" (click)="navigateNotifications()">
           <button type="button" class="btn btn-info w-100">
             <i class="fas fa-random" style="font-size: xxx-large"></i><br>
             <span class="w-75 ms-auto me-auto">Random match</span>
@@ -138,7 +138,7 @@
 </div>
 
 <div class="row ms-0 me-0">
-  <div class="col bg-primary p-3 rounded h-100 position-relative">
+  <div class="col mb-4 bg-primary p-3 rounded h-100 position-relative">
 
     <h2 class="h2 text-center"> Statistics </h2>
 
@@ -154,46 +154,46 @@
   </div>
 </div>
 
-<div class="container row mb-4">
+<div class="row">
 
-  <div *ngIf="!isLoading.user" class="col col-6">
-    <div class="col-12 bg-dark p-3 rounded text-light h-100">
+  <div *ngIf="!isLoading.user" class="col-12 col-xl-6 mb-4">
+    <div class="bg-primary p-3 rounded h-100">
 
       <h3 class="h3 text-center"> Friends </h3>
 
       <a *ngFor="let friend of user.friends; index as i" href="/user/{{friend}}" style="cursor: pointer">
         <ul class="list-group list-group-horizontal-sm mb-1">
           <li class="p-0 list-group-item d-flex justify-content-between align-items-center w-100 text-dark rounded hoverable">
-            <div class="card-body"><b>{{friend}}</b></div>
+            <div class="card-body p-2 text-center"><h5 class="m-0">{{friend}}</h5></div>
           </li>
         </ul>
       </a>
 
     </div>
   </div>
-  <div *ngIf="isLoading.user" class="col col-6" >
-    <div class="col-12 bg-dark p-3 rounded text-light h-100 d-flex justify-content-center">
+  <div *ngIf="isLoading.user" class="col-12 col-xl-6 mb-4" >
+    <div class="bg-primary p-3 rounded h-100 d-flex justify-content-center">
       <img src="assets/img/loading.gif" class="m-auto" style="height: 5em; width: 5em">
     </div>
   </div>
 
-  <div *ngIf="!isLoading.user" class="col col-6">
-    <div class="col-12 bg-dark p-3 rounded text-light h-100">
+  <div *ngIf="!isLoading.user" class="col-12 col-xl-6 mb-4">
+    <div class="bg-primary p-3 rounded h-100">
 
       <h3 class="h3 text-center"> Following </h3>
 
       <a *ngFor="let f of user.following; index as i" href="/user/{{f}}" style="cursor: pointer">
         <ul class="list-group list-group-horizontal-sm mb-1">
           <li class="p-0 list-group-item d-flex justify-content-between align-items-center w-100 text-dark rounded hoverable">
-            <div class="card-body"><b>{{f}}</b></div>
+            <div class="card-body p-2 text-center"><h5 class="m-0">{{f}}</h5></div>
           </li>
         </ul>
       </a>
 
     </div>
   </div>
-  <div *ngIf="isLoading.user" class="col col-6">
-    <div class="col-12 bg-dark p-3 rounded text-light h-100 d-flex justify-content-center">
+  <div *ngIf="isLoading.user" class="col-12 col-xl-6 mb-4">
+    <div class="bg-primary p-3 rounded h-100 d-flex justify-content-center">
       <img src="assets/img/loading.gif" class="m-auto" style="height: 5em; width: 5em">
     </div>
   </div>

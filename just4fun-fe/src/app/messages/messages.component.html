@@ -1,5 +1,5 @@
 <div class="container-fluid bg-dark rounded p-1 h-100 d-flex" style="flex-direction: column">
-  <div class="w-100 bg-secondary rounded mr-n2">
+  <div class="w-100 bg-secondary rounded me-2">
     <h1 class="text-center p-1 m-0"> {{chatTitle}} </h1>
   </div>
 
@@ -14,8 +14,8 @@
   </div>
 
   <div class="w-100 d-flex justify-content-center" style="justify-content: flex-start">
-    <input #message type="text" class="form-control rounded-pill pr-6" (keydown.enter)="sendMessage(message)">
-    <img src="assets/img/arrow-right-short.svg" class="btn btn-primary rounded-circle p-1 h-100 ml-md-1 ml-lg-2" (click)="sendMessage(message)">
+    <input #message type="text" class="form-control rounded-pill pe-6" (keydown.enter)="sendMessage(message)">
+    <button class="btn btn-info rounded-circle ms-2"><i class="fas fa-arrow-right"></i></button>
   </div>
 
 </div>

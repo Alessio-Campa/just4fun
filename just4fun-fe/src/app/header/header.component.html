@@ -8,9 +8,14 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav me-auto">
+      <ul class="navbar-nav">
         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-          <a class="nav-link" routerLink="/">Home page</a>
+          <a class="nav-link" routerLinkActive="text-white" routerLink="/" [routerLinkActiveOptions]="{exact: true}">Home page</a>
+        </li>
+      </ul>
+      <ul *ngIf="userService.isLoggedIn" class="navbar-nav me-auto">
+        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <a class="nav-link" routerLinkActive="text-white" routerLink="/profile" [routerLinkActiveOptions]="{exact: true}">Profile</a>
         </li>
       </ul>
 
@@ -25,8 +30,7 @@
             <b>{{ userService.username }}</b>
           </a>
           <div class="dropdown-menu dropdown-menu-end p-2" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item mb-1 rounded" href="/profile"> Profile </a>
-            <a class="dropdown-item mb-1 rounded" href="/changePassword"> Change Password </a>
+            <a class="dropdown-item mb-1 rounded" href="/changePassword">Change Password</a>
             <a class="dropdown-item rounded onFocusDanger" href="/logout">Logout</a>
           </div>
         </li>
