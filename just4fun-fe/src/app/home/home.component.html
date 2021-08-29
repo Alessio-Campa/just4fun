@@ -17,21 +17,21 @@
 <div class="container">
   <div class="row">
     <div class="col-md-8 mb-4">
-      <div class="col-md-12 bg-dark rounded p-3">
+      <div class="col-md-12 bg-primary rounded p-3">
 
-        <h2 class="h2 text-center text-light mb-3">Live matches</h2>
+        <h2 class="h2 text-center mb-3">Live matches</h2>
 
         <div class="row row-cols-2">
 
           <a *ngFor="let match of randomMatches; index as i; let last = last" href="/match/{{match._id}}" class="col-6">
-            <div class="card mb-3 hoverable" style="cursor: pointer">
+            <div class="card mb-3 border-info hoverable" style="cursor: pointer">
               <div class="card-header">
                 <h5 class="card-title text-left mb-0 d-flex">
-                  <span class="mr-2" style="height: 1em; width: 1em; background-color: red; border: solid black 1px; border-radius: 100%"></span>
+                  <i class="me-2 fa-circle fas text-danger"></i>
                   {{match.player0}}
                 </h5>
                 <h5 class="card-title text-left mt-0 d-flex">
-                  <span class="mr-2" style="height: 1em; width: 1em; background-color: yellow; border: solid black 1px; border-radius: 100%"></span>
+                  <i class="me-2 fa-circle fas text-warning"></i>
                   {{match.player1}}
                 </h5>
               </div>
@@ -41,7 +41,7 @@
                 </div>
               </div>
               <div class="card-footer">
-                <small class="text-muted"> Started on: {{match.matchStart | date:"d MMM yy, HH:mm"}}</small>
+                <small> Started on: {{match.matchStart | date:"d MMM yy, HH:mm"}}</small>
               </div>
             </div>
             {{ngForCallback(last)}}
@@ -53,15 +53,15 @@
     </div>
 
     <div class="col-md-4">
-      <div class="col-md-12 bg-dark rounded p-3">
-        <h2 class="h2 text-center text-light mb-3">Leaderboard</h2>
+      <div class="col-md-12 bg-primary rounded p-3">
+        <h2 class="h2 text-center mb-3">Leaderboard</h2>
 
         <a *ngFor="let user of leaderboard; index as i" href="/user/{{user.email}}" style="cursor: pointer">
           <ul class="list-group list-group-horizontal-sm mb-1 hoverable">
-            <li class="list-group-item w-25 leaderboard-position text-center"> {{i+1}} </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center w-75">
+            <li class="list-group-item bg-gradient w-25 text-center"> {{i+1}} </li>
+            <li class="list-group-item bg-gradient d-flex justify-content-between align-items-center w-75">
               {{user.username}}
-              <span class="badge bg-primary rounded-pill text-light"> {{user.points}} </span>
+              <span class="badge bg-primary rounded-pill"> {{user.points}} </span>
             </li>
           </ul>
         </a>
@@ -69,11 +69,11 @@
 
       </div>
 
-      <div class="col-md-12 bg-dark rounded p-3 mt-4 container-fluid">
+      <div class="col-md-12 bg-primary rounded p-3 mt-4 container-fluid">
         <div class="d-flex">
           <div class="w-100 d-flex justify-content-center" style="justify-content: flex-start">
-            <input #name type="text" class="form-control rounded-pill pr-6" placeholder="Search user by username" (keydown.enter)="searchUser(name.value)">
-            <img src="assets/img/arrow-right-short.svg" class="btn btn-primary rounded-circle p-1 h-100 ml-md-1 ml-lg-2" (click)="searchUser(name.value)">
+            <input #name type="text" class="form-control rounded-pill pe-6" placeholder="Search user by username" (keydown.enter)="searchUser(name.value)">
+            <img src="assets/img/arrow-right-short.svg" class="btn btn-info rounded-circle p-1 h-100 ms-md-1 ms-lg-2" (click)="searchUser(name.value)">
           </div>
         </div>
         <p class="text-danger m-1" [hidden]="!userNotFoundError">User not found</p>
