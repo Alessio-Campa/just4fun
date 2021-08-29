@@ -5,7 +5,7 @@
 
   <div class="d-flex justify-content-between h-100 overflow-auto" style="flex-direction: column-reverse">
     <div>
-      <div *ngFor="let message of chat.messages" class="card m-2 mt-1 p-2 w-75" [ngClass]="{'float-right': message.sender === userMail, 'float-left': message.sender !== userMail}">
+      <div *ngFor="let message of chat.messages" class="card m-2 mt-1 p-2 w-75 bg-primary rounded" [ngClass]="{'float-end': message.sender === userMail, 'float-start': message.sender !== userMail}">
         <b class="mb-1"> {{message.sender}} </b>
         {{message.text}}
         <small class="small text-secondary text-right"> {{message.timestamp | date: 'dd MMM, HH:mm'}} </small>
@@ -15,7 +15,7 @@
 
   <div class="w-100 d-flex justify-content-center" style="justify-content: flex-start">
     <input #message type="text" class="form-control rounded-pill pe-6" (keydown.enter)="sendMessage(message)">
-    <button class="btn btn-info rounded-circle ms-2"><i class="fas fa-arrow-right"></i></button>
+    <button class="btn btn-info rounded-circle ms-2" (click)="sendMessage(message)"><i class="fas fa-arrow-right"></i></button>
   </div>
 
 </div>

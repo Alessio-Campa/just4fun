@@ -57,7 +57,7 @@
         <div class="d-flex">
           <div class="w-100 d-flex justify-content-center" style="justify-content: flex-start">
             <input #name type="text" class="form-control rounded-pill pe-6" placeholder="Search user by username" (keydown.enter)="searchUser(name.value)">
-            <button class="btn btn-info rounded-circle ms-2"><i class="fas fa-arrow-right"></i></button>
+            <button class="btn btn-info rounded-circle ms-2" (click)="searchUser(name.value)"><i class="fas fa-arrow-right"></i></button>
           </div>
         </div>
         <p class="text-danger m-1" [hidden]="!userNotFoundError">User not found</p>

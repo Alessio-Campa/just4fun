@@ -9,7 +9,7 @@
       <small class="text-secondary"> Chats </small>
     </div>
     <div *ngIf="!isLoading.chats">
-      <div *ngFor="let chat of chats; index as i" class="card mt-2 p-2 hoverable" style="cursor: pointer" (click)="onChatSelect(i)">
+      <div *ngFor="let chat of chats; index as i" class="card mt-2 p-2 hoverable bg-primary" style="cursor: pointer" (click)="onChatSelect(i)">
         <b class="mb-1 text-center"> {{chat.members[0] == userMail ? chat.members[1] : chat.members[0]}} </b>
         <div *ngIf="chat.messages.length > 0" class="d-flex justify-content-between">
           <small class="message-preview">{{chat.messages[chat.messages.length-1].sender}}:  <span class="text-secondary"> {{chat.messages[chat.messages.length-1].text}} </span></small>
