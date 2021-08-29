@@ -143,6 +143,7 @@ matchSchema.methods.insertDisk = function(column: number): number {
         }
     }
 
+    this.lastMove = new Date;
     this.board[row][column] = this.turn;
     this.markModified("board");
     return row;

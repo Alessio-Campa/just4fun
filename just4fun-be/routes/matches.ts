@@ -26,7 +26,7 @@ router.get("/", (req, res, next) => {
     if (req.query.ended === "false")
         filter["winner.player"] = null
 
-    match.getModel().find(filter).sort(req.query.order_by).limit(limit).skip(skip).then( (data) => {
+    match.getModel().find(filter).sort({lastMove: -1}).limit(limit).skip(skip).then( (data) => {
         return res.status(200).json(data);
     }).catch((err)=> {
         return next({status_code:500, error:true, errormessage:err.errormessage});

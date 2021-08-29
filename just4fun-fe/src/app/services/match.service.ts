@@ -36,8 +36,7 @@ export class MatchService {
       }),
       params:{
         limit: 6,
-        ended: false,
-        order_by: '{matchStart: -1}'
+        ended: false
       }
     };
     return this.http.get<Match[]>(environment.serverUrl + "/match", options)
