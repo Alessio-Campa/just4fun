@@ -53,6 +53,16 @@
     </div>
 
     <div class="col-md-4">
+      <div class="col-md-12 bg-primary rounded p-3 mb-4 container-fluid">
+        <div class="d-flex">
+          <div class="w-100 d-flex justify-content-center" style="justify-content: flex-start">
+            <input #name type="text" class="form-control rounded-pill pe-6" placeholder="Search user by username" (keydown.enter)="searchUser(name.value)">
+            <img src="assets/img/arrow-right-short.svg" class="btn btn-info rounded-circle p-1 h-100 ms-md-1 ms-lg-2" (click)="searchUser(name.value)">
+          </div>
+        </div>
+        <p class="text-danger m-1" [hidden]="!userNotFoundError">User not found</p>
+      </div>
+
       <div class="col-md-12 bg-primary rounded p-3">
         <h2 class="h2 text-center mb-3">Leaderboard</h2>
 
@@ -65,18 +75,6 @@
             </li>
           </ul>
         </a>
-
-
-      </div>
-
-      <div class="col-md-12 bg-primary rounded p-3 mt-4 container-fluid">
-        <div class="d-flex">
-          <div class="w-100 d-flex justify-content-center" style="justify-content: flex-start">
-            <input #name type="text" class="form-control rounded-pill pe-6" placeholder="Search user by username" (keydown.enter)="searchUser(name.value)">
-            <img src="assets/img/arrow-right-short.svg" class="btn btn-info rounded-circle p-1 h-100 ms-md-1 ms-lg-2" (click)="searchUser(name.value)">
-          </div>
-        </div>
-        <p class="text-danger m-1" [hidden]="!userNotFoundError">User not found</p>
       </div>
 
     </div>

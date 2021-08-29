@@ -1,50 +1,52 @@
-<div class="container row mb-4">
+<div class="row">
 
-  <div *ngIf="!isLoading.user" class="col col-5" id="userInfoDiv">
-    <div class="col-12 bg-dark p-3 rounded d-flex h-100">
-      <img *ngIf="user" src="{{user.avatar}}" class="rounded-circle w-50 mr-3" alt="user profile image">
-      <div class="h-auto w-100 d-flex flex-wrap align-items-center">
-
-        <div class="w-100">
-          <h3 class="h3 text-center "> {{user.username}} </h3>
-          <h3 class="h3 text-center rounded-pill bg-primary"> {{user.points}} </h3>
+  <div *ngIf="!isLoading.user" class="col-12 col-xl-5 mb-4" id="userInfoDiv">
+    <div class="row justify-content-evenly bg-primary p-3 rounded ms-0 me-0">
+      <div class="col-6 col-sm-3 col-xl-6">
+        <div style="position:relative; overflow:hidden; padding-bottom:100%;">
+          <img *ngIf="user" src="{{user.avatar}}" class="img img-responsive rounded-circle me-3" style="position:absolute; max-width: 100%; max-height: 100%;" alt="user profile image">
         </div>
+      </div>
 
+      <div class="col-6 col-sm-4 col-xl-6 align-items-center">
+        <div class="mt-auto">
+          <h3 class="h3 text-center "> {{user.username}} </h3>
+          <h3 class="h3 text-center rounded-pill bg-dark"> {{user.points}} </h3>
+        </div>
       </div>
     </div>
   </div>
-  <div *ngIf="isLoading.user" class="col col-5" id="userInfoDiv-loading">
-    <div class="col-12 bg-dark p-3 rounded h-100 d-flex justify-content-center">
+  <div *ngIf="isLoading.user" class="col-12 col-xl-5 mb-4" id="userInfoDiv-loading">
+    <div class="bg-primary p-3 rounded h-100 d-flex justify-content-center ms-0 me-0">
       <img src="assets/img/loading.gif" class="m-auto" style="height: 5em; width: 5em">
     </div>
   </div>
 
-  <div class="col col-7" id="quickActionsDiv">
-    <div class="col-12 bg-dark p-3 rounded h-100">
+  <div class="col-12 col-xl-7 mb-4" id="quickActionsDiv">
+    <div class="bg-primary p-3 rounded h-100">
 
       <h3 class="h3 text-center"> Quick actions </h3>
 
-      <div class="row row-cols-3 h-100">
-
-        <div class="col h-100 text-center">
-          <button type="button" class="btn btn-primary square m-3 p-2" >
-            <img src="assets/img/gear.svg" class="bi" style="height: 4em">
+      <div class="row">
+        <div class="col-12 col-sm pb-2 text-center">
+          <button type="button" class="btn btn-info w-100" >
+            <i class="fas fa-user-cog" style="font-size: xxx-large"></i><br>
+            <span class="w-75 ms-auto me-auto">Settings</span>
           </button>
-          <p class="m-n2 w-75 ml-auto mr-auto">Settings</p>
         </div>
 
-        <div class="col h-100 text-center">
-          <button type="button" class="btn btn-primary square m-3 p-2" (click)="navigateChats()">
-            <img src="assets/img/chat-text.svg" class="bi" style="height: 4em">
+        <div class="col-12 col-sm pb-2 text-center">
+          <button type="button" class="btn btn-info w-100" (click)="navigateChats()">
+            <i class="fas fa-comments" style="font-size: xxx-large"></i><br>
+            <span class="w-75 ms-auto me-auto">Chats and friend requests</span>
           </button>
-          <p class="m-n2 w-75 ml-auto mr-auto">Chats and friend requests</p>
         </div>
 
-        <div class="col h-100 text-center">
-          <button type="button" class="btn btn-primary square m-3 p-2">
-            <img src="assets/img/shuffle.svg" class="bi" style="height: 4em">
+        <div class="col-12 col-sm pb-2 text-center">
+          <button type="button" class="btn btn-info w-100">
+            <i class="fas fa-random" style="font-size: xxx-large"></i><br>
+            <span class="w-75 ms-auto me-auto">Random match</span>
           </button>
-          <p class="m-n2 w-75 ml-auto mr-auto">Random match</p>
         </div>
 
       </div>
@@ -53,45 +55,48 @@
   </div>
 </div>
 
-<div class="container row mb-4">
+<div class="row">
 
-  <div *ngIf="!isLoading.matches" class="col col-6" id="activeMatchesDiv">
-    <div class="col-12 bg-dark p-3 rounded h-100">
+  <div *ngIf="!isLoading.matches" class="col-12 col-xl-6 mb-4" id="activeMatchesDiv">
+    <div class="bg-primary p-3 rounded h-100">
 
       <h3 class="h3 text-center"> Ongoing matches </h3>
 
-      <a *ngFor="let match of ongoingMatches; index as i" href="/match/{{match._id}}" style="cursor: pointer">
-        <ul class="list-group list-group-horizontal-sm mb-1">
-          <li class="p-0 list-group-item d-flex justify-content-between align-items-center w-100 rounded hoverable">
+      <div class="row">
+        <a *ngFor="let match of ongoingMatches; index as i" href="/match/{{match._id}}" style="cursor: pointer">
+          <ul class="list-group list-group-horizontal-sm mb-1">
+            <li class="p-0 list-group-item d-flex justify-content-between align-items-center w-100 rounded hoverable">
 
-            <div class="m-3">
-              <h6 class="card-title text-left mb-0 d-flex">
-                <div class="mr-2" style="height: 1em; width: 1em; background-color: red; border: solid black 1px; border-radius: 100%"></div>
-                {{match.player0}}
-              </h6>
-              <h6 class="card-title text-left mb-0 d-flex">
-                <div class="mr-2" style="height: 1em; width: 1em; background-color: yellow; border: solid black 1px; border-radius: 100%"></div>
-                {{match.player1}}
-              </h6>
-            </div>
+              <div class="m-3">
+                <h6 class="card-title text-left mb-0 d-flex">
+                  <i class="me-2 fa-circle fas text-danger"></i>
+                  {{match.player0}}
+                </h6>
+                <h6 class="card-title text-left mb-0 d-flex">
+                  <i class="me-2 fa-circle fas text-warning"></i>
+                  {{match.player1}}
+                </h6>
+              </div>
 
-            <h5 *ngIf="(match.turn == 0 && match.player0 == user.email) || (match.turn == 1 && match.player1 == user.email)" class="h6 w-25 m-0 text-center">Your turn</h5>
-            <h5 *ngIf="(match.turn == 0 && match.player0 != user.email) || (match.turn == 1 && match.player1 != user.email)" class="h6 w-25 m-0 text-center">Their turn</h5>
-
-          </li>
-        </ul>
-      </a>
+              <div class="m-3">
+                <h6 *ngIf="(match.turn == 0 && match.player0 == user.email) || (match.turn == 1 && match.player1 == user.email)" class="text-center">Your turn</h6>
+                <h6 *ngIf="(match.turn == 0 && match.player0 != user.email) || (match.turn == 1 && match.player1 != user.email)" class="text-center">Their turn</h6>
+              </div>
+            </li>
+          </ul>
+        </a>
+      </div>
 
     </div>
   </div>
-  <div *ngIf="isLoading.matches" class="col col-6" id="activeMatchesDiv-loading">
-    <div class="col-12 bg-dark p-3 rounded h-100 d-flex justify-content-center">
+  <div *ngIf="isLoading.matches" class="col-12 col-xl-6 mb-4" id="activeMatchesDiv-loading">
+    <div class="bg-primary p-3 rounded h-100 d-flex justify-content-center">
       <img src="assets/img/loading.gif" class="m-auto" style="height: 5em; width: 5em">
     </div>
   </div>
 
-  <div *ngIf="!isLoading.matches" class="col col-6" id="finishedMatchesDiv">
-    <div class="col-12 bg-dark p-3 rounded h-100 ">
+  <div *ngIf="!isLoading.matches" class="col-12 col-xl-6 mb-4" id="finishedMatchesDiv">
+    <div class="bg-primary p-3 rounded h-100 ">
 
       <h3 class="h3 text-center"> Last matches</h3>
 
@@ -101,18 +106,21 @@
 
             <div class="m-3">
               <h6 class="card-title text-left mb-0 d-flex">
-                <div class="mr-2" style="height: 1em; width: 1em; background-color: red; border: solid black 1px; border-radius: 100%"></div>
+                <i class="me-2 fa-circle fas text-danger"></i>
                 {{match.player0}}
               </h6>
               <h6 class="card-title text-left mb-0 d-flex">
-                <div class="mr-2" style="height: 1em; width: 1em; background-color: yellow; border: solid black 1px; border-radius: 100%"></div>
+                <i class="me-2 fa-circle fas text-warning"></i>
                 {{match.player1}}
               </h6>
             </div>
 
-            <div style="width: 10%">
-              <div *ngIf="match.winner.player === 0" class="mr-2" style="height: 1em; width: 1em; background-color: red; border: solid black 1px; border-radius: 100%"></div>
-              <div *ngIf="match.winner.player === 1" class="mr-2" style="height: 1em; width: 1em; background-color: yellow; border: solid black 1px; border-radius: 100%"></div>
+            <div class="m-3">
+              <span>
+                Winner:
+                <i *ngIf="match.winner.player === 0" class="fa-circle fas text-danger"></i>
+                <i *ngIf="match.winner.player === 1" class="fa-circle fas text-warning"></i>
+              </span>
             </div>
 
           </li>
@@ -121,29 +129,27 @@
 
     </div>
   </div>
-  <div *ngIf="isLoading.matches" class="col col-6" id="finishedMatchesDiv-loading">
-    <div class="col-12 bg-dark p-3 rounded h-100 d-flex justify-content-center">
+  <div *ngIf="isLoading.matches" class="col-12 col-xl-6 mb-4" id="finishedMatchesDiv-loading">
+    <div class="bg-primary p-3 rounded h-100 d-flex justify-content-center">
       <img src="assets/img/loading.gif" class="m-auto" style="height: 5em; width: 5em">
     </div>
   </div>
 
 </div>
 
-<div class="container row">
-  <div class="col-12">
-    <div class="col-12 bg-dark p-3 rounded h-100 position-relative">
+<div class="row ms-0 me-0">
+  <div class="col bg-primary p-3 rounded h-100 position-relative">
 
-      <h2 class="h2 text-center"> Statistics </h2>
+    <h2 class="h2 text-center"> Statistics </h2>
 
-      <div class="row row-cols-3 d-flex">
-        <div *ngFor="let stat of statistics" class="col mb-3">
-          <div class="card">
-            <h4 class="w-100 text-center card-header"> <b>{{stat.name}}</b> </h4>
-            <h5 class="w-100 text-center card-body"> {{stat.val}} </h5>
-          </div>
+    <div class="row">
+      <div *ngFor="let stat of statistics" class="col mb-3">
+        <div class="card border-info">
+          <h4 class="w-100 text-center card-header"> <b>{{stat.name}}</b> </h4>
+          <h5 class="w-100 text-center card-body"> {{stat.val}} </h5>
         </div>
       </div>
-
     </div>
+
   </div>
 </div>

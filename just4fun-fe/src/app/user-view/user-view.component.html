@@ -1,97 +1,101 @@
-<div class="container row mb-4">
+<div class="row">
 
-  <div *ngIf="!isLoading.user" class="col-5" id="userInfoDiv">
-    <div class="col-12 bg-dark p-3 rounded text-light d-flex h-100">
-      <img *ngIf="user" src="{{user.avatar}}" class="rounded-circle w-50 mr-3" alt="user profile image">
-      <div class="h-auto w-100 d-flex flex-wrap align-items-center">
-
-        <div class="w-100">
-          <h3 class="h3 text-center "> {{user.username}} </h3>
-          <h3 class="h3 text-center rounded-pill bg-primary"> {{user.points}} </h3>
+  <div *ngIf="!isLoading.user" class="col-12 col-xl-5 mb-4" id="userInfoDiv">
+    <div class="row justify-content-evenly bg-primary p-3 rounded ms-0 me-0">
+      <div class="col-6 col-sm-3 col-xl-6">
+        <div style="position:relative; overflow:hidden; padding-bottom:100%;">
+          <img *ngIf="user" src="{{user.avatar}}" class="img img-responsive rounded-circle me-3" style="position:absolute; max-width: 100%; max-height: 100%;" alt="user profile image">
         </div>
+      </div>
 
+      <div class="col-6 col-sm-4 col-xl-6 align-items-center">
+        <div class="mt-auto">
+          <h3 class="h3 text-center "> {{user.username}} </h3>
+          <h3 class="h3 text-center rounded-pill bg-dark"> {{user.points}} </h3>
+        </div>
       </div>
     </div>
   </div>
 
-  <div *ngIf="isLoading.user" class="col-5" id="userInfoDiv-loading">
-    <div class="col-12 bg-dark p-3 rounded h-100 d-flex justify-content-center">
+  <div *ngIf="isLoading.user" class="col-12 col-xl-5 mb-4" id="userInfoDiv-loading">
+    <div class="row justify-content-evenly bg-primary p-3 rounded ms-0 me-0">
       <img *ngIf="!user" src="assets/img/loading.gif" class="m-auto" style="height: 5em; width: 5em">
     </div>
   </div>
 
 
-  <div *ngIf="!isLoading.buttons" class="col-7" id="quickActionsDiv">
-    <div class="col-12 bg-dark p-3 rounded text-light h-100">
+  <div *ngIf="!isLoading.buttons" class="col-12 col-xl-7 mb-4" id="quickActionsDiv">
+    <div class="bg-primary p-3 rounded h-100">
 
       <h3 class="h3 text-center"> Quick actions </h3>
 
-      <div class="row row-cols-3 h-100" [class.blur]="!this.me">
+      <div class="row" [class.blur]="!this.me">
 
-        <div class="col h-100 text-center">
-          <button type="button" id="followButton" class="btn square m-3 p-2" [disabled]="!this.me" [ngStyle]="{'background-color': (isFollowed ? 'red' : 'lime')}" (click)="isFollowed ? unfollow() : follow()">
-            <img *ngIf="isFollowed" src="assets/img/person-fill.svg" class="bi bi-person-plus" style="height: 4em">
-            <img *ngIf="!isFollowed" src="assets/img/person.svg" class="bi bi-person-plus" style="height: 4em">
+        <div class="col-12 col-sm pb-2 text-center">
+          <button type="button" id="followButton" class="btn w-100" [disabled]="!this.me" [ngClass]="{'btn-outline-info': !isFollowed, 'btn-info': isFollowed}" (click)="isFollowed ? unfollow() : follow()">
+            <!--            <img *ngIf="isFollowed" src="assets/img/person-fill.svg" class="bi bi-person-plus" style="height: 4em">-->
+            <!--            <img *ngIf="!isFollowed" src="assets/img/person.svg" class="bi bi-person-plus" style="height: 4em">-->
+            <i class="fas fa-binoculars"  style="font-size: xxx-large"></i><br>
+            <span class="w-75 ms-auto me-auto">{{isFollowed ? 'Unfollow' : 'Follow'}}</span>
           </button>
-          <p class="m-n2"> {{isFollowed ? 'Unfollow' : 'Follow'}} </p>
         </div>
 
-        <div class="col h-100 text-center">
-          <button type="button" class="btn square m-3 p-2" [disabled]="!this.me" [ngStyle]="{'background-color': (isFriend ? 'red' : hasRequested ? 'yellow' : 'lime')}" (click)="isFriend ? unfriend() : (hasRequested ? unrequest() : sendRequest())">
-            <img *ngIf="!isFriend && !hasRequested" src="assets/img/people.svg" class="bi bi-person-plus" style="height: 4em">
-            <img *ngIf="hasRequested" src="assets/img/clock.svg" class="bi bi-person-plus" style="height: 4em">
-            <img *ngIf="isFriend" src="assets/img/people-fill.svg" class="bi bi-person-plus" style="height: 4em">
+        <div class="col-12 col-sm pb-2 text-center">
+          <button type="button" class="btn btn-info w-100" [disabled]="!this.me" (click)="isFriend ? unfriend() : (hasRequested ? unrequest() : sendRequest())">
+            <!--            <img *ngIf="!isFriend && !hasRequested" src="assets/img/people.svg" class="bi bi-person-plus" style="height: 4em">-->
+            <!--            <img *ngIf="hasRequested" src="assets/img/clock.svg" class="bi bi-person-plus" style="height: 4em">-->
+            <!--            <img *ngIf="isFriend" src="assets/img/people-fill.svg" class="bi bi-person-plus" style="height: 4em">-->
+            <i *ngIf="!isFriend && !hasRequested" class="fas fa-user" style="font-size: xxx-large"></i>
+            <i *ngIf="hasRequested" class="fas fa-clock" style="font-size: xxx-large"></i>
+            <i *ngIf="isFriend" class="far fa-user-friends" style="font-size: xxx-large"></i>
+            <br>
+            <span class="w-75 ms-auto me-auto">{{isFriend ? 'Unfriend' : hasRequested ? 'Remove pending request' : 'Send friend request'}}</span>
           </button>
-          <p class="m-n2"> {{isFriend ? 'Unfriend' : hasRequested ? 'Remove pending request' : 'Send friend request'}} </p>
         </div>
 
-        <div class="col h-100 text-center">
-          <button type="button" class="btn btn-primary square m-3 p-2" [disabled]="!this.me" (click)="sendMatchInvite()">
-            <img src="assets/img/crossed-flags.png" class="bi bi-person-plus" style="height: 4em">
+        <div class="col-12 col-sm pb-2 text-center">
+          <button type="button" class="btn btn-info w-100" [disabled]="!this.me" (click)="sendMatchInvite()">
+            <i class="fas fa-gamepad" style="font-size: xxx-large"></i><br>
+            <span class="w-75 ms-auto me-auto">New match</span>
           </button>
-          <p class="m-n2">New match</p>
         </div>
 
       </div>
 
     </div>
   </div>
-  <div *ngIf="isLoading.buttons" class="col col-7" id="quickActionsDiv-loading">
-    <div class="col-12 bg-dark p-3 rounded h-100 align-items-center d-flex justify-content-center">
+  <div *ngIf="isLoading.buttons" class="col-12 col-xl-7 mb-4" id="quickActionsDiv-loading">
+    <div class="col-12 bg-primary p-3 rounded h-100 align-items-center d-flex justify-content-center">
       <img src="assets/img/loading.gif" class="m-auto" style="height: 5em; width: 5em">
     </div>
   </div>
 </div>
 
-<div class="container row">
+<div class="row">
   <div class="col-12">
 
-    <div *ngIf="!isLoading.statistics && !isLoading.buttons" class="col-12 bg-dark p-3 rounded text-light h-100 position-relative">
-      <div *ngIf="!isFriend" class="row position-relative">
-        <div class="col blur h-100 w-100">
-          <h2 class="h2 text-center"> Statistics </h2>
-          <h4>Never gonna give you up, never gonna let you down, never gonna run around and desert you</h4>
-        </div>
-        <div class="col position-absolute h-100">
-          <h4 class="h4 text-center text-danger bg-dark shadow"> <b>Statistics for this user are not visible because they are not your friend</b> </h4>
+    <div *ngIf="!isLoading.statistics && !isLoading.buttons" class="col-12 bg-primary p-3 rounded text-light h-100 position-relative">
+      <div *ngIf="!isFriend" class="row">
+        <h4 class="h4 text-center text-danger bg-primary"> <b>Statistics for this user are not visible because they are not your friend</b> </h4>
+        <div class="w-100 blur text-center">
+          <h2 class="h2"> Statistics </h2>
+          <h4 class="text-white">Never gonna give you up, never gonna let you down, never gonna run around and desert you</h4>
         </div>
       </div>
 
       <div *ngIf="isFriend">
         <h2 class="h2 text-center"> Statistics </h2>
 
-        <div class="row row-cols-3 d-flex">
+        <div class="row">
           <div *ngFor="let stat of statistics" class="col mb-3">
-            <div class="card text-dark">
+            <div class="card border-info">
               <h4 class="w-100 text-center card-header"> <b>{{stat.name}}</b> </h4>
               <h5 class="w-100 text-center card-body"> {{stat.val}} </h5>
             </div>
           </div>
         </div>
+
       </div>
-
     </div>
-
   </div>
 </div>
-
