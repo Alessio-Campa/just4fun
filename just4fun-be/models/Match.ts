@@ -117,17 +117,17 @@ matchSchema.methods.makeMove = function (player: string, column: number): void {
         }
         ios.to(this.id + 'watchers').emit("broadcast", message);
         ios.to(this.id + 'players').emit("broadcast", message);
-        let myTest;
+        let victor;
         let loser;
         if (this.winner.player === 0) {
-            myTest = this.player0;
+            victor = this.player0;
             loser = this.player1;
         } else {
             loser = this.player0;
-            myTest = this.player1;
+            victor = this.player1;
         }
 
-        user.getModel().findOne({email: myTest}).then((theWinner) => {
+        user.getModel().findOne({email: victor}).then((theWinner) => {
             theWinner.updatePoints(loser);
         });
     }
