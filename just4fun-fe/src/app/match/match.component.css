@@ -2,19 +2,3 @@ body{
   background-color: #333333;
 }
 
-.cellDisk {
-  width: 100%;
-  padding-top: 95.71%;
-  background-color: #333333;
-  border-radius: 100%;
-  border: 2px solid #3333ee;
-}
-
-.cell {
-  display: block;
-  width: 100%;
-  height: auto;
-  padding: 5px;
-  background-color: #4444ff;
-}
-
