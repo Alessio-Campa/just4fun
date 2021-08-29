@@ -1,6 +1,7 @@
 <div class="text-center text-light">
   <h2>Welcome back {{ user.username }}</h2>
   <button (click)="matchmaking()" class="btn btn-primary" type="submit">Matchmaking</button>
-  <h3 *ngIf="matchSearching">  Searching... </h3>
+  <h3 *ngIf="matchSearching">  Searching...</h3>
+  <small *ngIf="matchSearching">time elapsed: {{timeElapsed}}s</small>
   <h3 *ngIf="matchFound">  Match found! {{ player0 }} vs {{ player1 }}</h3>
 </div>

@@ -45,14 +45,8 @@ export class NotificationsComponent implements OnInit {
     this.router.navigate([`/messages?chatID=${chatID}`])
   }
 
+  // accepts/refuses a friend request and deletes it from the array
   handleRequest(isAccepted, requester){
-    /*
-    this.userService.deleteNotification(notificationId).subscribe(()=>{},()=>{},()=>{
-      let idx = this.notifications.indexOf( this.notifications.filter( e => e._id === notificationId) );
-      this.notifications.splice(idx, 1);
-    })
-     */
-
     let idx = this.friendRequests.indexOf(requester);
     this.friendRequests.splice(idx, 1);
 
@@ -62,7 +56,6 @@ export class NotificationsComponent implements OnInit {
       this.refuseRequest(requester);
 
   }
-
   acceptRequest(accepted){
     if (this.canAccept){
       this.canAccept = false;
@@ -72,7 +65,6 @@ export class NotificationsComponent implements OnInit {
       });
     }
   }
-
   refuseRequest(refused){
     this.canAccept = false;
     this.userService.refuseFriendRequest(refused).subscribe(() => {
@@ -81,6 +73,7 @@ export class NotificationsComponent implements OnInit {
     });
   }
 
+  // accepts/refuses a match invite and deletes it from the array
   handleInvite(isAccepted, sender){
     let idx = this.matchInvites.indexOf(sender);
     this.matchInvites.splice(idx, 1);
@@ -90,7 +83,6 @@ export class NotificationsComponent implements OnInit {
     else
       this.refuseInvite(sender);
   }
-
   acceptInvite(sender){
     console.log("Accepting")
     if (this.canAccept){
@@ -109,7 +101,6 @@ export class NotificationsComponent implements OnInit {
     }
     this.userService.deleteInvitation(sender).subscribe();
   }
-
   refuseInvite(sender){
     this.userService.deleteInvitation(sender).subscribe();
   }

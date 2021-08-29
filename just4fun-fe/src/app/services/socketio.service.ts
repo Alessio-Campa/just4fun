@@ -15,9 +15,8 @@ export class SocketioService {
 
     this.socket = io(environment.serverUrl, { transports: ['websocket'] });
 
-    return new Observable( (observer) => {
+    return new Observable(observer => {
       this.socket.on('broadcast', (m) => {
-        console.log('Socket.io message received: ' + JSON.stringify(m));
         observer.next(m);
       });
 
@@ -53,7 +52,4 @@ export class SocketioService {
     });
   }
 
-  ngOnInit(): void {
-    console.log("socket initialized");
-  }
 }

@@ -23,13 +23,15 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //get user matches
+    //get user ongoing matches
     this.matchService.getUserMatches(this.userService.email, "false").subscribe(data => {
       this.ongoingMatches = data;
     }, () => {
     }, () => {
       this.isLoading.matches++;
     })
+
+    //get user last 5 finished matches
     this.matchService.getUserMatches(this.userService.email, "true", 5).subscribe(data => {
       this.endedMatches = data;
     }, () => {
@@ -55,6 +57,9 @@ export class ProfileComponent implements OnInit {
   }
   navigateSettings(){
     this.router.navigate(['settings'])
+  }
+  navigateNotifications(){
+    this.router.navigate(['notifications'])
   }
 
   private calculateStatistics(){

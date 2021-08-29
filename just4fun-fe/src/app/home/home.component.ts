@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   leaderboard;
   randomMatches: Match[];
   userNotFoundError = false;
-  ngForDone = false;
+  private ngForDone = false;
 
   constructor(private userService: UserService, private ms: MatchService, private router: Router) { }
   socket = io(environment.serverUrl, { transports: ['websocket'] });
@@ -29,6 +29,7 @@ export class HomeComponent implements OnInit {
       this.leaderboard = data;
     })
 
+    // gets 6 matches from DB and substitutes mails with usernames
     this.ms.randomLiveMatches.subscribe(
       data => {
         this.randomMatches = data;
@@ -42,13 +43,9 @@ export class HomeComponent implements OnInit {
          })
       });
 
-    console.log("127.0.0.0 sweet 127.0.0.0");
-    this.socket.on('broadcast', ()=>{
-      console.log("Roger");
-    })
-
   }
 
+  // creates board preview after the *ngFor has ended
   public ngForCallback(isReady){
     if (isReady && !this.ngForDone) {
       this.ngForDone = true
@@ -60,12 +57,13 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  searchUser(email){
-    this.userService.getUserByUsername(email).subscribe(data => {
+  // searches DB for username. If found redirects to their user page
+  searchUser(name){
+    this.userService.getUserByUsername(name).subscribe(data => {
       if (data.length === 0)
         this.userNotFoundError = true;
       else
-        this.router.navigate([`/user/${data[0].email}`])
+        this.router.navigate([`/user/${data[0].name}`])
     });
   }
 
