@@ -4,6 +4,7 @@ import {UserService} from "./user.service";
 import {environment} from "../../environments/environment";
 import { map } from "rxjs/operators";
 import {Observable} from "rxjs";
+import {getEntryPointInfo} from "@angular/compiler-cli/ngcc/src/packages/entry_point";
 
 export interface Match {
   _id: string,
@@ -84,4 +85,5 @@ export class MatchService {
 
     return this.http.post(`${environment.serverUrl}/match`, body, options)
   }
+
 }

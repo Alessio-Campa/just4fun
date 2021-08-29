@@ -129,7 +129,7 @@
 
 </div>
 
-<div class="container row">
+<div class="container row mb-4">
   <div class="col-12">
     <div class="col-12 bg-dark p-3 rounded text-light h-100 position-relative">
 
@@ -146,4 +146,50 @@
 
     </div>
   </div>
+</div>
+
+<div class="container row mb-4">
+
+  <div *ngIf="!isLoading.user" class="col col-6">
+    <div class="col-12 bg-dark p-3 rounded text-light h-100">
+
+      <h3 class="h3 text-center"> Friends </h3>
+
+      <a *ngFor="let friend of user.friends; index as i" href="/user/{{friend}}" style="cursor: pointer">
+        <ul class="list-group list-group-horizontal-sm mb-1">
+          <li class="p-0 list-group-item d-flex justify-content-between align-items-center w-100 text-dark rounded hoverable">
+            <div class="card-body"><b>{{friend}}</b></div>
+          </li>
+        </ul>
+      </a>
+
+    </div>
+  </div>
+  <div *ngIf="isLoading.user" class="col col-6" >
+    <div class="col-12 bg-dark p-3 rounded text-light h-100 d-flex justify-content-center">
+      <img src="assets/img/loading.gif" class="m-auto" style="height: 5em; width: 5em">
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading.user" class="col col-6">
+    <div class="col-12 bg-dark p-3 rounded text-light h-100">
+
+      <h3 class="h3 text-center"> Following </h3>
+
+      <a *ngFor="let f of user.following; index as i" href="/user/{{f}}" style="cursor: pointer">
+        <ul class="list-group list-group-horizontal-sm mb-1">
+          <li class="p-0 list-group-item d-flex justify-content-between align-items-center w-100 text-dark rounded hoverable">
+            <div class="card-body"><b>{{f}}</b></div>
+          </li>
+        </ul>
+      </a>
+
+    </div>
+  </div>
+  <div *ngIf="isLoading.user" class="col col-6">
+    <div class="col-12 bg-dark p-3 rounded text-light h-100 d-flex justify-content-center">
+      <img src="assets/img/loading.gif" class="m-auto" style="height: 5em; width: 5em">
+    </div>
+  </div>
+
 </div>

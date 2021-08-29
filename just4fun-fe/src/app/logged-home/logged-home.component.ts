@@ -16,6 +16,7 @@ export class LoggedHomeComponent implements OnInit {
   user = this.userService;
   matchFound: boolean = false;
   matchSearching: boolean = false;
+  isConnectingToServer = false;
   player0;
   player1;
   timeElapsed = 0;
@@ -40,13 +41,20 @@ export class LoggedHomeComponent implements OnInit {
 
   // find a new random match
   matchmaking() {
-    this.matchFound = false;
-    this.matchSearching = true;
-    this.matchmakingService.ngOnInit();
-    this.matchmakingService.match().subscribe();
-    setInterval(()=>this.timeElapsed++, 1000);
+    this.timeElapsed = 0;
+    this.isConnectingToServer = true;
+    this.matchmakingService.match().subscribe(()=>{}, ()=>{}, ()=>{
+      this.isConnectingToServer = false;
+      this.matchFound = false;
+      this.matchSearching = true;
+      setInterval(()=>this.timeElapsed++, 1000);
+    });
   }
 
-  // TODO: cancel matchmaking
+  cancelMatchmaking() {
+    this.matchmakingService.cancelUserMatchmaking().subscribe(()=>{
+      this.matchSearching = false;
+    })
+  }
 
 }
