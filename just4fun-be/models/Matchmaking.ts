@@ -66,7 +66,7 @@ matchMakingSchema.methods.searchMatch = function (): void {
 		clearInterval(interval);
 		let match:Match = newMatch(thisPlayer.playerID, opponentPlayer.playerID);
 		match.save().then(() => {
-			let c: Chat = newChat(match._id, []);
+			let c: Chat = newChat(match._id, null);
 			c.save().then(()=>{
 				let message = {
 					subject: "matchMakingFound",

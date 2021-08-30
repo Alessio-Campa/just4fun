@@ -29,7 +29,7 @@ router.get("/", (req, res, next) => {
     match.getModel().find(filter).sort({lastMove: -1}).limit(limit).skip(skip).then( (data) => {
         return res.status(200).json(data);
     }).catch((err)=> {
-        return next({status_code:500, error:true, errormessage:err.errormessage});
+        return next({statusCode: 500, error: true, errormessage: "DB error: "+err});
     })
 })
 
@@ -42,7 +42,7 @@ router.post("/random", passport_auth('jwt'), (req, res, next) => {
         matchmaking.getModel().findOne({playerID: req.user.email}).then((alreadyPresent) => {
             if(alreadyPresent)
             {
-                return res.status(400).json({status_code: 400, error: false, message: "Matchmaking already started"});
+                return res.status(400).json({statusCode: 400, error: false, message: "Matchmaking already started"});
             }
             else
             {
@@ -52,16 +52,16 @@ router.post("/random", passport_auth('jwt'), (req, res, next) => {
                     max: userPoints
                 }).then((m: Matchmaking) => {
                     m.searchMatch();
-                    return res.status(200).json({status_code: 200, error: false, message: "Matchmaking started"});
+                    return res.status(200).json({statusCode: 200, error: false, message: "Matchmaking started"});
                 }).catch((err) => {
-                    return next({status_code: 500, error: true, errormessage: err.errormessage});
+                    return next({statusCode: 500, error: true, errormessage: "DB error: "+err});
                 });
             }
         }).catch((err) => {
-            return next({status_code: 500, error: true, errormessage: err.errormessage});
+            return next({statusCode: 500, error: true, errormessage: "DB error: "+err});
         });
     }).catch((err) => {
-        return next({status_code: 500, error: true, errormessage: err.errormessage});
+        return next({statusCode: 500, error: true, errormessage: "DB error: "+err});
     });
 })
 
@@ -72,7 +72,7 @@ router.delete("/random", passport_auth('jwt'), (req, res, next) => {
     matchmaking.getModel().deleteMany({playerID: req.user.email}).then(() => {
         return res.status(200).json({message: "Matchmaking stopped"});
     }).catch((err) => {
-        return next({status_code: 500, error: true, errormessage: err.errormessage});
+        return next({statusCode: 500, error: true, errormessage: "DB error: "+err});
     });
 })
 
@@ -86,7 +86,7 @@ router.get("/:id", passport_auth(['jwt', 'anonymous']), (req, res, next) =>{
         }
         return res.status(200).json(m);
     }).catch((err)=> {
-        return next({status_code:500, error:true, errormessage:err.message})
+        return next({statusCode: 500, error: true, errormessage: "DB error: "+err});
     })
 })
 
@@ -96,21 +96,21 @@ router.post("/", passport_auth('jwt'), (req, res, next) => {
 
     user.getModel().findOne({email: req.body.opponent}).then((opponent: User) => {
         if (!opponent)
-            return next({status_code: 400, error: true, errormessage: "Opponent doesn't exist"});
+            return next({statusCode: 400, error: true, errormessage: "Opponent doesn't exist"});
         if (!opponent.friends.includes(req.body.user))
-            return next({status_code: 400, error: true, errormessage: "Opponent is not your friend"});
+            return next({statusCode: 400, error: true, errormessage: "Opponent is not your friend"});
 
         let m: Match = match.newMatch(req.body.user, req.body.opponent);
         m.save().then(() => {
-            let c: Chat = newChat(m._id, [req.body.user, req.body.opponent]);
+            let c: Chat = newChat(m._id, null);
             c.save().then(() => {
                 opponent.notify({type: 'acceptedInvite', content: {opponent: req.body.user, matchID: m._id}})
                 return res.status(200).json({objectID: m._id})
             }).catch((err) => {
-                return next({status_code: 500, error: true, errormessage: err.errormessage})
+                return next({statusCode: 500, error: true, errormessage: "DB error: "+err});
             })
         }).catch((err) => {
-            return next({status_code: 500, error: true, errormessage: err.errormessage})
+            return next({statusCode: 500, error: true, errormessage: "DB error: "+err});
         });
     });
 })
@@ -121,21 +121,21 @@ router.post("/:matchID/moves", passport_auth('jwt'), (req, res, next)=>{
 
     match.getModel().findById(req.params.matchID).then((m: Match) => {
         if (req.body.user !== m.player0 && req.body.user !== m.player1) // check if user is player 0 or 1
-            return next({status_code: 403, error: true, errormessage: "User is not player for this match"});
+            return next({statusCode: 403, error: true, errormessage: "User is not player for this match"});
 
         try {
             m.makeMove(req.body.user, req.body.column);
         }
         catch (e) {
-            return next({status_code:500, error: true, errormessage:e.message});
+            return next({statusCode:500, error: true, errormessage:e.message});
         }
         m.save().then(() => {
             return res.status(200).json({error: false, edit:"Added disk in column: " + req.body.column})
         }).catch((err) => {
-            return next({status_code:500, error: true, errormessage:"An error occurred while saving data: " + err});
+            return next({statusCode:500, error: true, errormessage:"An error occurred while saving data: " + err});
         })
     }).catch((err) => {
-        return next({status_code:500, error: true, errormessage: err.message});
+        return next({statusCode: 500, error: true, errormessage: "DB error: "+err});
     });
 })
 

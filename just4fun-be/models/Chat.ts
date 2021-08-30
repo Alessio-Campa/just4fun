@@ -2,7 +2,7 @@ import mongoose = require("mongoose");
 
 export interface Chat extends mongoose.Document{
     matchID: string,
-    members: string[],
+    members: string[],//Users that can read/write, if null public (Match chat are public)
     messages: {
         sender: string,
         text: string,
@@ -12,7 +12,7 @@ export interface Chat extends mongoose.Document{
 
 export function isChat(arg: any): arg is Chat{
     return arg &&
-        arg.members && Array.isArray(arg.members) &&
+        (!arg.members || Array.isArray(arg.members)) &&
         arg.messages && Array.isArray(arg.messages);
 }
 
@@ -24,7 +24,7 @@ let chatSchema = new mongoose.Schema<Chat>({
     },
     members: {
         type: [mongoose.SchemaTypes.String],
-        required: true
+        required: false
     },
     messages: [{
         sender: {
@@ -52,6 +52,6 @@ export function getModel(): mongoose.Model< Chat > {
 }
 
 export function newChat (matchID: string, members: string[]): Chat{
-    let test = getModel();
-    return new test({matchID: matchID, members: members, messages: []});
+    let model = getModel();
+    return new model({matchID: matchID, members: members, messages: []});
 }

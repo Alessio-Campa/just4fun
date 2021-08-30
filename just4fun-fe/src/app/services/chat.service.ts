@@ -7,11 +7,12 @@ import {emitDistinctChangesOnlyDefaultValue} from "@angular/compiler/src/core";
 import {map, tap} from "rxjs/operators";
 
 export class Chat {
-  constructor(private http: HttpClient, private userService: UserService, data: { _id: string; matchID: string; members: string[]; messages: Message[]; }) {
+  constructor(private http: HttpClient, private userService: UserService, data: { _id: string; matchID: string; members: string[]; }) {
     this._id = data._id;
     this.matchID = data.matchID;
     this.members = data.members;
-    this.messages = data.messages;
+    this.messages = [];
+    this.fetchChat();
   }
 
   _id: string
@@ -90,24 +91,30 @@ export class ChatService {
   }
 
   getChatsByUser(user: string): Observable<Chat[]>{
+    return this.getChatsByUsers([user]);
+  }
+
+  getChatsByUsers(users: string[]): Observable<Chat[]>{
     let options = {
       headers: new HttpHeaders({
         'Authorization': this.userService.tokenAuth(),
         'cache-control': 'no-cache',
         'Content-Type': 'application/json',
-      }),
-      params:{
-        user: user,
-        matchID: null
-      }
+      })
     };
 
-    return this.http.get<Chat[]>(`${environment.serverUrl}/chat`, options).pipe(map((datas: Chat[]) => {
+    let params = '';
+    for(let i in users)
+      params += `user=${users[i]}&`;
+    params = params.substring(0, params.length - 1); //remove last '&'
+
+
+    return this.http.get<Chat[]>(`${environment.serverUrl}/chat?${params}`, options).pipe(map((datas: Chat[]) => {
       return datas.map((d: Chat) => { return new Chat(this.http, this.userService, d); });
     }));
   }
 
-  newChat(user, friend): Observable<any>{
+  newChat(members: string[]): Observable<any>{
     let options = {
       headers: new HttpHeaders({
         'Authorization': this.userService.tokenAuth(),
@@ -116,9 +123,9 @@ export class ChatService {
       })
     };
     let body = {
-      friend: friend
+      members: members
     }
 
-    return this.http.post(`${environment.serverUrl}/chat/${user}`, body, options);
+    return this.http.post(`${environment.serverUrl}/chat/`, body, options);
   }
 }

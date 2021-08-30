@@ -37,7 +37,9 @@ export class ChatsComponent implements OnInit {
       this.userService.get_user_by_mail(this.userMail).subscribe(data => {
         this.friends = new Set(data.friends);
         this.chats.forEach(c => {
-          this.friends.delete(c.members[0] == this.userMail ? c.members[1] : c.members[0])
+          c.members.forEach(m => {
+            this.friends.delete(m);
+          })
         })
       })
     })
@@ -68,7 +70,7 @@ export class ChatsComponent implements OnInit {
   }
 
   createChat(friend): void{
-    this.chatService.newChat(this.userMail, friend).subscribe( data=>{
+    this.chatService.newChat([this.userMail, friend]).subscribe( data=>{
       this.friends.delete(friend)
       this.chats.push(data.object)
     })

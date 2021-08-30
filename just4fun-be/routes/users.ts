@@ -125,7 +125,7 @@ router.delete('/:email', passport_auth('jwt'), (req, res, next)=>{
                 u.save().then(() => {
                     return next({statusCode:200, error: false, errormessage:""});
                 }).catch((err)=>{
-                    return next({statusCode:500, error: true, errormessage:"DB error"+err.errormessage});
+                    return next({statusCode:500, error: true, errormessage:"DB error"+err});
                 });
             }
             else
@@ -133,7 +133,7 @@ router.delete('/:email', passport_auth('jwt'), (req, res, next)=>{
                 return next({statusCode:403, error: true, errormessage:"You cannot delete a moderator"});
             }
         }).catch((err) => {
-            return next({statusCode:500, error: true, errormessage:"DB error"+err.errormessage});
+            return next({statusCode:500, error: true, errormessage:"DB error"+err});
         });
     }
     else
@@ -168,10 +168,10 @@ router.put("/:id", passport_auth(['basic', 'jwt']), (req, res, next) => {
         u.save().then(() => {
             return res.status(200).json({statusCode: 200, error: false, errormessage: ""});
         }).catch((err) => {
-            return next({statusCode: 500, error: true, errormessage: "DB error: "+err.errormessage});
+            return next({statusCode: 500, error: true, errormessage: "DB error: "+err});
         });
     }).catch((err) => {
-        return next({statusCode: 500, error: true, errormessage: "DB error: "+err.errormessage});
+        return next({statusCode: 500, error: true, errormessage: "DB error: "+err});
     });
 });
 
@@ -182,7 +182,7 @@ router.post('/:id/follow', passport_auth('jwt'), (req, res, next) => {
     user.getModel().findOne({email: req.user.email}).then((data) => {
         data.follow(req.body.user, res, next);
     }).catch((err) => {
-        return next({statusCode: 400, error: true, errormessage: "DB error: "+err.errormessage});
+        return next({statusCode: 400, error: true, errormessage: "DB error: "+err});
     });
 });
 
@@ -193,7 +193,7 @@ router.delete('/:id/follow/:user', passport_auth('jwt'), (req, res, next)=>{
     user.getModel().findOne({email: req.user.email}).then((data) => {
         data.unfollow(req.params.user, res, next);
     }).catch((err) => {
-        return next({statusCode: 500, error: true, errormessage: "DB error: "+err.errormessage});
+        return next({statusCode: 500, error: true, errormessage: "DB error: "+err});
     });
 });
 
@@ -208,7 +208,7 @@ router.post('/:id/friend', passport_auth('jwt'), (req, res, next) => {
             data.sendFriendRequest(req.body.user, res, next);
         }
     }).catch((err) => {
-        return next({statusCode: 500, error: true, errormessage: "DB error: "+err.errormessage});
+        return next({statusCode: 500, error: true, errormessage: "DB error: "+err});
     });
 })
 
@@ -221,7 +221,7 @@ router.delete('/:user1/friend/:user2', passport_auth('jwt'), (req, res, next) =>
             else
                 data.removeFriendRequest(req.params.user2, res, next);
         }).catch((err) => {
-            return next({statusCode: 500, error: true, errormessage: "DB error: "+err.errormessage});
+            return next({statusCode: 500, error: true, errormessage: "DB error: "+err});
         });
     }
     else if (req.params.user2 === req.user.email)
@@ -229,7 +229,7 @@ router.delete('/:user1/friend/:user2', passport_auth('jwt'), (req, res, next) =>
         user.getModel().findOne({email: req.params.user2}).then((data) => {
             data.refuseFriendRequest(req.params.user1, res, next)
         }).catch((err) => {
-            return next({statusCode: 500, error: true, errormessage: "DB error: "+err.errormessage});
+            return next({statusCode: 500, error: true, errormessage: "DB error: "+err});
         });
     }
     else

@@ -13,13 +13,13 @@
           <a class="nav-link" routerLinkActive="text-white" routerLink="/" [routerLinkActiveOptions]="{exact: true}">Home page</a>
         </li>
       </ul>
-      <ul *ngIf="userService.isLoggedIn" class="navbar-nav me-auto">
+      <ul *ngIf="userService.isLoggedIn" class="navbar-nav">
         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
           <a class="nav-link" routerLinkActive="text-white" routerLink="/profile" [routerLinkActiveOptions]="{exact: true}">Profile</a>
         </li>
       </ul>
 
-      <ul *ngIf="userService.isLoggedIn" class="navbar-nav navbar-right">
+      <ul *ngIf="userService.isLoggedIn" class="navbar-nav navbar-right ms-auto">
         <li class="nav-item">
           <a class="nav-link" href="/notifications">
             <img src="assets/img/bell.svg" height="20em" class="m-0 p-0">

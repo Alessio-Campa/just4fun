@@ -28,7 +28,7 @@ router.get('/login', passport_auth('basic'), (req, res, next)=>{
         else
             return next({statusCode: 422, error: true, errormessage: "Please change your temporary password"});
     }).catch(err => {
-        return next({statusCode: 500, error: true, errormessage: err.errormessage});
+        return next({statusCode: 500, error: true, errormessage: err});
     });
 });
 
