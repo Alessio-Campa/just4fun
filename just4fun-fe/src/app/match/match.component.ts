@@ -35,11 +35,10 @@ export class MatchComponent implements OnInit {
       this.canViewMessages = true;
 
     // fetch chat
-    this.chatService.getChatByMatch(matchID).subscribe(data => {
-      this.matchChat = data[0];
-      this.matchChat.messages = [];
-
-      this.fetchChat()
+    this.chatService.getChatByMatch(matchID).subscribe((data) => {
+      this.matchChat = data;
+      // this.matchChat.messages = [];
+      // this.fetchChat()
     })
 
     // get match from DB and determine user's relationship with it (player/watcher)
@@ -72,9 +71,9 @@ export class MatchComponent implements OnInit {
           this.board.highlightVictory(message.win.positions)
         }
         // to execute when a new message is sent
-        if (message.subject === 'newMessageReceived') {
-          this.fetchChat()
-        }
+        if (message.subject === 'newMessageReceived')
+          this.matchChat.fetchChat();
+
       });
 
       // create the board (playable or not) based on the user relationship with the match
@@ -88,19 +87,6 @@ export class MatchComponent implements OnInit {
         this.board.highlightVictory(this.match.winner.positions)
       }
 
-    });
-  }
-
-  // gets all the messages sent after the last one displayed, if none it gets the messages since the beginning of time (for computers)
-  fetchChat(){
-    let lastTimestamp = 0;
-    if (this.matchChat.messages.length > 0){
-      lastTimestamp = this.matchChat.messages.pop().timestamp;
-    }
-    this.chatService.fetchChat(this.matchChat._id, lastTimestamp).subscribe(data => {
-      data.forEach(element => {
-        this.matchChat.messages.push(element);
-      })
     });
   }
 

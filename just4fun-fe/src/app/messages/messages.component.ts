@@ -35,7 +35,7 @@ export class MessagesComponent implements OnInit, OnChanges { //rappresenta una 
       this.ios.connect().subscribe((message)=>{
         if (message.subject === 'newMessageReceived') {
           console.log('start fetching');
-          this.messageFetch();
+          this.chat.fetchChat();
           console.log('fetch ended');
         }
       });
@@ -52,25 +52,10 @@ export class MessagesComponent implements OnInit, OnChanges { //rappresenta una 
 
   }
 
-  // gets all the messages sent after the last one displayed, if none it gets the messages since the beginning of time (for computers)
-  messageFetch() {
-    let lastTimestamp = 0;
-    if (this.chat.messages.length > 0){
-      lastTimestamp = this.chat.messages.pop().timestamp;
-    }
-    this.chatService.fetchChat(this.chat._id, lastTimestamp).subscribe(data => {
-      data.forEach(element => {
-        this.chat.messages.push(element);
-      })
-    });
-  }
-
   sendMessage(message){
-    if (message.value === ''){
-      return;
+    if (message.value !== ''){
+      this.chat.sendMessage(message.value).subscribe();
+      message.value = '';
     }
-    this.chatService.sendMessage(this.userMail, message.value, this.chat._id).subscribe()
-    message.value = '';
   }
-
 }

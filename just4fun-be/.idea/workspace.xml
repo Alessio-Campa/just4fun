@@ -3,10 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="50b6c8c6-a28e-4a48-8e0d-af753471fd40" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/header/header.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/header/header.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/home/home.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/home/home.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/match/match.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/match/match.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/profile/profile.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/profile/profile.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/chats.ts" beforeDir="false" afterPath="$PROJECT_DIR$/routes/chats.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/match/match.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/match/match.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/messages/messages.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/messages/messages.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/services/chat.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/services/chat.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,6 +143,7 @@
       <workItem from="1629814280409" duration="6776000" />
       <workItem from="1629968894977" duration="5491000" />
       <workItem from="1630144008555" duration="1250000" />
+      <workItem from="1630309739126" duration="4515000" />
     </task>
     <servers />
   </component>

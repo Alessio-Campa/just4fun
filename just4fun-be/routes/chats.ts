@@ -2,12 +2,10 @@ import express = require('express')
 import {isChat, Chat} from "../models/Chat";
 import * as chat from "../models/Chat";
 import {passport_auth} from "../bin/authentication";
-import jwt_decode from "jwt-decode"
-import {User} from "../models/User";
 import {getIoServer} from "../bin/socket";
-import {Schema} from "mongoose";
 import * as match from "../models/Match";
 import {Match} from "../models/Match";
+import {getIntFromQueryParam} from "../utils/utils";
 
 let router = express.Router();
 
@@ -44,18 +42,21 @@ router.get("/:chatID", passport_auth('jwt'), (req, res, next)=>{
     })
 });
 
-router.get("/:chatID/simpleFetching", passport_auth('jwt'), (req, res, next) => {
-    if (!req.query.timestamp){
-        return next({status_code: 400, error: true, errormessage:'timestamp missing'});
-    }
-    let lastTimestamp: number =+ req.query.timestamp;
-    chat.getModel().findOne({_id: req.params.chatID}).then((data: Chat)=>{
-        let i = data.messages.length - 1;
-        while (i > 0 && data.messages[i].timestamp > lastTimestamp) {
-            --i;
+router.get("/:chatID/message", passport_auth('jwt'), (req, res, next) => {
+    // if (!req.query.timestamp)
+    //     return next({status_code: 400, error: true, errormessage:'timestamp missing'});
+
+    let lastTimestamp: number = getIntFromQueryParam(req.query.afterTimestamp, null);
+    chat.getModel().findOne({_id: req.params.chatID}).then((data: Chat) => {
+        if (lastTimestamp)
+        {
+            let i = data.messages.length - 1;
+            while (i > 0 && data.messages[i].timestamp > lastTimestamp) {
+                --i;
+            }
+            data.messages = data.messages.slice(i);
         }
-        data.messages = data.messages.slice(i);
-        return res.status(200).json(data);
+        return res.status(200).json(data.messages);
     }).catch(err => {
         return next({status_code: 500, error: true, errormessage: err});
     });
@@ -77,13 +78,13 @@ router.post("/:id", passport_auth('jwt'), (req, res, next)=> {
         }).then((data)=> {
             return res.status(200).json({error: false, object: data})
         }).catch((err)=> {
-            return next({status_code:400, error:true, errormessage:err})
+            return next({status_code:500, error:true, errormessage:err})
         })
     });
 
 })
 
-router.put("/:idChat/message", passport_auth('jwt'), (req, res, next)=> {
+router.post("/:idChat/message", passport_auth('jwt'), (req, res, next)=> {
     let ios = getIoServer();
     let c: Chat;
     let message = {
@@ -123,7 +124,7 @@ router.put("/:idChat/message", passport_auth('jwt'), (req, res, next)=> {
         }
         return res.status(200).json({error: false, message: "Object created"})
     }).catch((err) => {
-        return next({status_code: 400, error: true, errormessage: err.message})
+        return next({status_code: 500, error: true, errormessage: err.message})
     })
 })
 
@@ -133,7 +134,7 @@ router.delete("/:id", (req, res, next)=> {
     chat.getModel().findByIdAndDelete(req.params.id).then(()=>{
         return res.status(200).json({error: false, message:"object deleted succesfully"})
     }).catch((err)=> {
-        return next({status_code:400, error:true, errormessage:err})
+        return next({status_code:500, error:true, errormessage:err})
     })
 })
 

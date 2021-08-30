@@ -6,15 +6,57 @@ import {UserService} from "./user.service";
 import {emitDistinctChangesOnlyDefaultValue} from "@angular/compiler/src/core";
 import {map, tap} from "rxjs/operators";
 
-export interface Chat{
-  _id: string,
-  matchID: string,
-  members: string[],
-  messages: {
-    sender: string,
-    text: string,
-    timestamp: number
-  }[]
+export class Chat {
+  constructor(private http: HttpClient, private userService: UserService, data: { _id: string; matchID: string; members: string[]; messages: Message[]; }) {
+    this._id = data._id;
+    this.matchID = data.matchID;
+    this.members = data.members;
+    this.messages = data.messages;
+  }
+
+  _id: string
+  matchID: string
+  members: string[]
+  messages: Message[]
+
+  fetchChat() {
+    let lastTimestamp = 0;
+    if (this.messages.length > 0){
+      lastTimestamp = this.messages[this.messages.length-1].timestamp;
+    }
+
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': this.userService.tokenAuth(),
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json',
+      })
+    };
+    this.http.get<Message[]>(`${environment.serverUrl}/chat/${this._id}/message/?afterTimestamp=${lastTimestamp}`, options)
+      .subscribe((messages: Message[]) => {
+        for(let i in messages) {
+          // if((this.members.includes(this.userService.email) && this.members.includes(m.sender))
+          //   || !this.members.includes(this.userService.email))
+          this.messages.push(messages[i]);
+        }
+      });
+  }
+
+  sendMessage(message: string): Observable<any> {
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': this.userService.tokenAuth(),
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json',
+      })
+    };
+    let body = {
+      sender: this.userService.email,
+      text: message
+    }
+
+    return this.http.post(`${environment.serverUrl}/chat/${this._id}/message`, body, options);
+  }
 }
 
 export interface Message{
@@ -42,29 +84,12 @@ export class ChatService {
       }
     };
 
-    return this.http.get<Chat>(`${environment.serverUrl}/chat`, options);
+    return this.http.get<Chat>(`${environment.serverUrl}/chat`, options).pipe(map((data) => {
+      return new Chat(this.http, this.userService, data[0]);
+    }));
   }
 
-  fetchChat(chatID, timestamp): Observable<any>{
-    let options = {
-      headers: new HttpHeaders({
-        'Authorization': this.userService.tokenAuth(),
-        'cache-control': 'no-cache',
-        'Content-Type': 'application/json',
-      })/*,
-      params: {
-        timestamp: timestamp
-      }*/
-    };
-    //return this.http.get<Chat>(`${environment.serverUrl}/chat/` + chatID, options); //old version
-    return this.http.get<Chat>(`${environment.serverUrl}/chat/${chatID}/simpleFetching?timestamp=${timestamp}`, options).pipe(
-      map( (data: any) => data.messages.filter( m => {
-        return (data.members.includes(this.userService.email) && data.members.includes(m.sender)) || !data.members.includes(this.userService.email)
-      }))
-    );
-  }
-
-  getChatsByUser(user: string): Observable<any>{
+  getChatsByUser(user: string): Observable<Chat[]>{
     let options = {
       headers: new HttpHeaders({
         'Authorization': this.userService.tokenAuth(),
@@ -77,23 +102,9 @@ export class ChatService {
       }
     };
 
-    return this.http.get<Chat[]>(`${environment.serverUrl}/chat`, options);
-  }
-
-  sendMessage(sender, message, chatID): Observable<any>{
-    let options = {
-      headers: new HttpHeaders({
-        'Authorization': this.userService.tokenAuth(),
-        'cache-control': 'no-cache',
-        'Content-Type': 'application/json',
-      })
-    };
-    let body = {
-      sender: sender,
-      text: message
-    }
-
-    return this.http.put(`${environment.serverUrl}/chat/${chatID}/message`, body, options);
+    return this.http.get<Chat[]>(`${environment.serverUrl}/chat`, options).pipe(map((datas: Chat[]) => {
+      return datas.map((d: Chat) => { return new Chat(this.http, this.userService, d); });
+    }));
   }
 
   newChat(user, friend): Observable<any>{
@@ -110,5 +121,4 @@ export class ChatService {
 
     return this.http.post(`${environment.serverUrl}/chat/${user}`, body, options);
   }
-
 }
