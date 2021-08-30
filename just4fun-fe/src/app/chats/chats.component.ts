@@ -15,7 +15,7 @@ export class ChatsComponent implements OnInit {
   chats: Chat[];
   selectedChat: Chat = null;
   isLoading = {chats: -1};
-  friends;
+  friends: Set<string>;
 
   // return to home if url is '/messages' and user is not logged in
   constructor(private chatService: ChatService, private userService: UserService, private router: Router,

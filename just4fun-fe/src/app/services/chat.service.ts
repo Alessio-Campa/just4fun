@@ -20,6 +20,16 @@ export class Chat {
   members: string[]
   messages: Message[]
 
+  getMessage(filter?: string[])
+  {
+    if(filter)
+      return this.messages.filter((m) => {
+        return filter.includes(m.sender);
+      });
+    else
+      return this.messages;
+  }
+
   fetchChat() {
     let lastTimestamp = 0;
     if (this.messages.length > 0){
@@ -36,8 +46,6 @@ export class Chat {
     this.http.get<Message[]>(`${environment.serverUrl}/chat/${this._id}/message/?afterTimestamp=${lastTimestamp}`, options)
       .subscribe((messages: Message[]) => {
         for(let i in messages) {
-          // if((this.members.includes(this.userService.email) && this.members.includes(m.sender))
-          //   || !this.members.includes(this.userService.email))
           this.messages.push(messages[i]);
         }
       });

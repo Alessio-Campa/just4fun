@@ -18,6 +18,11 @@
           <a class="nav-link" routerLinkActive="text-white" routerLink="/profile" [routerLinkActiveOptions]="{exact: true}">Profile</a>
         </li>
       </ul>
+      <ul *ngIf="userService.isLoggedIn" class="navbar-nav">
+        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <a class="nav-link" routerLinkActive="text-white" routerLink="/messages" [routerLinkActiveOptions]="{exact: true}">Chats</a>
+        </li>
+      </ul>
 
       <ul *ngIf="userService.isLoggedIn" class="navbar-nav navbar-right ms-auto">
         <li class="nav-item">

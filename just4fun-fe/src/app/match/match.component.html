@@ -39,11 +39,12 @@
 
       </div>
     </div>
-    <div *ngIf="canViewMessages" class="col-md-4 mb-4 h-100">
+    <div *ngIf="canViewMessages && matchChat !== null" class="col-md-4 mb-4 h-100">
 
       <div class="col-md-12">
         <div class="w-100" style="height: 75vh">
-          <app-messages *ngIf="matchChat !== null" [chat]="matchChat"></app-messages>
+          <app-messages *ngIf="(userService.email === match.player0 || userService.email === match.player1)" [chat]="matchChat" [filter]="[match.player0, match.player1]"></app-messages>
+          <app-messages *ngIf="!(userService.email === match.player0 || userService.email === match.player1)" [chat]="matchChat"></app-messages>
         </div>
       </div>
 

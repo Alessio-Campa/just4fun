@@ -1,20 +1,19 @@
-<div class="container-fluid d-flex" style="height: 85vh">
-  <div class="container-fluid h-100 w-25 ml-n2 bg-dark overflow-auto rounded">
+<div class="row" style="height: 85vh">
+  <div class="col-12 col-sm-4 h-100 bg-dark overflow-auto rounded">
 
-    <div class="w-100 d-flex justify-content-center mt-3 mb-2">
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newChatModal">
-        New chat
-      </button>
+    <div class="row align-items-center">
+      <div class="col"></div>
+      <div class="col text-center"><h5 class="m-0 text-white">Chats</h5></div>
+      <div class="col">
+        <button type="button" [disabled]="!friends || friends.size == 0" class="btn btn-info float-end" data-bs-toggle="modal" data-bs-target="#newChatModal">New chat</button>
+      </div>
     </div>
 
-    <div class="w-100 d-flex justify-content-center mt-3 mb-2">
-      <small class="text-secondary"> Chats </small>
-    </div>
     <div *ngIf="!isLoading.chats">
       <div *ngFor="let chat of chats; index as i" class="card mt-2 p-2 hoverable bg-primary" style="cursor: pointer" (click)="onChatSelect(i)">
         <b class="mb-1 text-center"> {{chat.members[0] == userMail ? chat.members[1] : chat.members[0]}} </b>
         <div *ngIf="chat.messages.length > 0" class="d-flex justify-content-between">
-          <small class="message-preview">{{chat.messages[chat.messages.length-1].sender}}:  <span class="text-secondary"> {{chat.messages[chat.messages.length-1].text}} </span></small>
+          <small class="message-preview">{{chat.messages[chat.messages.length-1].sender}}:  <span class="text-white"> {{chat.messages[chat.messages.length-1].text}} </span></small>
 
           <div class="h-100">
             <small class="small text-secondary text-right h-100" style="font-size: 0.5em; bottom: 0"> {{chat.messages[chat.messages.length-1].timestamp | date: 'HH:mm'}} </small>
@@ -26,7 +25,7 @@
 
   </div>
 
-  <div class="container h-100 w-75 bg-dark rounded p-1 ">
+  <div class="col-12 col-sm-8 h-100 bg-dark rounded p-1 ">
     <app-messages *ngIf="selectedChat !== null" [chat]="selectedChat"></app-messages>
     <div *ngIf="selectedChat === null" class="h1 text-center text-secondary mt-3"> You have no chats at the moment </div>
   </div>
@@ -42,7 +41,7 @@
       </div>
       <div class="modal-body">
 
-        <div *ngFor="let friend of friends" class="card mt-2 p-2 hoverable" style="cursor: pointer" (click)="createChat(friend)" data-dismiss="modal">
+        <div *ngFor="let friend of friends" class="card bg-dark mt-2 p-2 hoverable" style="cursor: pointer" (click)="createChat(friend)" data-bs-dismiss="modal">
           <b class="mb-1 text-center"> {{friend}} </b>
         </div>
       </div>

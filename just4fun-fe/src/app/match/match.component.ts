@@ -16,15 +16,15 @@ export class MatchComponent implements OnInit {
 
   match: Match;
   board;
-  username0;
-  username1;
+  username0: string;
+  username1: string;
   canViewMessages: boolean = false;
   matchChat: Chat = null;
   isReplaying = false;
   isAutoReplaying = false;
   private replayStep = 0;
 
-  constructor(private router: Router, private ms: MatchService, private userService: UserService,
+  constructor(private router: Router, private ms: MatchService, public userService: UserService,
               private ios: SocketioService, private chatService: ChatService) { }
 
   ngOnInit(): void {

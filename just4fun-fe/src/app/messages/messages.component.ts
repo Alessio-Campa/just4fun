@@ -15,8 +15,9 @@ import {event} from "jquery";
 export class MessagesComponent implements OnInit, OnChanges { //rappresenta una singola chat
 
   @Input() chat: Chat = null;
-  userMail;
-  chatTitle;
+  @Input() filter: string[] = null;
+  userMail: string;
+  chatTitle: string;
 
   // if user is not logged in return to home
   constructor(private chatService: ChatService, private userService: UserService, private router: Router,
@@ -39,8 +40,14 @@ export class MessagesComponent implements OnInit, OnChanges { //rappresenta una 
           console.log('fetch ended');
         }
       });
-      this.chatTitle = this.chat.members[0] == this.userMail ? this.chat.members[1] : this.chat.members[0]
+      this.chatTitle = this.getTitles(this.chat.members);
     }
+  }
+
+  getTitles(members: string[]): string
+  {
+    let others = members.filter((x) => x != this.userMail);
+    return others.join(', ');
   }
 
   // activated when another chat is selected from chatsComponent
@@ -48,14 +55,13 @@ export class MessagesComponent implements OnInit, OnChanges { //rappresenta una 
     if (changes.chat.currentValue.matchID !== null)
       this.chatTitle = 'Match chat'
     else
-      this.chatTitle = changes.chat.currentValue.members[0] == this.userMail ? changes.chat.currentValue.members[1] : changes.chat.currentValue.members[0]
-
+      this.chatTitle = this.getTitles(changes.chat.currentValue.members);
   }
 
   sendMessage(message){
-    if (message.value !== ''){
+    if (message.value !== '') {
       this.chat.sendMessage(message.value).subscribe();
       message.value = '';
     }
-  }
+  }S
 }
