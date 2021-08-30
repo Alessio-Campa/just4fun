@@ -21,9 +21,9 @@
 
         <h2 class="h2 text-center mb-3">Live matches</h2>
 
-        <div class="row row-cols-2">
+        <div class="row row-cols-1 row-cols-lg-2">
 
-          <a *ngFor="let match of randomMatches; index as i; let last = last" href="/match/{{match._id}}" class="col-6">
+          <a *ngFor="let match of randomMatches; index as i; let last = last" href="/match/{{match._id}}" class="col">
             <div class="card mb-3 border-info hoverable" style="cursor: pointer">
               <div class="card-header">
                 <h5 class="card-title text-left mb-0 d-flex">
@@ -57,7 +57,7 @@
         <div class="d-flex">
           <div class="w-100 d-flex justify-content-center" style="justify-content: flex-start">
             <input #name type="text" class="form-control rounded-pill pe-6" placeholder="Search user by username" (keydown.enter)="searchUser(name.value)">
-            <button class="btn btn-info rounded-circle ms-2" (click)="searchUser(name.value)"><i class="fas fa-arrow-right"></i></button>
+            <button class="btn btn-info rounded-circle ms-2 sendButton" (click)="searchUser(name.value)"><i class="fas fa-arrow-right"></i></button>
           </div>
         </div>
         <p class="text-danger m-1" [hidden]="!userNotFoundError">User not found</p>

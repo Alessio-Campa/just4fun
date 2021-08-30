@@ -1,6 +1,6 @@
 const ROWS: number = 6;
 const COLUMNS: number = 7;
-const colors: string[] = ["#ff4c4c ", "#ffff4c"];
+const colors: string[] = ["#d7444b ", "#f7be00"];
 
 export class Board {
   constructor(_$board: any, board: number[][], callback = ()=>{}) {
