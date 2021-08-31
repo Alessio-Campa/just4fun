@@ -118,6 +118,7 @@
             <div class="m-3">
               <span>
                 Winner:
+                <i *ngIf="match.winner.player === -1" class="fa-circle fas" style="background-color: lightgrey; border-radius: 100%"></i>
                 <i *ngIf="match.winner.player === 0" class="fa-circle fas text-danger"></i>
                 <i *ngIf="match.winner.player === 1" class="fa-circle fas text-warning"></i>
               </span>
