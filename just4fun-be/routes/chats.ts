@@ -19,10 +19,9 @@ router.get("/", passport_auth(['jwt', 'anonymous']), (req, res, next)=>{
     }
 
     if (!req.query.user) {
-        filter['members'] = null; //Public default is user not supplied
+        filter['members'] = []; //Public default is user not supplied
     }
-    else
-    {
+    else {
         let users;
         if (Array.isArray(req.query.user))
             users = req.query.user;
@@ -34,7 +33,9 @@ router.get("/", passport_auth(['jwt', 'anonymous']), (req, res, next)=>{
 
         filter['members'] = {$all: users}; //If chat contains all users in query
     }
-    if (req.query.matchID) {
+    if (req.query.matchID === 'null')
+        filter['matchID'] = null;
+    else if (req.query.matchID) {
         filter['matchID'] = req.query.matchID;
     }
 

@@ -111,11 +111,10 @@ export class ChatService {
       })
     };
 
-    let params = '';
+    let params = 'matchID=null&';
     for(let i in users)
       params += `user=${users[i]}&`;
     params = params.substring(0, params.length - 1); //remove last '&'
-
 
     return this.http.get<Chat[]>(`${environment.serverUrl}/chat?${params}`, options).pipe(map((datas: Chat[]) => {
       return datas.map((d: Chat) => { return new Chat(this.http, this.userService, d); });
