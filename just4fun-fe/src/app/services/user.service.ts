@@ -51,7 +51,7 @@ export class UserService {
   private _token: string = '';
   get token()
   {
-    if(this.jwtHelper.isTokenExpired(this._token))
+    if(this._token !== '' && this.jwtHelper.isTokenExpired(this._token))
       this._token = '';
     return this._token;
   }
@@ -295,19 +295,19 @@ export class UserService {
   }
 
   get username() {
-    return (jwtDecode(this.token) as TokenData).username;
+    return this.isLoggedIn ? (jwtDecode(this.token) as TokenData).username : '';
   }
 
   get email() {
-    return (jwtDecode(this.token) as TokenData).email;
+    return this.isLoggedIn ? (jwtDecode(this.token) as TokenData).email : '';
   }
 
   get id() {
-    return (jwtDecode(this.token) as TokenData).id;
+    return this.isLoggedIn ? (jwtDecode(this.token) as TokenData).id : '';
   }
 
   get is_moderator(): boolean {
-    return (jwtDecode(this.token) as TokenData).roles.includes('MODERATOR');
+    return this.isLoggedIn ? (jwtDecode(this.token) as TokenData).roles.includes('MODERATOR') : false;
   }
 
   get_user_by_mail(mail: string): Observable<User>{
