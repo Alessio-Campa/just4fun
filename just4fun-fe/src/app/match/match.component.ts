@@ -47,6 +47,8 @@ export class MatchComponent implements OnInit {
       let isPlayer = this.userService.isLoggedIn && (this.userService.email === this.match.player0 || this.userService.email === this.match.player1)
       let playerTurn = isPlayer && this.userService.email === this.match.player0 ? 0 : isPlayer && this.userService.email === this.match.player1 ? 1 : null
 
+      this.username0 = this.match.player0; //Provide a value before fetch
+      this.username1 = this.match.player1;
       this.userService.get_user_by_mail(this.match.player0).subscribe(data => this.username0 = data.username);
       this.userService.get_user_by_mail(this.match.player1).subscribe(data => this.username1 = data.username);
 

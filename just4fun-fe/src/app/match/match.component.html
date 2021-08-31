@@ -4,26 +4,40 @@
   </div>
 </div>
 
-<div class="container text-light">
-  <h1 *ngIf="match && match.turn === 0 && match.winner.player === null" class="h1 mb-0 d-flex justify-content-center">
-    <i class="me-2 fa-circle fas text-danger"></i>
-    <b>{{username0}}</b>'s turn
-  </h1>
-  <h1 *ngIf="match && match.turn === 1 && match.winner.player === null" class="h1 mb-0 d-flex justify-content-center">
-    <i class="me-2 fa-circle fas text-warning"></i>
-    <b>{{username1}}</b>'s turn
-  </h1>
-  <h1 *ngIf="match && match.winner.player !== null && match.winner.player === 0" class="h1 mb-0 d-flex justify-content-center">
-    <i class="me-2 fa-circle fas text-danger"></i>
-    <b> {{username0}} is the winner</b>
-  </h1>
-  <h1 *ngIf="match && match.winner.player !== null && match.winner.player === 1" class="h1 mb-0 d-flex justify-content-center">
-    <i class="me-2 fa-circle fas text-warning"></i>
-    <b> {{username1}} is the winner</b>
-  </h1>
+<div class="col-md-8">
+  <div class="row justify-content-between">
+    <div class="col-auto">
+      <h1 *ngIf="match && match.winner.player === null && match.turn === 0" class="mb-0">
+        <i class="me-2 fa-circle fas text-danger"></i>
+        <b>{{username0}}</b>'s turn
+      </h1>
+      <h1 *ngIf="match && match.winner.player === null && match.turn === 1" class="mb-0">
+        <i class="me-2 fa-circle fas text-warning"></i>
+        <b>{{username1}}</b>'s turn
+      </h1>
+      <h1 *ngIf="match && match.winner.player !== null && match.winner.player === 0" class="mb-0">
+        <i class="me-2 fa-circle fas text-danger"></i>
+        <b> {{username0}} is the winner</b>
+      </h1>
+      <h1 *ngIf="match && match.winner.player !== null && match.winner.player === 1" class="mb-0">
+        <i class="me-2 fa-circle fas text-warning"></i>
+        <b> {{username1}} is the winner</b>
+      </h1>
+    </div>
+    <div class="col-auto text-muted">
+      <h1 *ngIf="match && ((match.winner.player === null && match.turn === 0) || (match.winner.player !== null && match.winner.player === 0))" class="mb-0 mt-auto">
+        <b>{{username1}}</b>
+        <i class="ms-2 fa-circle fas text-warning"></i>
+      </h1>
+      <h1 *ngIf="match && ((match.winner.player === null && match.turn === 1) || (match.winner.player !== null && match.winner.player === 1))" class="mb-0 mt-auto">
+        <b>{{username0}}</b>
+        <i class="ms-2 fa-circle fas text-danger"></i>
+      </h1>
+    </div>
+  </div>
 </div>
 
-<div class="container align-content-center">
+<div class="align-content-center">
   <div class="row mt-4">
     <div class="col-md-8 mb-4">
       <div id="board" class="col-md-12" style=" margin: auto">
