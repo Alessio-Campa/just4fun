@@ -4,25 +4,28 @@
 
 <div class="row">
   <div class="col-6 text-light h-100">
-    <div class="col-12 bg-dark rounded p-2 text-light h-100">
+    <div class="col-12 rounded bg-dark p-2 text-light h-100">
       <h2 class="text-center"> Feed </h2>
       <div *ngFor="let n of notifications">
 
-        <div *ngIf="n.type === 'follow'" class="card card-body text-dark d-block mb-2">
-          <b> <a href="/user/{{n.content}}" class="text-dark">{{n.content}}</a> </b> started following you
+        <div class="card card-body bg-primary text-dark d-block mb-2">
+          <div *ngIf="n.type === 'follow'">
+            <b> <a href="/user/{{n.content}}" class="text-dark">{{n.content}}</a> </b> started following you
+          </div>
+          <div *ngIf="n.type === 'request'">
+            <b> <a href="/user/{{n.content}}" class="text-dark">{{n.content}}</a> </b> wants to be your friend
+          </div>
+          <div *ngIf="n.type === 'invite'">
+            <b> <a href="/user/{{n.content}}" class="text-dark">{{n.content}}</a> </b> invited you to play a match against them
+          </div>
+          <div *ngIf="n.type === 'message'">
+            <b> <a href="/user/{{n.content}}" class="text-dark">{{n.content}}</a> </b> sent you a message
+          </div>
+          <div *ngIf="n.type === 'acceptedInvite'">
+            <b> <a href="/user/{{n.content.opponent}}" class="text-dark">{{n.content.opponent}}</a> </b> accepted your <b> <a href="/match/{{n.content.matchID}}" class="alert-link">match</a> </b> invite
+          </div>
         </div>
-        <div *ngIf="n.type === 'request'" class="card card-body text-dark d-block mb-2">
-          <b> <a href="/user/{{n.content}}" class="text-dark">{{n.content}}</a> </b> wants to be your friend
-        </div>
-        <div *ngIf="n.type === 'invite'" class="card card-body text-dark d-block mb-2">
-          <b> <a href="/user/{{n.content}}" class="text-dark">{{n.content}}</a> </b> invited you to play a match against them
-        </div>
-        <div *ngIf="n.type === 'message'" class="card card-body text-dark d-block mb-2">
-          <b> <a href="/user/{{n.content}}" class="text-dark">{{n.content}}</a> </b> sent you a message
-        </div>
-        <div *ngIf="n.type === 'acceptedInvite'" class="card card-body text-dark d-block mb-2">
-          <b> <a href="/user/{{n.content.opponent}}" class="text-dark">{{n.content.opponent}}</a> </b> accepted your <b> <a href="/match/{{n.content.matchID}}" class="alert-link">match</a> </b> invite
-        </div>
+
 
       </div>
     </div>
@@ -34,11 +37,11 @@
       <div class="col-12 bg-dark rounded p-2 mb-4">
         <h2 class="text-center"> Friend requests </h2>
 
-        <div *ngFor="let request of friendRequests; index as i" class="card mt-2 p-2">
+        <div *ngFor="let request of friendRequests; index as i" class="card mt-2 p-2 bg-primary">
           <div class="d-flex flex-wrap justify-content-between text-dark">
             <b class="mb-1"> {{ request }}</b>
             <div>
-              <img src="assets/img/check2.svg" class="btn btn-success p-0 mr-1" style="height: 1.5em" (click)="handleRequest(true, request)">
+              <img src="assets/img/check2.svg" class="btn btn-success p-0 me-2" style="height: 1.5em" (click)="handleRequest(true, request)">
               <img src="assets/img/x.svg" class="btn btn-danger p-0" style="height: 1.5em" (click)="handleRequest(false, request)">
             </div>
           </div>
@@ -49,11 +52,11 @@
       <div class="col-12 bg-dark rounded p-2 text-light mb-4 h-100">
         <h2 class="text-center"> Match invitations </h2>
 
-        <div *ngFor="let invite of matchInvites; index as i" class="card mt-2 p-2">
+        <div *ngFor="let invite of matchInvites; index as i" class="card mt-2 p-2 bg-primary">
           <div class="d-flex flex-wrap justify-content-between text-dark">
             <b class="mb-1"> {{ invite }}</b>
             <div>
-              <img src="assets/img/check2.svg" class="btn btn-success p-0 mr-1" style="height: 1.5em" (click)="handleInvite(true, invite)">
+              <img src="assets/img/check2.svg" class="btn btn-success p-0 me-2" style="height: 1.5em" (click)="handleInvite(true, invite)">
               <img src="assets/img/x.svg" class="btn btn-danger p-0" style="height: 1.5em" (click)="handleInvite(false, invite)">
             </div>
           </div>

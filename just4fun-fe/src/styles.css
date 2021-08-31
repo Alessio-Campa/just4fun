@@ -19,7 +19,7 @@ footer {
   background-color: #d3d3d3;
 }
 
-*:not(.cellDisk){
+*:not(.cellDisk, nav){
   text-shadow: 0 0 !important;
   box-shadow: 0 0 !important;
 }
@@ -42,4 +42,8 @@ footer {
 
 .sendButton {
   aspect-ratio: 1;
+}
+
+.bg-custom{
+  background-color: mediumpurple;
 }

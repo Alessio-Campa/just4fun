@@ -43,8 +43,8 @@
 
       <div class="col-md-12">
         <div class="w-100" style="height: 75vh">
-          <app-messages *ngIf="(userService.email === match.player0 || userService.email === match.player1)" [chat]="matchChat" [filter]="[match.player0, match.player1]"></app-messages>
-          <app-messages *ngIf="!(userService.email === match.player0 || userService.email === match.player1)" [chat]="matchChat"></app-messages>
+          <app-messages *ngIf="(userService.username === match.player0 || userService.username === match.player1)" [chat]="matchChat" [filter]="[match.player0, match.player1]"></app-messages>
+          <app-messages *ngIf="!(userService.username === match.player0 || userService.username === match.player1)" [chat]="matchChat"></app-messages>
         </div>
       </div>
 
