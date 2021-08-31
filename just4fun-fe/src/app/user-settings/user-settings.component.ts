@@ -13,6 +13,9 @@ export class UserSettingsComponent implements OnInit {
   successMessage: string = '';
   errorMessage: string = '';
 
+  public modEmail = '';
+  public modPassword = '';
+
   constructor(private userService: UserService, private router: Router) {
     if (!this.userService.isLoggedIn)
       this.router.navigate(['/'])
@@ -35,6 +38,17 @@ export class UserSettingsComponent implements OnInit {
         this.successMessage = "Image updated successfully";
       });
     }
+  }
+
+  registerNewMod(){
+    this.userService.register(this.modEmail, '',this.modPassword, '', true).subscribe( ()=> {
+      this.modEmail = '';
+      this.modPassword = '';
+    });
+  }
+
+  isModerator(){
+    return this.userService.is_moderator;
   }
 
 

@@ -13,5 +13,20 @@
   <p class="text-success" [hidden]="successMessage === ''">{{successMessage}}</p>
   <p class="text-danger" [hidden]="errorMessage === ''">{{errorMessage}}</p>
   <button class="btn btn-primary" (click)="changeAvatar()"> Change avatar </button>
+</div>
 
+<div *ngIf="isModerator()" class="bg-dark rounded p-2 mb-4">
+  <h1 class="text-light">Create new moderator</h1>
+  <div class="d-flex justify-content-center">
+    <div class="w-25">
+      <form class="form-signin" (ngSubmit)="registerNewMod()">
+        <div>
+          <input [(ngModel)]="modEmail" type="email" name="email"  maxlength="200" required="" class="my-form-control form-control mb-1" [ngClass]="{'is-invalid' : errorMessage}" placeholder="E-mail">
+          <input [(ngModel)]="modPassword" type="password" name="password" required="" class="my-form-control form-control" [ngClass]="{'is-invalid' : errorMessage}" placeholder="Temporary password">
+        </div>
+      </form>
+      <button class="btn btn-lg btn-primary col-12 mt-4" type="submit" (click)="registerNewMod()">Register</button>
+    </div>
+
+  </div>
 </div>

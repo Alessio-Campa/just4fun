@@ -92,16 +92,18 @@ export class UserService {
     localStorage.removeItem('just4fun_token');
   }
 
-  register(email: string, name: string, password: string, avatar: string): Observable<User>{
+  register(email: string, name: string, password: string, avatar: string, isMod: boolean = false): Observable<User>{
     let user = {
       name: name,
       email: email,
       password: password,
-      avatar: avatar
+      avatar: avatar,
+      moderator: isMod
     }
 
     let options = {
       headers: new HttpHeaders({
+        'authorization': this.isLoggedIn ? this.tokenAuth() : '',
         'cache-control': 'no-cache',
         'Content-Type': 'application/json',
       })

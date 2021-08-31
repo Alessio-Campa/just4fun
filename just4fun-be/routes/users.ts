@@ -2,7 +2,7 @@ import express = require('express')
 import {isUser, User} from "../models/User";
 import * as user from "../models/User";
 import { passport_auth } from "../bin/authentication";
-import { getIntFromQueryParam } from "../utils/utils";
+import { getIntFromQueryParam, randomString } from "../utils/utils";
 
 let router = express.Router();
 
@@ -92,7 +92,7 @@ router.post('/', passport_auth(['jwt', 'anonymous']), (req, res, next) => {
     let u: User;
     if(req.body.moderator && req.user && req.user.hasModeratorRole()) //Create moderator
     {
-        u = user.newUser(req.body.email, "", "");
+        u = user.newUser(req.body.email, randomString(20), "");
         u.setPassword(req.body.password, true);
         u.setModerator(true);
     }
@@ -112,7 +112,7 @@ router.post('/', passport_auth(['jwt', 'anonymous']), (req, res, next) => {
     }).catch((err) => {
         if (err.code === 11000)
             return next({statusCode: 400, error: true, errormessage: "User already exists"});
-        return next({statusCode: 500, error: true, errormessage: "DB error: "+err.errormessage});
+        return next({statusCode: 500, error: true, errormessage: "DB error: "+err.message});
     })
 });
 
