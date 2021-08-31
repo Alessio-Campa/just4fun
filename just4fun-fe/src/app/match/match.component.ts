@@ -82,11 +82,6 @@ export class MatchComponent implements OnInit {
         this.board.highlightVictory(message.win.positions)
       });
 
-      this.socket.on('matchDraw', (message) => {
-        this.match.winner.player = message.win.player;
-        this.board.endMatch();
-      });
-
       this.socket.on('newMessageReceived', (message)=>{
         console.log('start fetching');
         this.fetchChat();

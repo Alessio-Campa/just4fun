@@ -12,7 +12,7 @@ export interface Match extends mongoose.Document{
     player0: string,
     player1: string,
     winner: {
-        player: number, // TODO?: renderlo enum, null = in corso, -1 = parità, 0/1 = vincitore;
+        player: number,
         positions: number[][]
     },
     turn: number,
@@ -103,7 +103,7 @@ matchSchema.methods.makeMove = function (player: string, column: number): void {
         subject: "newMove",
         matchID: this.id,
         column: column,
-        player: player //in teoria non serve
+        player: player //TODO: in teoria non serve
     }
     ios.to(this.id + 'watchers').emit("newMove", message);
     ios.to(this.id + 'players').emit("newMove", message);
@@ -131,19 +131,8 @@ matchSchema.methods.makeMove = function (player: string, column: number): void {
         user.getModel().findOne({email: myTest}).then((theWinner) => {
             theWinner.updatePoints(loser);
         });
-    } else if (this.moves.length >= CELLS) {
-        let draw = new Result();
-        draw.setWinner(-1); // draw
-        this.winner.player = draw.winner;
-        this.winner.positions = [];
-        let message = {
-            subject: "matchDraw",
-            matchID: this.id,
-            win: this.winner,
-        }
-        ios.to(this.id + 'watchers').emit("matchDraw", message);
-        ios.to(this.id + 'players').emit("matchDraw", message);
     }
+
     this.turn = (this.turn + 1) % 2 //switch turn
 }
 
@@ -170,6 +159,12 @@ matchSchema.methods.getCell = function(row: number, column: number): number {
 
 matchSchema.methods.checkWin = function(row:number, column:number): Result {
     let result;
+
+    if (this.moves.length >= CELLS) {
+        result = new Result();
+        result.setWinner(-1); // draw
+        return result
+    }
 
     result = this.checkDirection(row, column, -1,1)
     if (result.winner == null)
