@@ -289,6 +289,17 @@ export class UserService {
     return this.http.delete(`${environment.serverUrl}/user/${this.email}/invite/${sender}`, options);
   }
 
+  deleteUser(email): Observable<any>{
+    let options = {
+      headers: new HttpHeaders({
+        'Authorization': this.tokenAuth(),
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json',
+      })
+    };
+    return this.http.delete(`${environment.serverUrl}/user/${email}`, options)
+  }
+
   get isLoggedIn()
   {
     return this.token != '';
@@ -335,5 +346,6 @@ export class UserService {
   get leaderboard(): Observable<User[]>{
     return this.http.get<User[]>(environment.serverUrl + '/user/leaderboard');
   }
+
 
 }

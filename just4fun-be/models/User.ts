@@ -100,7 +100,8 @@ let userSchema = new mongoose.Schema<User>({
     },
     isDeleted: {
         type: Boolean,
-        required: false
+        required: false,
+        default: false
     },
     notifications: [{
         type: {

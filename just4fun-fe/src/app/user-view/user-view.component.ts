@@ -129,4 +129,15 @@ export class UserViewComponent implements OnInit {
     })
   }
 
+  isModerator(){
+    return this.userService.is_moderator
+  }
+
+  deleteUser(){
+    if(this.userService.is_moderator)
+      this.userService.deleteUser(this.user.email).subscribe(()=>{},()=>{}, ()=>{
+        this.router.navigate(['/']);
+      })
+  }
+
 }

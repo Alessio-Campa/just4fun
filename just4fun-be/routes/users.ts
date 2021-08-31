@@ -123,7 +123,7 @@ router.delete('/:email', passport_auth('jwt'), (req, res, next)=>{
             {
                 u.isDeleted = true;
                 u.save().then(() => {
-                    return next({statusCode:200, error: false, errormessage:""});
+                    return res.status(200).json("Deleted successfully");
                 }).catch((err)=>{
                     return next({statusCode:500, error: true, errormessage:"DB error"+err});
                 });

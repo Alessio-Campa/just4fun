@@ -99,3 +99,24 @@
     </div>
   </div>
 </div>
+
+<div *ngIf="isModerator()" class="justify-content-center w-100 mt-4 d-flex">
+  <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal">
+    Delete user
+  </button>
+</div>
+
+
+<div class="modal fade" id="deleteUserModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete <b>{{user.username}}</b>?</h5>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light text-dark" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="deleteUser()">Delete user</button>
+      </div>
+    </div>
+  </div>
+</div>
