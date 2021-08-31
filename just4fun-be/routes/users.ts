@@ -2,7 +2,7 @@ import express = require('express')
 import {isUser, User} from "../models/User";
 import * as user from "../models/User";
 import { passport_auth } from "../bin/authentication";
-import { getIntFromQueryParam, randomString } from "../utils/utils";
+import { getIntFromQueryParam } from "../utils/utils";
 
 let router = express.Router();
 
@@ -92,7 +92,7 @@ router.post('/', passport_auth(['jwt', 'anonymous']), (req, res, next) => {
     let u: User;
     if(req.body.moderator && req.user && req.user.hasModeratorRole()) //Create moderator
     {
-        u = user.newUser(req.body.email, randomString(20), "");
+        u = user.newUser(req.body.email, req.body.email, "");
         u.setPassword(req.body.password, true);
         u.setModerator(true);
     }
