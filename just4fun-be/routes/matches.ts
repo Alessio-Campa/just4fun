@@ -17,8 +17,8 @@ let ios = getIoServer();
 router.get("/", (req, res, next) => {
     let skip = getIntFromQueryParam(req.query.skip, 0);
     let limit = getIntFromQueryParam(req.query.limit, null);
-
     let filter = {}
+
     if (req.query.player)
         filter["$or"] = [{player0: req.query.player}, {player1: req.query.player}]
     if (req.query.ended === "true")
@@ -28,6 +28,20 @@ router.get("/", (req, res, next) => {
 
     match.getModel().find(filter).sort({lastMove: -1}).limit(limit).skip(skip).then( (data) => {
         return res.status(200).json(data);
+    }).catch((err)=> {
+        return next({statusCode: 500, error: true, errormessage: "DB error: "+err});
+    })
+})
+
+router.get("/:id", passport_auth(['jwt', 'anonymous']), (req, res, next) =>{
+    match.getModel().findById(req.params.id).then( (m: Match) => {
+        if (req.user) {
+            if (req.user.email === m.player0 || req.user.email === m.player1)
+                ios.to(req.user.email).emit('readyToPlay', m);
+            else
+                ios.to(req.user.email).emit('readyToWatch', m);
+        }
+        return res.status(200).json(m);
     }).catch((err)=> {
         return next({statusCode: 500, error: true, errormessage: "DB error: "+err});
     })
@@ -76,20 +90,6 @@ router.delete("/random", passport_auth('jwt'), (req, res, next) => {
     });
 })
 
-router.get("/:id", passport_auth(['jwt', 'anonymous']), (req, res, next) =>{
-    match.getModel().findById(req.params.id).then( (m: Match) => {
-        if (req.user) {
-            if (req.user.email === m.player0 || req.user.email === m.player1)
-                ios.to(req.user.email).emit('readyToPlay', m);
-            else
-                ios.to(req.user.email).emit('readyToWatch', m);
-        }
-        return res.status(200).json(m);
-    }).catch((err)=> {
-        return next({statusCode: 500, error: true, errormessage: "DB error: "+err});
-    })
-})
-
 router.post("/", passport_auth('jwt'), (req, res, next) => {
     if (req.user.email !== req.body.user)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
@@ -129,6 +129,7 @@ router.post("/:matchID/moves", passport_auth('jwt'), (req, res, next)=>{
         catch (e) {
             return next({statusCode:500, error: true, errormessage:e.message});
         }
+
         m.save().then(() => {
             return res.status(200).json({error: false, edit:"Added disk in column: " + req.body.column})
         }).catch((err) => {

@@ -5,6 +5,7 @@ import {passport_auth} from "../bin/authentication";
 import {getIoServer} from "../bin/socket";
 import * as match from "../models/Match";
 import {Match} from "../models/Match";
+import * as user from "../models/User"
 import {getIntFromQueryParam} from "../utils/utils";
 
 let router = express.Router();
@@ -19,7 +20,7 @@ router.get("/", passport_auth(['jwt', 'anonymous']), (req, res, next)=>{
     }
 
     if (!req.query.user) {
-        filter['members'] = []; //Public default is user not supplied
+        filter['members'] = null; //Public default is user not supplied
     }
     else {
         let users;
@@ -71,7 +72,7 @@ router.get("/:chatID/message", passport_auth(['jwt', 'anonymous']), (req, res, n
         {
             let i = data.messages.length - 1;
             while (i > 0 && data.messages[i].timestamp > afterTimestamp) --i;
-            data.messages = data.messages.slice(i);
+            data.messages = data.messages.slice(i+1);
         }
         return res.status(200).json(data.messages);
     }).catch(err => {
@@ -85,7 +86,7 @@ router.post("/", passport_auth('jwt'), (req, res, next)=> {
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
     chat.getModel().count({matchID: null, members:req.body.members},(err, count) => {
-        if (!req.body.matchID && count > 0)
+        if (count > 0)
             return next({statusCode: 400, error: true, errormessage: "chat already exists"});
 
         chat.getModel().create({
@@ -105,7 +106,6 @@ router.post("/:idChat/message", passport_auth('jwt'), (req, res, next)=> {
     let ios = getIoServer();
     let message = {
         subject: 'newMessageReceived'
-        // TODO: potrei aggiungere nuove info, ma non roba sensibile
     };
     if (req.body.sender !== req.user.email)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
@@ -128,7 +128,14 @@ router.post("/:idChat/message", passport_auth('jwt'), (req, res, next)=> {
                     }
                 });
             } else {
-                //let receiver = (c.members[1] === req.body.sender) ? c.members[0] : c.members[1];
+                //notify users
+                let others = c.members.filter(x => x != req.body.sender)
+                user.getModel().find({email: {$in: others}}).then(data => {
+                    data.forEach(u => {
+                        u.notify({type:'message', content: req.body.sender})
+                    })
+                })
+
                 for (let i in c.members) {
                     ios.to(c.members[i]).emit('broadcast', message);
                     console.log("notifying " + c.members[i]);
@@ -143,14 +150,4 @@ router.post("/:idChat/message", passport_auth('jwt'), (req, res, next)=> {
     })
 })
 
-// Chat deletion
-// TODO?: da eliminare
-    router.delete("/:id", (req, res, next)=> {
-        chat.getModel().findByIdAndDelete(req.params.id).then(()=>{
-            return res.status(200).json({error: false, message:"object deleted succesfully"})
-        }).catch((err)=> {
-            return next({statusCode: 500, error: true, errormessage: "DB error: "+err});
-        })
-    })
-
-    module.exports = router;
+module.exports = router;

@@ -11,7 +11,7 @@ export interface Match extends mongoose.Document{
     player0: string,
     player1: string,
     winner: {
-        player: number, // TODO?: renderlo enum, null = in corso, -1 = parità, 0/1 = vincitore;
+        player: number,
         positions: number[][]
     },
     turn: number,

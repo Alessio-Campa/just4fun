@@ -43,7 +43,7 @@ export class Chat {
         'Content-Type': 'application/json',
       })
     };
-    this.http.get<Message[]>(`${environment.serverUrl}/chat/${this._id}/message/?afterTimestamp=${lastTimestamp}`, options)
+    this.http.get<Message[]>(`${environment.serverUrl}/chat/${this._id}/message?afterTimestamp=${lastTimestamp}`, options)
       .subscribe((messages: Message[]) => {
         for(let i in messages) {
           this.messages.push(messages[i]);
