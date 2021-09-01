@@ -3,7 +3,7 @@ colors.enabled = true;
 import express = require('express')
 import * as user from '../models/User'
 import {User} from "../models/User";
-import {signToken, passport_auth} from "../bin/authentication";
+import { signToken, passport_auth} from "../bin/authentication";
 
 let router = express.Router();
 

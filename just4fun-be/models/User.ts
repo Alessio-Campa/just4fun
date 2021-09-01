@@ -21,6 +21,7 @@ export interface User extends mongoose.Document{
         type: string,
         content: Object,
     }[],
+    hasNewNotifications: boolean,
 
     setPassword: (pwd:string, temporary?:boolean)=>void,
     validatePassword: (pwd:string)=>boolean,
@@ -112,7 +113,12 @@ let userSchema = new mongoose.Schema<User>({
             type: mongoose.SchemaTypes.Mixed,
             required: true
         }
-    }]
+    }],
+    hasNewNotifications: {
+        type: Boolean,
+        required: false,
+        default: false
+    }
 
 })
 
@@ -286,12 +292,15 @@ userSchema.methods.notify = function (notification, save = true): void{
     let message = {
         subject: "newNotification"
     };
+
     this.notifications.push({
         type: notification.type,
         content: notification.content,
     });
+    this.hasNewNotifications = true;
+
     ios.to(this.email).emit('newNotification', message);
-    console.log("socket notification sended".red)
+
     if (save)
         this.save();
 }

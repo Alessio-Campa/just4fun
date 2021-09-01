@@ -25,6 +25,7 @@ router.get('/', passport_auth(['jwt', 'anonymous']), (req, res, next) => {
         projection['friends'] = 0;
         projection['friendRequests'] = 0;
         projection['roles'] = 0;
+        projection['hasNewNotifications'] = 0;
     }
 
     let skip = getIntFromQueryParam(req.query.skip, 0);
@@ -56,6 +57,7 @@ router.get('/:email', passport_auth(['jwt', 'anonymous']), (req, res, next) => {
         projection['roles'] = 0;
         projection['following'] = 0;
         projection['friends'] = 0;
+        projection['hasNewNotifications'] = 0;
         // projection['friendRequests'] = 0;
     }
 
@@ -272,6 +274,17 @@ router.delete('/:id/invite/:sender', passport_auth('jwt'), (req, res, next) => {
 
     user.getModel().findOneAndUpdate({email: req.params.id}, {$pull: {matchInvites: req.params.sender}} ).then(data => {
         return res.status(200).json('Invitation deleted');
+    }).catch(err => {
+        return next({statusCode: 500, error: true, errormessage: "DB error: "+err.message});
+    })
+})
+
+router.delete('/:email/newNotifications', passport_auth('jwt'), (req, res, next)=>{
+    if (req.user.email !== req.params.email)
+        return next({statusCode: 403, error: true, errormessage: "Forbidden"});
+
+    user.getModel().findOneAndUpdate({email: req.params.email}, {hasNewNotifications: false}).then(()=>{
+        return res.status(200).json('Notifications read');
     }).catch(err => {
         return next({statusCode: 500, error: true, errormessage: "DB error: "+err.message});
     })

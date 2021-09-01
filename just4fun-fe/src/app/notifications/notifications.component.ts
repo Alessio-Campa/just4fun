@@ -23,6 +23,7 @@ export class NotificationsComponent implements OnInit {
               private ios: SocketioService) { }
 
   ngOnInit(): void {
+    this.userService.readNotifications().subscribe();
     this.gettingNotifications();
     this.ios.connect().subscribe(data =>{
       if (data.subject === 'newNotification')
