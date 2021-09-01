@@ -52,6 +52,8 @@ export class LoggedHomeComponent implements OnInit {
     this.socket.on('matchMakingFound', (message) => {
       this.matchSearching = false;
       this.matchFound = true;
+      this.player0 = message.player0; //Provide a value before fetch
+      this.player1 = message.player1;
       this.userService.get_user_by_mail(message.player0).subscribe(data => this.player0 = data.username);
       this.userService.get_user_by_mail(message.player1).subscribe(data => this.player1 = data.username);
       setTimeout(()=>{
@@ -59,7 +61,7 @@ export class LoggedHomeComponent implements OnInit {
       }, 1000);
     })
 
-    console.log("127.0.0.0 sweet logged 127.0.0.0")
+    console.log("127.0.0.1 sweet logged 127.0.0.1")
   }
 
   // find a new random match

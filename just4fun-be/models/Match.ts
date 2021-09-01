@@ -98,7 +98,7 @@ matchSchema.methods.makeMove = function (player: string, column: number): void {
         return e
     }
     this.moves.push(column)
-    let winner = this.checkWin(row, column);
+    let winnerCheck = this.checkWin(row, column);
     let message = {
         subject: "newMove",
         matchID: this.id,
@@ -107,9 +107,9 @@ matchSchema.methods.makeMove = function (player: string, column: number): void {
     }
     ios.to(this.id + 'watchers').emit("newMove", message);
     ios.to(this.id + 'players').emit("newMove", message);
-    if(winner.winner !== null){
-        this.winner.player = winner.winner;
-        this.winner.positions = winner.cells;
+    if(winnerCheck.winner !== null){
+        this.winner.player = winnerCheck.winner;
+        this.winner.positions = winnerCheck.cells;
         this.markModified("winner")
         let message = {
             subject: "matchEnded",
@@ -118,17 +118,17 @@ matchSchema.methods.makeMove = function (player: string, column: number): void {
         }
         ios.to(this.id + 'watchers').emit("matchEnded", message);
         ios.to(this.id + 'players').emit("matchEnded", message);
-        let myTest;
+        let winner;
         let loser;
         if (this.winner.player === 0) {
-            victor = this.player0;
+            winner = this.player0;
             loser = this.player1;
         } else {
             loser = this.player0;
-            victor = this.player1;
+            winner = this.player1;
         }
 
-        user.getModel().findOne({email: victor}).then((theWinner) => {
+        user.getModel().findOne({email: winner}).then((theWinner) => {
             theWinner.updatePoints(loser);
         });
     }

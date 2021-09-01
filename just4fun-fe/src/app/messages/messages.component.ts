@@ -38,7 +38,7 @@ export class MessagesComponent implements OnInit, OnChanges { //rappresenta una 
       this.chatTitle = this.chat.members[0] == this.userMail ? this.chat.members[1] : this.chat.members[0]
       this.socket.on('newMessageReceived', (message)=>{
         console.log('start fetching');
-        this.messageFetch();
+        this.chat.fetchChat();
         console.log('fetch ended');
       });
       this.chatTitle = this.getTitles(this.chat.members);

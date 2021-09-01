@@ -3,15 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="50b6c8c6-a28e-4a48-8e0d-af753471fd40" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/chats/chats.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/chats/chats.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/chats/chats.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/chats/chats.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/header/header.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/header/header.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/match/match.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/match/match.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/Match.ts" beforeDir="false" afterPath="$PROJECT_DIR$/models/Match.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/chats.ts" beforeDir="false" afterPath="$PROJECT_DIR$/routes/chats.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/logged-home/logged-home.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/logged-home/logged-home.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/match/match.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/match/match.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/messages/messages.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/messages/messages.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/messages/messages.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/messages/messages.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/profile/profile.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/profile/profile.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/services/chat.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/services/chat.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

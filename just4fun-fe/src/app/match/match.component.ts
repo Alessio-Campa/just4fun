@@ -18,7 +18,6 @@ export class MatchComponent implements OnInit {
   board;
   username0: string;
   username1: string;
-  canViewMessages: boolean = false;
   matchChat: Chat = null;
   isReplaying = false;
   isAutoReplaying = false;
@@ -31,9 +30,6 @@ export class MatchComponent implements OnInit {
   ngOnInit(): void {
     this.socket = this.ios.getSocketIO();
     let matchID = this.router.url.split('/').pop();
-
-    if (this.userService.isLoggedIn)
-      this.canViewMessages = true;
 
     // fetch chat
     this.chatService.getChatByMatch(matchID).subscribe((data) => {
@@ -58,7 +54,7 @@ export class MatchComponent implements OnInit {
         this.matchChat = data[0];
         this.matchChat.messages = [];
 
-        this.fetchChat()
+        this.matchChat.fetchChat();
       })
 
 
@@ -95,7 +91,7 @@ export class MatchComponent implements OnInit {
 
       this.socket.on('newMessageReceived', (message)=>{
         console.log('start fetching');
-        this.fetchChat();
+        this.matchChat.fetchChat();
         console.log('fetch ended');
       });
       /*
