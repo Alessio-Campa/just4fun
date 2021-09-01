@@ -270,7 +270,7 @@ export class UserService {
     return this.http.delete(`${environment.serverUrl}/user/${this.email}/notification/${id}`, options);
   }
 
-  readNotifications(sender: boolean = true): Observable<any>{
+  readNotifications(): Observable<any>{
     let options = {
       headers: new HttpHeaders({
         'Authorization': this.tokenAuth(),
@@ -278,10 +278,7 @@ export class UserService {
         'Content-Type': 'application/json',
       })
     };
-    if (sender)
-      return this.http.delete(`${environment.serverUrl}/user/${this.email}/newNotifications`, options);
-    else
-      return null;
+    return this.http.delete(`${environment.serverUrl}/user/${this.email}/newNotifications`, options);
   }
 
   sendInvitation(receiver): Observable<any>{

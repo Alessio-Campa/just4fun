@@ -20,7 +20,7 @@ export class ChatsComponent implements OnInit {
   // return to home if url is '/messages' and user is not logged in
   constructor(private chatService: ChatService, private userService: UserService, private router: Router,
               private ios: SocketioService, private route: ActivatedRoute) {
-    if (!this.userService.isLoggedIn && this.router.url.split('/').pop() == 'messages')
+    if (!this.userService.isLoggedIn)
       router.navigate(['/'])
   }
 

@@ -34,8 +34,6 @@ export class MatchComponent implements OnInit {
     // fetch chat
     this.chatService.getChatByMatch(matchID).subscribe((data) => {
       this.matchChat = data;
-      // this.matchChat.messages = [];
-      // this.fetchChat()
     })
 
     // get match from DB and determine user's relationship with it (player/watcher)
@@ -48,14 +46,6 @@ export class MatchComponent implements OnInit {
       this.username1 = this.match.player1;
       this.userService.get_user_by_mail(this.match.player0).subscribe(data => this.username0 = data.username);
       this.userService.get_user_by_mail(this.match.player1).subscribe(data => this.username1 = data.username);
-
-      // fetch chat
-      this.chatService.getChatByMatch(matchID).subscribe(data => {
-        this.matchChat = data[0];
-        this.matchChat.messages = [];
-
-        this.matchChat.fetchChat();
-      })
 
 
       this.socket.on('welcome', () => {
@@ -89,48 +79,6 @@ export class MatchComponent implements OnInit {
         this.board.highlightVictory(message.win.positions)
       });
 
-      this.socket.on('newMessageReceived', (message)=>{
-        console.log('start fetching');
-        this.matchChat.fetchChat();
-        console.log('fetch ended');
-      });
-      /*
-
-      this.ios.connect(matchID, isPlayer).subscribe((message)=>{
-        let subject = message.subject;
-        // to execute when one player makes a new move
-        if (subject === 'newMove') {
-          this.match.turn = (this.match.turn + 1) % 2;
-          if (!isPlayer || message.player !== this.userService.email) {
-            this.board.insertDisk(message.column, (message.player === this.match.player0 ? 0 : 1));
-          }
-        }
-        // to execute when the match ends
-        if (subject === 'matchEnded') {
-          this.ms.getMatchById(this.match._id).subscribe((m: Match) => {
-            this.match.moves = m.moves;
-          });
-          this.match.winner.player = message.win.player;
-          this.match.winner.positions = message.win.positions;
-          this.board.endMatch();
-          this.board.highlightVictory(message.win.positions)
-        }
-        // to execute when a new message is sent
-        if (message.subject === 'newMessageReceived')
-          this.matchChat.fetchChat();
-
-          /* old version: for each fetch, the entire chat is fetched
-          this.chatService.fetchChat(this.matchChat._id).subscribe((data) =>{
-            console.log(data);
-            this.matchChat.messages = data.messages;
-            console.log(data.messages);
-          });
-
-          this.fetchChat()
-          console.log('fetch ended');
-        }
-      });
-           */
       if (isPlayer && this.match.winner.player === null){
         this.board = new PlayableBoard('#board', this.match.board,this.match.turn, playerTurn, (c)=>{
           this.makeMove(c);

@@ -26,10 +26,9 @@ export class HeaderComponent implements OnInit {
     this.socket.on('newNotification', () => {
       this.hasNotifications = true;
     });
-    this.userService.readNotifications(false).subscribe(data=>{
-      if (data !== null){
-        this.hasNotifications = false
-      }
+
+    this.socket.on('viewedNotification', () => {
+      this.hasNotifications = false;
     });
   }
 }

@@ -3,6 +3,7 @@ import {isUser, User} from "../models/User";
 import * as user from "../models/User";
 import { passport_auth } from "../bin/authentication";
 import { getIntFromQueryParam } from "../utils/utils";
+import {getIoServer} from "../bin/socket";
 
 let router = express.Router();
 
@@ -287,6 +288,8 @@ router.delete('/:email/newNotifications', passport_auth('jwt'), (req, res, next)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
     user.getModel().findOneAndUpdate({email: req.params.email}, {hasNewNotifications: false}).then(()=>{
+        let ios = getIoServer();
+        ios.to(req.user.email).emit('viewedNotification', { });
         return res.status(200).json('Notifications read');
     }).catch(err => {
         return next({statusCode: 500, error: true, errormessage: "DB error: "+err.message});
