@@ -20,6 +20,7 @@ export class LoggedHomeComponent implements OnInit {
   player0;
   player1;
   timeElapsed = 0;
+  private timer;
 
   constructor(public userService: UserService, public router: Router, public matchmakingService: MatchmakingService,
               public ios: SocketioService) { }
@@ -47,11 +48,12 @@ export class LoggedHomeComponent implements OnInit {
       this.isConnectingToServer = false;
       this.matchFound = false;
       this.matchSearching = true;
-      setInterval(()=>this.timeElapsed++, 1000);
+      this.timer = setInterval(()=>this.timeElapsed++, 1000);
     });
   }
 
   cancelMatchmaking() {
+    clearInterval(this.timer)
     this.matchmakingService.cancelUserMatchmaking().subscribe(()=>{
       this.matchSearching = false;
     })
