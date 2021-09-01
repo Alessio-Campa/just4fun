@@ -53,7 +53,7 @@
         </div>
 
         <div class="col-12 col-sm pb-2 text-center">
-          <button type="button" class="btn btn-info w-100" [disabled]="!this.me" (click)="sendMatchInvite()">
+          <button type="button" class="btn btn-info w-100" [disabled]="!me && !me.friends.includes(user.email)" (click)="sendMatchInvite()">
             <i class="fas fa-gamepad" style="font-size: xxx-large"></i><br>
             <span class="w-75 ms-auto me-auto">New match</span>
           </button>
