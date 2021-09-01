@@ -72,7 +72,8 @@ router.get("/:chatID/message", passport_auth(['jwt', 'anonymous']), (req, res, n
         {
             let i = data.messages.length - 1;
             while (i > 0 && data.messages[i].timestamp > afterTimestamp) --i;
-            data.messages = data.messages.slice(i+1);
+            if (i >= 0 && data.messages[i].timestamp <= afterTimestamp)
+                data.messages = data.messages.slice(i+1);
         }
         return res.status(200).json(data.messages);
     }).catch(err => {
