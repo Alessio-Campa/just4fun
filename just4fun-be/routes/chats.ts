@@ -71,7 +71,7 @@ router.get("/:chatID/message", passport_auth(['jwt', 'anonymous']), (req, res, n
         if (afterTimestamp)//filter only new messages
         {
             let i = data.messages.length - 1;
-            while (i > 0 && data.messages[i].timestamp > afterTimestamp) --i;
+            while (i >= 0 && data.messages[i].timestamp > afterTimestamp) --i;
             if (i >= 0 && data.messages[i].timestamp <= afterTimestamp)
                 data.messages = data.messages.slice(i+1);
         }
