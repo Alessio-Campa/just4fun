@@ -100,6 +100,8 @@ router.post('/', passport_auth(['jwt', 'anonymous']), (req, res, next) => {
     {
         if (!req.body.name || req.body.name === "")
             return next({statusCode:400, error:true, errormessage:"Name field required"});
+        if (req.body.name.includes(''))
+            return next({statusCode:400, error:true, errormessage:"Username cannot contain whitespaces"});
         if (!req.body.avatar || req.body.avatar === "")
             return next({statusCode:400, error:true, errormessage:"Avatar field required"});
 
