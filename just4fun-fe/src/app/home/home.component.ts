@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
   private ngForDone = false;
 
   constructor(private userService: UserService, private ms: MatchService, private router: Router) { }
-  socket = io(environment.serverUrl, { transports: ['websocket'] });
+  //socket = io(environment.serverUrl, { transports: ['websocket'] });
 
   ngOnInit(): void {
     this.isLogged = this.userService.isLoggedIn;

@@ -23,12 +23,13 @@ export class MatchComponent implements OnInit {
   isReplaying = false;
   isAutoReplaying = false;
   private replayStep = 0;
+  socket;
 
   constructor(private router: Router, private ms: MatchService, public userService: UserService,
               private ios: SocketioService, private chatService: ChatService) { }
 
   ngOnInit(): void {
-    // get matchID from url
+    this.socket = this.ios.getSocketIO();
     let matchID = this.router.url.split('/').pop();
 
     if (this.userService.isLoggedIn)
@@ -52,7 +53,53 @@ export class MatchComponent implements OnInit {
       this.userService.get_user_by_mail(this.match.player0).subscribe(data => this.username0 = data.username);
       this.userService.get_user_by_mail(this.match.player1).subscribe(data => this.username1 = data.username);
 
-      // connect to socketIo
+      // fetch chat
+      this.chatService.getChatByMatch(matchID).subscribe(data => {
+        this.matchChat = data[0];
+        this.matchChat.messages = [];
+
+        this.fetchChat()
+      })
+
+
+      this.socket.on('welcome', () => {
+        this.socket.emit('join', this.userService.email);
+      });
+
+      if (isPlayer){
+        this.socket.emit('playing', matchID);
+      }
+      else {
+        this.socket.emit('watching', matchID);
+      }
+
+
+
+      this.socket.on('newMove', (message) => {
+        console.log("new move from player: " + message.player);
+        this.match.turn = (this.match.turn + 1) % 2;
+        if (!isPlayer || message.player !== this.userService.email) {
+          this.board.insertDisk(message.column, (message.player === this.match.player0 ? 0 : 1));
+        }
+      });
+
+      this.socket.on('matchEnded', (message) => {
+        this.ms.getMatchById(this.match._id).subscribe((m: Match) => {
+          this.match.moves = m.moves;
+        });
+        this.match.winner.player = message.win.player;
+        this.match.winner.positions = message.win.positions;
+        this.board.endMatch();
+        this.board.highlightVictory(message.win.positions)
+      });
+
+      this.socket.on('newMessageReceived', (message)=>{
+        console.log('start fetching');
+        this.fetchChat();
+        console.log('fetch ended');
+      });
+      /*
+
       this.ios.connect(matchID, isPlayer).subscribe((message)=>{
         let subject = message.subject;
         // to execute when one player makes a new move
@@ -76,9 +123,18 @@ export class MatchComponent implements OnInit {
         if (message.subject === 'newMessageReceived')
           this.matchChat.fetchChat();
 
-      });
+          /* old version: for each fetch, the entire chat is fetched
+          this.chatService.fetchChat(this.matchChat._id).subscribe((data) =>{
+            console.log(data);
+            this.matchChat.messages = data.messages;
+            console.log(data.messages);
+          });
 
-      // create the board (playable or not) based on the user relationship with the match
+          this.fetchChat()
+          console.log('fetch ended');
+        }
+      });
+           */
       if (isPlayer && this.match.winner.player === null){
         this.board = new PlayableBoard('#board', this.match.board,this.match.turn, playerTurn, (c)=>{
           this.makeMove(c);

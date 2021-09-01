@@ -121,31 +121,33 @@ router.post("/:idChat/message", passport_auth('jwt'), (req, res, next)=> {
             if (c.matchID) {
                 ios.to(c.matchID + 'watchers').emit('broadcast', message);
                 console.log("notifying watchers of " + c.matchID);
-
-                match.getModel().findOne({_id: c.matchID}).then((data: Match) => {
-                    if (req.body.sender === data.player0 || req.body.sender === data.player1) {
-                        console.log("notifying players of " + c.matchID);
-                        ios.to(c.matchID + 'players').emit('broadcast', message);
-                    }
-                });
-            } else {
+                
+        if (c.matchID) {
+            ios.to(c.matchID + 'watchers').emit('newMessageReceived', message);
+            console.log("notifying watchers of " + c.matchID);
                 //notify users
                 let others = c.members.filter(x => x != req.body.sender)
                 user.getModel().find({email: {$in: others}}).then(data => {
-                    data.forEach(u => {
                         u.notify({type:'message', content: req.body.sender})
+                    data.forEach(u => {
                     })
                 })
 
-                for (let i in c.members) {
-                    ios.to(c.members[i]).emit('broadcast', message);
+            match.getModel().findOne({_id: c.matchID}).then((data:Match) => {
+                if (req.body.sender === data.player0 || req.body.sender === data.player1) {
+                    console.log("notifying players of " + c.matchID);
+                    ios.to(c.matchID + 'players').emit('newMessageReceived', message);
+                }
+            });
+        }
+        else {
+            //let receiver = (c.members[1] === req.body.sender) ? c.members[0] : c.members[1];
+            for (let i in c.members) {
+                    ios.to(c.members[i]).emit('newMessageReceived', message);
                     console.log("notifying " + c.members[i]);
                 }
-            }
-            return res.status(200).json({error: false, message: "Object created"})
-        }).catch((err) => {
-            return next({statusCode: 500, error: true, errormessage: "DB error: " + err});
-        })
+        }
+        return res.status(200).json({error: false, message: "Object created"})
     }).catch((err) => {
         return next({statusCode: 500, error: true, errormessage: "DB error: " + err});
     })

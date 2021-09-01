@@ -18,6 +18,7 @@ export class MessagesComponent implements OnInit, OnChanges { //rappresenta una 
   @Input() filter: string[] = null;
   userMail: string;
   chatTitle: string;
+  socket;
 
   // if user is not logged in return to home
   constructor(private chatService: ChatService, private userService: UserService, private router: Router,
@@ -27,21 +28,24 @@ export class MessagesComponent implements OnInit, OnChanges { //rappresenta una 
   }
 
   ngOnInit(): void {
+    this.socket = this.ios.getSocketIO();
     this.userMail = this.userService.email;
     // set chat title to display
     if (this.chat.matchID !== null) {
       this.chatTitle = 'Match chat'
     }
     else {
-      this.ios.connect().subscribe((message)=>{
-        if (message.subject === 'newMessageReceived') {
-          console.log('start fetching');
-          this.chat.fetchChat();
-          console.log('fetch ended');
-        }
+      this.chatTitle = this.chat.members[0] == this.userMail ? this.chat.members[1] : this.chat.members[0]
+      this.socket.on('newMessageReceived', (message)=>{
+        console.log('start fetching');
+        this.messageFetch();
+        console.log('fetch ended');
       });
       this.chatTitle = this.getTitles(this.chat.members);
     }
+    this.socket.on('welcome', () => {
+      this.socket.emit('join', this.userService.email);
+    });
   }
 
   getTitles(members: string[]): string

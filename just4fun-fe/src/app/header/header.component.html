@@ -27,7 +27,8 @@
       <ul *ngIf="userService.isLoggedIn" class="navbar-nav navbar-right ms-auto">
         <li class="nav-item">
           <a class="nav-link" href="/notifications">
-            <img src="assets/img/bell.svg" height="20em" class="m-0 p-0">
+            <img *ngIf="hasNotifications" src="assets/img/bell-fill.svg" height="20em" class="m-0 p-0">
+            <img *ngIf="!hasNotifications" src="assets/img/bell.svg" height="20em" class="m-0 p-0">
           </a>
         </li>
         <li class="nav-item dropdown">

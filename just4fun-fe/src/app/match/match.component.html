@@ -35,6 +35,9 @@
       </h1>
     </div>
   </div>
+  <h1 *ngIf="match && match.winner.player !== null && match.winner.player === -1" class="h1 mb-0 d-flex justify-content-center">
+    <b> It's a draw! </b>
+  </h1>
 </div>
 
 <div class="align-content-center">

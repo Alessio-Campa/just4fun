@@ -6,6 +6,7 @@ import * as user from "./User";
 const ROWS: number = 6;
 const COLUMNS: number = 7;
 const CELL_TO_WIN: number = 4;
+const CELLS: number = ROWS * COLUMNS;
 
 export interface Match extends mongoose.Document{
     player0: string,
@@ -102,10 +103,10 @@ matchSchema.methods.makeMove = function (player: string, column: number): void {
         subject: "newMove",
         matchID: this.id,
         column: column,
-        player: player //in teoria non serve
+        player: player //TODO: in teoria non serve
     }
-    ios.to(this.id + 'watchers').emit("broadcast", message);
-    ios.to(this.id + 'players').emit("broadcast", message);
+    ios.to(this.id + 'watchers').emit("newMove", message);
+    ios.to(this.id + 'players').emit("newMove", message);
     if(winner.winner !== null){
         this.winner.player = winner.winner;
         this.winner.positions = winner.cells;
@@ -115,9 +116,9 @@ matchSchema.methods.makeMove = function (player: string, column: number): void {
             matchID: this.id,
             win: this.winner,
         }
-        ios.to(this.id + 'watchers').emit("broadcast", message);
-        ios.to(this.id + 'players').emit("broadcast", message);
-        let victor;
+        ios.to(this.id + 'watchers').emit("matchEnded", message);
+        ios.to(this.id + 'players').emit("matchEnded", message);
+        let myTest;
         let loser;
         if (this.winner.player === 0) {
             victor = this.player0;
@@ -131,6 +132,7 @@ matchSchema.methods.makeMove = function (player: string, column: number): void {
             theWinner.updatePoints(loser);
         });
     }
+
     this.turn = (this.turn + 1) % 2 //switch turn
 }
 
@@ -158,6 +160,12 @@ matchSchema.methods.getCell = function(row: number, column: number): number {
 
 matchSchema.methods.checkWin = function(row:number, column:number): Result {
     let result;
+
+    if (this.moves.length >= CELLS) {
+        result = new Result();
+        result.setWinner(-1); // draw
+        return result
+    }
 
     result = this.checkDirection(row, column, -1,1)
     if (result.winner == null)

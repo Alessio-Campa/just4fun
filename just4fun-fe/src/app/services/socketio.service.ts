@@ -11,6 +11,14 @@ export class SocketioService {
   private socket;
   constructor( private userService: UserService ) { }
 
+  getSocketIO(){
+    if (!this.socket) {
+      this.socket = io(environment.serverUrl, { transports: ['websocket'] });
+    }
+    return this.socket;
+  }
+
+
   connect(matchID: string = null, player = false): Observable< any > {
 
     this.socket = io(environment.serverUrl, { transports: ['websocket'] });
