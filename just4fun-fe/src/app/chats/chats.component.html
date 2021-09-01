@@ -1,5 +1,5 @@
 <div class="row" style="height: 85vh">
-  <div class="col-12 col-sm-4 h-100 bg-dark overflow-auto rounded">
+  <div *ngIf="!isLoading.chats" class="col-12 col-sm-4 h-100 bg-dark overflow-auto rounded">
 
     <div class="row align-items-center">
       <div class="col"></div>
@@ -24,10 +24,15 @@
     </div>
 
   </div>
+  <div *ngIf="isLoading.chats" class="col-12 col-sm-4 h-100 bg-dark">
+    <div class="bg-dark rounded h-100 loading">
+    </div>
+  </div>
 
-  <div class="col-12 col-sm-8 h-100 bg-dark rounded p-1 ">
+  <div class="col-12 col-sm-8 h-100 bg-dark rounded p-1">
     <app-messages *ngIf="selectedChat !== null" [chat]="selectedChat"></app-messages>
-    <div *ngIf="selectedChat === null" class="h1 text-center text-secondary mt-3"> You have no chats at the moment </div>
+    <div *ngIf="selectedChat === null && !isLoading.chats" class="h1 text-center text-secondary mt-3"> You have no chats at the moment </div>
+    <div *ngIf="isLoading.chats" class="h1 text-center text-secondary mt-3"> Loading... </div>
   </div>
 
 </div>
