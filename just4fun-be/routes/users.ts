@@ -257,8 +257,9 @@ router.post('/:id/invite/:friend', passport_auth('jwt'), (req, res, next) => {
     if (!req.user.friends.includes(req.params.friend))
         return next({statusCode: 400, error: true, errormessage: "User doesn't exist or isn't your friend"});
 
-    // TODO: inviare solo se non è già stato fatto
     user.getModel().findOne({email: req.params.friend}).then(data => {
+        if (data.matchInvites.includes(req.user.email))
+            return next({statusCode: 400, error: true, errormessage:"Match invite already sent"})
         data.matchInvites.push(req.user.email);
         data.notify({type: 'invite', content: req.user.email}, false);
         data.save();
