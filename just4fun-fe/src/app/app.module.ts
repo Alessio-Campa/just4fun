@@ -22,6 +22,8 @@ import { UserChangePasswordComponent } from './user-change-password/user-change-
 import { NotificationsComponent } from './notifications/notifications.component';
 import { UserChangeAvatarComponent } from './user-change-avatar/user-change-avatar.component';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,13 @@ import { UserSettingsComponent } from './user-settings/user-settings.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ImageCropperModule
+    ImageCropperModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [
     {provide: UserService, useClass: UserService}
