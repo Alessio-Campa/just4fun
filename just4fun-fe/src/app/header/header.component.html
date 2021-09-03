@@ -43,9 +43,7 @@
 
       </ul>
 
-    </div>
-
-    <ul *ngIf="!userService.isLoggedIn" class="navbar-nav">
+    <ul *ngIf="!userService.isLoggedIn" class="navbar-nav navbar-right">
       <li class="nav-item">
         <a class="btn btn-sm btn-secondary nav-link" href="/login" style="margin-right: 10px;">Login</a>
       </li>
@@ -53,6 +51,8 @@
         <a class="btn btn-sm btn-info nav-link" href="/register" style="margin-right: 10px;">Sign Up</a>
       </li>
     </ul>
+
+    </div>
 
   </nav>
 </header>
