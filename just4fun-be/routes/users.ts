@@ -17,7 +17,9 @@ router.get('/', passport_auth(['jwt', 'anonymous']), (req, res, next) => {
         roles:0,  //Security reason
         isPasswordTemporary:0, //Security reason
         avatar:0,  //Size of response reason
-        isDeleted:0  //Deleted user isn't showed
+        isDeleted:0,  //Deleted user isn't showed
+        hasNewNotifications: 0,  //Security reason
+        notifications:0  //Security reason
     };
     if(!req.user || !req.user.hasModeratorRole())
     {
@@ -26,7 +28,6 @@ router.get('/', passport_auth(['jwt', 'anonymous']), (req, res, next) => {
         projection['friends'] = 0;
         projection['friendRequests'] = 0;
         projection['roles'] = 0;
-        projection['hasNewNotifications'] = 0;
     }
 
     let skip = getIntFromQueryParam(req.query.skip, 0);
@@ -59,6 +60,7 @@ router.get('/:email', passport_auth(['jwt', 'anonymous']), (req, res, next) => {
         projection['following'] = 0;
         projection['friends'] = 0;
         projection['hasNewNotifications'] = 0;
+        projection['notifications'] = 0;
         // projection['friendRequests'] = 0;
     }
 
