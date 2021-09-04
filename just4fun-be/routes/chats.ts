@@ -92,7 +92,7 @@ router.post("/", passport_auth('jwt'), (req, res, next)=> {
 
         if (req.body.members)
             for (let i in req.body.members)
-                if(!req.user.friends.includes(req.body.members[i]))
+                if(!req.user.friends.includes(req.body.members[i]) && req.user.email !== req.body.members[i])
                     return next({statusCode: 403, error: true, errormessage: "You can't create chat with non-friends"});
 
         chat.getModel().create({
