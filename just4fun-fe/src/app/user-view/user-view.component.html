@@ -59,6 +59,13 @@
           </button>
         </div>
 
+        <div *ngIf="isModerator()" class="ol-12 col-sm pb-2 text-center">
+          <button class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#deleteUserModal">
+            <i class="fas fa-user-slash" style="font-size: xxx-large"></i><br>
+            <span class="w-75 ms-auto me-auto">Delete user</span>
+          </button>
+        </div>
+
       </div>
 
     </div>
@@ -100,12 +107,6 @@
       </div>
     </div>
   </div>
-</div>
-
-<div *ngIf="isModerator()" class="justify-content-center w-100 mt-4 d-flex">
-  <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal">
-    Delete user
-  </button>
 </div>
 
 
