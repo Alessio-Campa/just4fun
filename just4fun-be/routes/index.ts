@@ -8,7 +8,7 @@ import { signToken, passport_auth} from "../bin/authentication";
 let router = express.Router();
 
 router.get("/", (req, res, next)=>{
-    next({statusCode: 200, api_version:"1.0", endpoints:["/chat", "/match", "/user"]})
+    return next({statusCode: 200, api_version:"1.0.0", endpoints:["/chat", "/match", "/user"]})
 })
 
 router.get('/login', passport_auth('basic'), (req, res, next)=>{

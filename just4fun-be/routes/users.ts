@@ -103,14 +103,14 @@ router.post('/', passport_auth(['jwt', 'anonymous']), (req, res, next) => {
     }
     else
     {
-        if (!req.body.name || req.body.name === "")
-            return next({statusCode:400, error:true, errormessage:"Name field required"});
-        if (req.body.name.includes(' '))
+        if (!req.body.username || req.body.username === "")
+            return next({statusCode:400, error:true, errormessage:"Username field required"});
+        if (req.body.username.includes(' '))
             return next({statusCode:400, error:true, errormessage:"Username cannot contain whitespaces"});
         if (!req.body.avatar || req.body.avatar === "")
             return next({statusCode:400, error:true, errormessage:"Avatar field required"});
 
-        u = user.newUser(req.body.email, req.body.name, req.body.avatar);
+        u = user.newUser(req.body.email, req.body.username, req.body.avatar);
         u.setPassword(req.body.password);
     }
 
