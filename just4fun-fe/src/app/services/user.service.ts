@@ -289,7 +289,7 @@ export class UserService {
         'Content-Type': 'application/json',
       })
     };
-    return this.http.post(`${environment.serverUrl}/user/${this.email}/invite/${receiver}`, {}, options)
+    return this.http.post(`${environment.serverUrl}/user/${this.email}/invite/`, {user: receiver}, options)
   }
 
   deleteInvitation(sender): Observable<any>{

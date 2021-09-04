@@ -256,13 +256,13 @@ router.delete('/:id/notification/:idNot', passport_auth('jwt'), (req, res, next)
     })
 })
 
-router.post('/:id/invite/:friend', passport_auth('jwt'), (req, res, next) => {
+router.post('/:id/invite', passport_auth('jwt'), (req, res, next) => {
     if (req.user.email !== req.params.id)
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
-    if (!req.user.friends.includes(req.params.friend))
+    if (!req.user.friends.includes(req.body.user))
         return next({statusCode: 400, error: true, errormessage: "User doesn't exist or isn't your friend"});
 
-    user.getModel().findOne({email: req.params.friend}).then(data => {
+    user.getModel().findOne({email: req.body.user}).then(data => {
         if (data.matchInvites.includes(req.user.email))
             return next({statusCode: 400, error: true, errormessage:"Match invite already sent"})
         data.matchInvites.push(req.user.email);
