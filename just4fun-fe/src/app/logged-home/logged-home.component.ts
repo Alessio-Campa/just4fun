@@ -45,11 +45,8 @@ export class LoggedHomeComponent implements OnInit {
 
     this.socket = this.ios.getSocketIO();
 
-    this.socket.on('welcome', () => {
-      this.socket.emit('join', this.userService.email);
-    });
-
     this.socket.on('matchMakingFound', (message) => {
+      console.log('matchMakingFound');
       this.matchSearching = false;
       this.matchFound = true;
       this.player0 = message.player0; //Provide a value before fetch

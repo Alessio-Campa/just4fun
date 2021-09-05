@@ -14,19 +14,6 @@ export class SocketioService {
   getSocketIO(){
     if (!this.socket) {
       this.socket = io(environment.serverUrl, { transports: ['websocket'] });
-    }
-    return this.socket;
-  }
-
-
-  connect(matchID: string = null, player = false): Observable< any > {
-
-    this.socket = io(environment.serverUrl, { transports: ['websocket'] });
-
-    return new Observable(observer => {
-      this.socket.on('broadcast', (m) => {
-        observer.next(m);
-      });
 
       this.socket.on('readyToPlay', (m)=>{
         this.socket.emit('playing', m.matchID);
@@ -37,27 +24,14 @@ export class SocketioService {
       });
 
       this.socket.on('welcome', () => {
-        if (matchID === null) {
           this.socket.emit('join', this.userService.email);
-        }
-        else if (player === true){
-          this.socket.emit('playing', matchID);
-        }
-        else {
-          this.socket.emit('watching', matchID);
-        }
       });
 
       this.socket.on('error', (err) => {
         console.log('Socket.io error: ' + err);
-        observer.error(err);
       });
-
-      return { unsubscribe() {
-          this.socket.disconnect();
-      }};
-
-    });
+    }
+    return this.socket;
   }
 
 }

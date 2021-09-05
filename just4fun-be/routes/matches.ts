@@ -58,7 +58,7 @@ router.post("/random", passport_auth('jwt'), (req, res, next) => {
         matchmaking.getModel().findOne({playerID: req.user.email}).then((alreadyPresent) => {
             if(alreadyPresent)
             {
-                return res.status(400).json({statusCode: 400, error: false, message: "Matchmaking already started"});
+                return next({statusCode: 400, error: true, message: "Matchmaking already started"});
             }
             else
             {
@@ -107,7 +107,7 @@ router.post("/", passport_auth('jwt'), (req, res, next) => {
             let c: Chat = newChat(m._id, null);
             c.save().then(() => {
                 opponent.notify({type: 'acceptedInvite', content: {opponent: req.body.user, matchID: m._id}})
-                return res.status(200).json({objectID: m._id})
+                return res.status(200).json({matchID: m._id})
             }).catch((err) => {
                 return next({statusCode: 500, error: true, errormessage: "DB error: "+err});
             })

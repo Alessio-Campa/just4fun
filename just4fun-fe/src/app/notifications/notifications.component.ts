@@ -25,8 +25,7 @@ export class NotificationsComponent implements OnInit {
   ngOnInit(): void {
     this.userService.readNotifications().subscribe();
     this.gettingNotifications();
-    this.ios.connect().subscribe(data =>{
-      if (data.subject === 'newNotification')
+    this.ios.getSocketIO().on('newNotification', (data) =>{
         this.gettingNotifications();
     })
   }
@@ -89,7 +88,7 @@ export class NotificationsComponent implements OnInit {
     if (this.canAccept){
       this.canAccept = false;
       this.matchService.crateMatchFromInvitation(this.user.email, sender).subscribe(res => {
-          this.lastMatchAccepted = res.objectID;
+          this.lastMatchAccepted = res.matchID;
         },
         ()=>{},
         ()=>{
