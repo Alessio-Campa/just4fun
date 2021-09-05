@@ -105,7 +105,7 @@ router.post("/", passport_auth('jwt'), (req, res, next) => {
         if (req.user.matchInvites.includes(opponent.email))
             req.user.matchInvites.splice(req.user.matchInvites.indexOf(opponent.email), 1);//Remove invite
         else
-            return next({statusCode: 400, error: true, errormessage: "You do not receive an invite to play"});
+            return next({statusCode: 403, error: true, errormessage: "You do not receive an invite to play"});
 
         let m: Match = match.newMatch(req.body.user, req.body.opponent);
         m.save().then(() => {
