@@ -41,9 +41,6 @@
 
         <div class="col-12 col-sm pb-2 text-center">
           <button type="button" class="btn btn-info w-100" [disabled]="!this.me" (click)="isFriend ? unfriend() : (hasRequested ? unrequest() : sendRequest())">
-            <!--            <img *ngIf="!isFriend && !hasRequested" src="assets/img/people.svg" class="bi bi-person-plus" style="height: 4em">-->
-            <!--            <img *ngIf="hasRequested" src="assets/img/clock.svg" class="bi bi-person-plus" style="height: 4em">-->
-            <!--            <img *ngIf="isFriend" src="assets/img/people-fill.svg" class="bi bi-person-plus" style="height: 4em">-->
             <i *ngIf="!isFriend && !hasRequested" class="fas fa-user" style="font-size: xxx-large"></i>
             <i *ngIf="hasRequested" class="fas fa-clock" style="font-size: xxx-large"></i>
             <i *ngIf="isFriend" class="fas fa-user-friends" style="font-size: xxx-large"></i>
@@ -53,7 +50,7 @@
         </div>
 
         <div class="col-12 col-sm pb-2 text-center">
-          <button type="button" class="btn btn-info w-100" [disabled]="!me && !me.friends.includes(user.email)" (click)="sendMatchInvite()">
+          <button type="button" class="btn btn-info w-100" [disabled]="!me || !me.friends.includes(user.email)" (click)="sendMatchInvite()">
             <i class="fas fa-gamepad" style="font-size: xxx-large"></i><br>
             <span class="w-75 ms-auto me-auto">New match</span>
           </button>
