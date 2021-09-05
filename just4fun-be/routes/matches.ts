@@ -3,16 +3,14 @@ import {passport_auth} from "../bin/authentication";
 import * as match from "../models/Match";
 import * as matchmaking from "../models/Matchmaking";
 import * as user from "../models/User";
-import {isMatch, Match} from "../models/Match";
-import {isMatchMaking, Matchmaking} from "../models/Matchmaking";
+import {Match} from "../models/Match";
+import {Matchmaking} from "../models/Matchmaking";
 import {getIoServer} from "../bin/socket";
-import jwt_decode from "jwt-decode";
 import {User} from "../models/User";
 import {getIntFromQueryParam} from "../utils/utils";
 import {Chat, newChat} from "../models/Chat";
 
 let router = express.Router();
-let ios = getIoServer();
 
 router.get("/", (req, res, next) => {
     let skip = getIntFromQueryParam(req.query.skip, 0);
@@ -37,6 +35,7 @@ router.get("/", (req, res, next) => {
 })
 
 router.get("/:id", passport_auth(['jwt', 'anonymous']), (req, res, next) =>{
+    let ios  = getIoServer();
     match.getModel().findById(req.params.id).then( (m: Match) => {
         if (req.user) {
             if (req.user.email === m.player0 || req.user.email === m.player1)

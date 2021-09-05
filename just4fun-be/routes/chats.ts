@@ -83,12 +83,17 @@ router.get("/:chatID/message", passport_auth(['jwt', 'anonymous']), (req, res, n
 
 
 router.post("/", passport_auth('jwt'), (req, res, next)=> {
-    if (!req.body.members.includes(req.user.email))
+    if (req.body.members && !req.body.members.includes(req.user.email))
         return next({statusCode: 403, error: true, errormessage: "Forbidden"});
 
     chat.getModel().count({matchID: null, members:req.body.members},(err, count) => {
         if (count > 0)
-            return next({statusCode: 400, error: true, errormessage: "chat already exists"});
+            return next({statusCode: 400, error: true, errormessage: "Chat already exists"});
+
+        if (req.body.members)
+            for (let i in req.body.members)
+                if(!req.user.friends.includes(req.body.members[i]) && req.user.email !== req.body.members[i])
+                    return next({statusCode: 403, error: true, errormessage: "You can't create chat with non-friends"});
 
         chat.getModel().create({
             matchID: null,

@@ -93,9 +93,9 @@ export class UserService {
     localStorage.removeItem('just4fun_token');
   }
 
-  register(email: string, name: string, password: string, avatar: string, isMod: boolean = false): Observable<User>{
+  register(email: string, username: string, password: string, avatar: string, isMod: boolean = false): Observable<User>{
     let user = {
-      name: name,
+      username: username,
       email: email,
       password: password,
       avatar: avatar,
@@ -116,9 +116,9 @@ export class UserService {
       })
     );
   }
-  completeRegistration(email: string, name: string, oldPassword: string, newPassword: string, avatar: string): Observable<User>{
+  completeRegistration(email: string, username: string, oldPassword: string, newPassword: string, avatar: string): Observable<User>{
     let data = {
-      name: name,
+      username: username,
       password: newPassword,
       avatar: avatar
     }
@@ -289,7 +289,7 @@ export class UserService {
         'Content-Type': 'application/json',
       })
     };
-    return this.http.post(`${environment.serverUrl}/user/${this.email}/invite/${receiver}`, {}, options)
+    return this.http.post(`${environment.serverUrl}/user/${this.email}/invite/`, {user: receiver}, options)
   }
 
   deleteInvitation(sender): Observable<any>{
