@@ -13,8 +13,10 @@ export class UserSettingsComponent implements OnInit {
   successMessage: string = '';
   errorMessage: string = '';
 
-  public modEmail = '';
-  public modPassword = '';
+  modEmail = '';
+  modPassword = '';
+  modError = '';
+  modSuccess = '';
 
   constructor(private userService: UserService, private router: Router) {
     if (!this.userService.isLoggedIn)
@@ -40,11 +42,17 @@ export class UserSettingsComponent implements OnInit {
     }
   }
 
-  registerNewMod(){
+  registerNewMod() {
+    this.modError = '';
+    this.modSuccess = '';
     this.userService.register(this.modEmail, '',this.modPassword, '', true).subscribe( ()=> {
-      this.modEmail = '';
-      this.modPassword = '';
-    });
+        this.modEmail = '';
+        this.modPassword = '';
+        this.modSuccess = 'Done!';
+      },
+      ()=> {
+        this.modError = 'An error occurred';
+      });
   }
 
   isModerator(){

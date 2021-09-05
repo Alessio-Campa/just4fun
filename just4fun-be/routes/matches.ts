@@ -102,6 +102,11 @@ router.post("/", passport_auth('jwt'), (req, res, next) => {
         if (!opponent.friends.includes(req.body.user))
             return next({statusCode: 400, error: true, errormessage: "Opponent is not your friend"});
 
+        if (req.user.matchInvites.includes(opponent.email))
+            req.user.matchInvites.splice(req.user.matchInvites.indexOf(opponent.email), 1);//Remove invite
+        else
+            return next({statusCode: 400, error: true, errormessage: "You do not receive an invite to play"});
+
         let m: Match = match.newMatch(req.body.user, req.body.opponent);
         m.save().then(() => {
             let c: Chat = newChat(m._id, null);
