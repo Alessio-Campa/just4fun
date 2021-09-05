@@ -8,7 +8,7 @@ import { signToken, passport_auth} from "../bin/authentication";
 let router = express.Router();
 
 router.get("/", (req, res, next)=>{
-    return next({statusCode: 200, api_version:"1.0.0", endpoints:["/chat", "/match", "/user"]})
+    return res.status(200).json({statusCode: 200, api_version:"1.0.0", endpoints:["/chat", "/match", "/user"]})
 })
 
 router.get('/login', passport_auth('basic'), (req, res, next)=>{
@@ -24,7 +24,7 @@ router.get('/login', passport_auth('basic'), (req, res, next)=>{
 
     user.getModel().findOne({email: req.user.email}).then((u: User)=> {
         if (!u.isPasswordTemporary)
-            return next({statusCode: 200, error: false, errormessage: "", token: token_signed });
+            return res.status(200).json({statusCode: 200, error: false, errormessage: "", token: token_signed });
         else
             return next({statusCode: 422, error: true, errormessage: "Please change your temporary password"});
     }).catch(err => {
