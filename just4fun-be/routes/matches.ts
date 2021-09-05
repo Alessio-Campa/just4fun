@@ -11,7 +11,6 @@ import {getIntFromQueryParam} from "../utils/utils";
 import {Chat, newChat} from "../models/Chat";
 
 let router = express.Router();
-let ios = getIoServer();
 
 router.get("/", (req, res, next) => {
     let skip = getIntFromQueryParam(req.query.skip, 0);
@@ -36,6 +35,7 @@ router.get("/", (req, res, next) => {
 })
 
 router.get("/:id", passport_auth(['jwt', 'anonymous']), (req, res, next) =>{
+    let ios  = getIoServer();
     match.getModel().findById(req.params.id).then( (m: Match) => {
         if (req.user) {
             if (req.user.email === m.player0 || req.user.email === m.player1)
