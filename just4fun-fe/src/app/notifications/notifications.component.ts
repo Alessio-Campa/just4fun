@@ -25,8 +25,7 @@ export class NotificationsComponent implements OnInit {
   ngOnInit(): void {
     this.userService.readNotifications().subscribe();
     this.gettingNotifications();
-    this.ios.connect().subscribe(data =>{
-      if (data.subject === 'newNotification')
+    this.ios.getSocketIO().on('newNotification', (data) =>{
         this.gettingNotifications();
     })
   }

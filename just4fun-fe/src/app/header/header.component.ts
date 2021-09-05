@@ -15,9 +15,6 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.socket = this.ios.getSocketIO();
-    this.socket.on('welcome', () => {
-      this.socket.emit('join', this.userService.email);
-    });
     this.userService.get_user_by_mail(this.userService.email).subscribe(data => {
       if (data.hasNewNotifications) {
         this.hasNotifications = true;
