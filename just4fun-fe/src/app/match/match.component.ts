@@ -47,19 +47,12 @@ export class MatchComponent implements OnInit {
       this.userService.get_user_by_mail(this.match.player0).subscribe(data => this.username0 = data.username);
       this.userService.get_user_by_mail(this.match.player1).subscribe(data => this.username1 = data.username);
 
-
-      this.socket.on('welcome', () => {
-        this.socket.emit('join', this.userService.email);
-      });
-
       if (isPlayer){
         this.socket.emit('playing', matchID);
       }
       else {
         this.socket.emit('watching', matchID);
       }
-
-
 
       this.socket.on('newMove', (message) => {
         console.log("new move from player: " + message.player);

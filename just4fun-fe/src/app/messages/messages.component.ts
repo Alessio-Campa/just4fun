@@ -28,19 +28,18 @@ export class MessagesComponent implements OnInit, OnChanges { //rappresenta una 
     this.socket = this.ios.getSocketIO();
     this.userMail = this.userService.email;
     // set chat title to display
-    if (this.chat.matchID !== null)
-      this.chatTitle = 'Match chat'
-    else
-      this.chatTitle = this.getTitles(this.chat.members);
+    if (this.chat)
+    {
+      if(this.chat.matchID !== null)
+        this.chatTitle = 'Match chat'
+      else
+        this.chatTitle = this.getTitles(this.chat.members);
+    }
 
     this.socket.on('newMessageReceived', (message)=>{
       console.log('start fetching');
       this.chat.fetchChat();
       console.log('fetch ended');
-    });
-
-    this.socket.on('welcome', () => {
-      this.socket.emit('join', this.userService.email);
     });
   }
 
@@ -52,10 +51,12 @@ export class MessagesComponent implements OnInit, OnChanges { //rappresenta una 
 
   // activated when another chat is selected from chatsComponent
   ngOnChanges(changes: SimpleChanges){
-    if (changes.chat.currentValue.matchID !== null)
-      this.chatTitle = 'Match chat'
-    else
-      this.chatTitle = this.getTitles(changes.chat.currentValue.members);
+    if(this.chat) {
+      if (changes.chat.currentValue.matchID !== null)
+        this.chatTitle = 'Match chat'
+      else
+        this.chatTitle = this.getTitles(changes.chat.currentValue.members);
+    }
   }
 
   sendMessage(message){
