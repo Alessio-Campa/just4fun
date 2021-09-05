@@ -72,7 +72,7 @@ export class ChatsComponent implements OnInit {
   createChat(friend): void{
     this.chatService.newChat([this.userMail, friend]).subscribe( data=>{
       this.friends.delete(friend)
-      this.chats.push(data.object)
+      this.chats.push(data)
     })
   }
 

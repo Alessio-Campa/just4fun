@@ -121,7 +121,7 @@ export class ChatService {
     }));
   }
 
-  newChat(members: string[]): Observable<any>{
+  newChat(members: string[]): Observable<Chat>{
     let options = {
       headers: new HttpHeaders({
         'Authorization': this.userService.tokenAuth(),
@@ -133,6 +133,8 @@ export class ChatService {
       members: members
     }
 
-    return this.http.post(`${environment.serverUrl}/chat/`, body, options);
+    return this.http.post(`${environment.serverUrl}/chat/`, body, options).pipe(map((data: any) => {
+      return new Chat(this.http, this.userService, data.object);
+    }));
   }
 }
