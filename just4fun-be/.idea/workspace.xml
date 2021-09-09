@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="50b6c8c6-a28e-4a48-8e0d-af753471fd40" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../just4fun-fe/ngsw-config.json" afterDir="false" />
+    <list default="true" id="50b6c8c6-a28e-4a48-8e0d-af753471fd40" name="Default Changelist" comment="end of res status refactor">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/header/header.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/header/header.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/logged-home/logged-home.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/logged-home/logged-home.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/services/socketio.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/services/socketio.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,6 +19,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GitSEFilterConfiguration">
@@ -30,15 +35,16 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/routes/matches.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/models/User.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.env" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/routes/users.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/models/Chat.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/routes/chats.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/bin/authentication.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/models/Chat.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/bin/www.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/routes/users.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/bin/app.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/bin/www.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/models/User.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/bin/socket.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/routes/matches.ts" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1vGki78QVY5bgOViP5ghX5tCdjN" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -53,14 +59,13 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="add_unversioned_files" value="$PROJECT_DIR$/.env" />
-    <property name="javascript.nodejs.core.library.configured.version" value="12.18.2" />
-    <property name="javascript.nodejs.core.library.typings.version" value="12.20.19" />
+    <property name="javascript.nodejs.core.library.configured.version" value="14.17.3" />
+    <property name="javascript.nodejs.core.library.typings.version" value="14.17.3" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/build/bin/www.js" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="ts.external.directory.path" value="C:\Users\Admin\WebStormProjects\just4fun\just4fun-be\node_modules\typescript\lib" />
+    <property name="ts.external.directory.path" value="C:\Users\Mario\Documents\GitHub\just4fun\just4fun-be\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -68,7 +73,7 @@
       <recent name="C:\Users\Admin\WebStormProjects\just4fun\just4fun-be" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.compile">
+  <component name="RunManager" selected="npm.start">
     <configuration name="www.js" type="NodeJSConfigurationType" nameIsGenerated="true" path-to-js-file="build/bin/www.js" working-dir="$PROJECT_DIR$">
       <method v="2">
         <option name="RunConfigurationTask" enabled="true" run_configuration_name="compile" run_configuration_type="js.build_tools.npm" />
@@ -139,12 +144,34 @@
       <workItem from="1629650377422" duration="2632000" />
       <workItem from="1629789552887" duration="6987000" />
       <workItem from="1629814280409" duration="6776000" />
-      <workItem from="1629968894977" duration="5491000" />
-      <workItem from="1630144008555" duration="1250000" />
-      <workItem from="1630309739126" duration="13220000" />
-      <workItem from="1630679232028" duration="120000" />
-      <workItem from="1630679369845" duration="1213000" />
+      <workItem from="1629968894977" duration="4884000" />
+      <workItem from="1630226115920" duration="1197000" />
+      <workItem from="1630743949387" duration="25581000" />
+      <workItem from="1631043224225" duration="5742000" />
+      <workItem from="1631180499246" duration="1364000" />
     </task>
+    <task id="LOCAL-00001" summary="small variable rebase">
+      <created>1630275498859</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1630275498859</updated>
+    </task>
+    <task id="LOCAL-00002" summary="draw implemented">
+      <created>1630277267154</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1630277267154</updated>
+    </task>
+    <task id="LOCAL-00003" summary="end of res status refactor">
+      <created>1630860602669</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1630860602669</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -153,32 +180,44 @@
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
   </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+      </list>
+    </option>
+  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/bin/socket.ts</url>
-          <line>20</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/bin/socket.ts</url>
-          <line>26</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="small variable rebase" />
+    <MESSAGE value="draw implemented" />
+    <MESSAGE value="end of res status refactor" />
+    <option name="LAST_COMMIT_MESSAGE" value="end of res status refactor" />
   </component>
 </project>
