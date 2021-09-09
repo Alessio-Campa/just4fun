@@ -14,10 +14,7 @@ export class SocketioService {
   getSocketIO(){
     if (!this.socket) {
       this.socket = io(environment.serverUrl, { transports: ['websocket'] });
-
-      this.socket.on('welcome', () => {
-          this.socket.emit('join', this.userService.email);
-      });
+      this.socket.emit('join', this.userService.email);
 
       this.socket.on('readyToPlay', (m)=>{
         this.socket.emit('playing', m.matchID);
