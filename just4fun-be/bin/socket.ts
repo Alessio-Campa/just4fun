@@ -9,7 +9,6 @@ function startSocketIoServer(server: Server): io.Server {
 
     ioServer.on('connection', function (socket){
         console.log(('the socket id ' + socket.id + " is connected").yellow);
-        ioServer.to(socket.id).emit("welcome", "welcome back dear socket " + socket.id);
 
         socket.on('join', function (room){
             socket.join(room);
