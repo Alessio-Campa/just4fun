@@ -1,6 +1,6 @@
 {
   "name": "just4fun-be",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Connect 4 multiplayer",
   "main": "www.js",
   "scripts": {
