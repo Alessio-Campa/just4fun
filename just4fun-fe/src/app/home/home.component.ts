@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit {
       if (data.length === 0)
         this.userNotFoundError = true;
       else
-        this.router.navigate([`/user/${data[0].email}`])
+        this.router.navigate([`/user/${data[0].email.replace(".", "$")}`])
     });
   }
 

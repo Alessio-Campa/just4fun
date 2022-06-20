@@ -3,8 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="50b6c8c6-a28e-4a48-8e0d-af753471fd40" name="Default Changelist" comment="end of res status refactor">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/logged-home/logged-home.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/logged-home/logged-home.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/services/socketio.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/services/socketio.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/home/home.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/home/home.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/home/home.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/home/home.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../just4fun-fe/src/app/user-view/user-view.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../just4fun-fe/src/app/user-view/user-view.component.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,15 +37,18 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/.env" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/routes/users.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/models/Chat.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/routes/chats.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/bin/authentication.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/bin/app.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/bin/www.ts" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/models/User.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/bin/authentication.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/bin/socket.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/bin/www.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/models/Chat.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/models/User.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/routes/chats.ts" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/routes/matches.ts" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/routes/users.ts" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="1vGki78QVY5bgOViP5ghX5tCdjN" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -54,20 +58,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="javascript.nodejs.core.library.configured.version" value="14.17.3" />
-    <property name="javascript.nodejs.core.library.typings.version" value="14.17.3" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/build/bin/www.js" />
-    <property name="nodejs_interpreter_path" value="node" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="restartRequiresConfirmation" value="false" />
-    <property name="ts.external.directory.path" value="C:\Users\Mario\Documents\GitHub\just4fun\just4fun-be\node_modules\typescript\lib" />
-    <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/Admin/WebStormProjects/just4fun/just4fun-fe",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Admin\WebStormProjects\just4fun\just4fun-be" />
@@ -149,6 +147,11 @@
       <workItem from="1630743949387" duration="25581000" />
       <workItem from="1631043224225" duration="5742000" />
       <workItem from="1631180499246" duration="1364000" />
+      <workItem from="1635165572668" duration="37000" />
+      <workItem from="1635253687260" duration="626000" />
+      <workItem from="1641647825953" duration="922000" />
+      <workItem from="1649089936724" duration="1382000" />
+      <workItem from="1655740525399" duration="1684000" />
     </task>
     <task id="LOCAL-00001" summary="small variable rebase">
       <created>1630275498859</created>
@@ -212,7 +215,6 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="small variable rebase" />

@@ -66,7 +66,7 @@
       <div class="col-12 bg-primary rounded p-3">
         <h2 class="h2 text-center mb-3">Leaderboard</h2>
 
-        <a *ngFor="let user of leaderboard; index as i" href="/user/{{user.email}}" style="cursor: pointer" class="row mb-1">
+        <a *ngFor="let user of leaderboard; index as i" href="/user/{{user.email.replace('.', '$')}}" style="cursor: pointer" class="row mb-1">
             <div class="list-group-item bg-gradient col-4 text-center border-end border-1"> <b> {{i+1}} </b> </div>
             <div class="list-group-item bg-gradient col-8 d-flex justify-content-between align-items-center">
               {{user.username}}

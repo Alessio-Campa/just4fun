@@ -24,13 +24,13 @@ export class UserViewComponent implements OnInit {
   isLoading = {user: -1, buttons: -1, statistics: -1}
 
   constructor(private router: Router, private userService: UserService, private matchService: MatchService) {
-    if (this.userService.isLoggedIn && this.userService.email === this.router.url.split('/').pop()){
+    if (this.userService.isLoggedIn && this.userService.email === this.router.url.split('/').pop().replace('$', '.')){
       this.router.navigate(['/profile'])
     }
   }
 
   ngOnInit(): void {
-    let userMail = this.router.url.split('/').pop();
+    let userMail = this.router.url.split('/').pop().replace('$', '.');
 
     this.userService.get_user_by_mail(userMail).subscribe(data => {
       this.user = data;
